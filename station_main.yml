@@ -1,0 +1,9 @@
+- station:
+    name: "staion_1"
+    enabled: false
+    email: false
+    command: "{exe} --model {mod}/BUPwithMUASimple1.nlogo --experiment {unique} --table {out}/{unique}.out --threads {cpus}"
+    exe:     "/share/apps/user/stow/netlogo-5.2.1/netlogo-headless.sh"
+    input:  "{in}/OneWaySA77.csv"
+    cpus: 5
+
