@@ -1,0 +1,5 @@
+#Comment
+#FilePath macros
+#{metrodata} -- References the full path to the current metro data directory metro/Data
+
+{metrodata}/somefile
