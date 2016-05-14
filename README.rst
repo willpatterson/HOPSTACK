@@ -4,7 +4,7 @@
 LASubway README
 ***************
 
-LASubway (LAS) is a software pipeliner in active development. I started the LASubway project because I have exprienced profound discontinuity in the way computational analyses are documented, written and exectued in the acedemic community. This discontinuity makes computatoinal research difficult to reproduce adding a lot of overhead to researchers. LASubway aims to address these problems with a comprehensive set of tools to create, document, run and distriubte standarized software pipelines on UNIX-like computers and clusters.
+LASubway (LAS) is a software pipeliner in active development. I started the LASubway project because I have exprienced profound discontinuity in the way computational analyses are documented, written, and exectued in the acedemic community. This discontinuity makes computational research difficult to reproduce adding a lot of overhead to researchers. LASubway aims to address these problems with a comprehensive set of tools to create, document, run and distriubte standarized software pipelines on UNIX-like computers and clusters.
 
 LASubway is named after Los Angeles' 1990's metro system for two resasons:
 
