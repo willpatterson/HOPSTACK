@@ -1,13 +1,14 @@
 .. _README.rst
 
 ***************
-LASubWay README
+LASubway README
 ***************
 
-LASubway (LAS) is a software pipeliner in active development. I started the LASubway project because I have exprienced profound discontinuity in the way computational analyses are documented, written and exectued in the acedemic community. This discontinuity makes computatoinal research difficult to reproduce adding a lot of overhead to researchers. LASubway aims to address these problems with a comprehensive set of tools to create, document, run and distriubte standarized software pipelines on unix like computers and clusters.
+LASubway (LAS) is a software pipeliner in active development. I started the LASubway project because I have exprienced profound discontinuity in the way computational analyses are documented, written and exectued in the acedemic community. This discontinuity makes computatoinal research difficult to reproduce adding a lot of overhead to researchers. LASubway aims to address these problems with a comprehensive set of tools to create, document, run and distriubte standarized software pipelines on UNIX-like computers and clusters.
 
 LASubway is named after Los Angeles' 1990's metro system for two resasons:
-1. Subway systems provide a rough metaphor for software pipelining, providing easy names for features and data types
+
+1. Subway systems provide a rough metaphor for software pipelining, providing easy names for features and concepts
 2. Nobody uses the Los Angeles Metro Rail
 
 Planned Features of LASubway:
@@ -26,7 +27,7 @@ In it's current state of development and planning LASubway has three different o
 Stations:
 ---------
 
-``Station`` objects are the most basic LAS object. A station defines one shell command or LAS module and the type of input and output data expected. Stations are the building blocks of all other LAS objects. ``Stations`` can linked together with LASDI in Metro Lines to provide a simple way of pipeing data between different shell commands.
+``Station`` objects are the most basic LAS object. A station defines one shell command or LAS module and the type of input and output data expected. Stations are the building blocks of all other LAS objects. ``Stations`` are linked together with LASDI in ``metro lines`` to provide a simple way of pipeing data between different shell commands and or LAS modules.
 
 Metro Lines:
 ------------
@@ -48,6 +49,7 @@ The LAS Data Interpreter is one of LASubway's key abstractions. LASDI's main fun
 LASDI Can also take any LAS object as input. LASDI will run the LAS object provided as input and pipe it's data into existing pipeline.
 
 Strings LASDI can decode:
+
 - File Paths
 - Dirctory File Paths
 - Tar Files
@@ -56,6 +58,7 @@ Strings LASDI can decode:
 - URLs
 
 Protocols Supported:
+
 - FTP
 - FSTP
 - SSH
@@ -66,6 +69,6 @@ LASDI is curretnly being developed.
 Getting Involved:
 =================
 
-If you want get involved in developing LASubway please let me know. Currently most of the project is planned but not implemented so there is A LOT to do. I am a busy working college student with little time to work on personal projects.
+If you want get involved in developing LASubway please let me know. You can reach me at wpatt2 (at) pdx.edu. Currently most of the project is planned but not implemented so there is A LOT to do. I am a busy, working college student with little time to work on personal projects.
 
 
