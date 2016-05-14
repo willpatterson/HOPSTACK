@@ -4,7 +4,7 @@
 LASubway README
 ***************
 
-LASubway (LAS) is a software pipeliner in active development. I started the LASubway project because I have exprienced profound discontinuity in the way computational analyses are documented, written, and exectued in the acedemic community. This discontinuity makes computational research difficult to reproduce adding a lot of overhead to researchers. LASubway aims to address these problems with a comprehensive set of tools to create, document, run and distriubte standarized software pipelines on UNIX-like computers and clusters.
+LASubway (LAS) is a software pipeliner in active development. I started the LASubway project because I have experienced profound discontinuity in the way computational analyses are documented, written, and exectued in the acedemic community. This discontinuity makes computational research difficult to reproduce adding a lot of overhead work for researchers simply to reproduce results. LASubway aims to address these problems with a comprehensive set of tools to create, document, run and distriubte standarized software pipelines on UNIX-like computers and clusters.
 
 LASubway is named after Los Angeles' 1990's metro system for two resasons:
 
@@ -46,12 +46,12 @@ LAS Data Interpreter (LASDI):
 -----------------------------
 The LAS Data Interpreter is one of LASubway's key abstractions. LASDI's main function is to fetch/prepare data for the start of a pipeline as well as pipe data between different parts of the pipeline. At it's most basic level, LASDI takes a string as input, attempts to find verified data files with it, downloads and prepares data if nessesary, and then outputs every verified file path found with the input string. This may sound complex but in the contex of UNIX, where everything is a string it acutally makes a lot of sense. You pass LASDI a path to a directory in the file system, LASDI will return every file inside that directory. Pass LASDI the URL of a tar.gz file, LASDI will download the tar.gz file into a tmp direcotry, decompress and untar the archive and return the true file paths of every file inside the archive. 
 
-LASDI Can also take any LAS object as input. LASDI will run the LAS object provided as input and pipe it's data into existing pipeline.
+LASDI Can also take any LAS object as input. LASDI will run the LAS object provided as input and pipe it's data into an existing pipeline.
 
 Strings LASDI can decode:
 
 - File Paths
-- Dirctory File Paths
+- Directory File Paths
 - Tar Files
 - Compressed Files (bz2, gz, zip)
 - IP addresses
@@ -64,11 +64,11 @@ Protocols Supported:
 - SSH
 - HTTP/s
 
-LASDI is curretnly being developed.
+LASDI is currently under development.
 
 Getting Involved:
 =================
 
-If you want get involved in developing LASubway please let me know. You can reach me at wpatt2 (at) pdx.edu. Currently most of the project is planned but not implemented so there is A LOT to do. I am a busy, working college student with little time to work on personal projects.
+If you want to get involved in developing LASubway please let me know. You can reach me at wpatt2 (at) pdx.edu. Currently most of the project is planned but not implemented so there is A LOT to do. I am a busy, working college student with little time to work on personal projects.
 
 
