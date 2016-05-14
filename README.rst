@@ -32,12 +32,12 @@ Stations:
 Metro Lines:
 ------------
 
-``Metro lines`` are the next object layer above ``stations``. ``Metro lines`` are simply a linear set of stations that pipe data from one end to the other. 
+``Metro lines`` are the next object layer above ``stations``. ``Metro lines`` are simply a linear set of ``stations`` that pipe data from one end to the other. 
 
 Metros:
 -------
 
-Metros are the highest layer of LAS objects. Metros link linear ``metro lines`` together to provide a unidirectional and potentially parallel graph. In the future I plan on implementing conditional control flow to ``metros`` to allow for dynamic 'smart' metros. 
+``Metros`` are the highest layer of LAS objects. ``Metros`` link linear ``metro lines`` together to provide a unidirectional (and potentially parallel) graph. In the future I plan on implementing conditional control flow to ``metros`` to allow for dynamic 'smart' ``metros``. 
 
 The ``metro`` format software pipeline standard that LASubway intends to provide. However, ``stations`` and ``metro lines`` can be run independenly from ``metros``.
 
