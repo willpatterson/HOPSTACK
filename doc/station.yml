@@ -1,0 +1,9 @@
+#This is a station file template.
+
+- station:
+  Name: "Example station YAML file"
+  cmd: "shell_command --input {in} --output {out}"
+  in: "/path/to/directory/of/like/files"
+  out: "{in}.out"
+
+  comments: "This is a designated comment section, Comments can also be included in-file with the pound sign"
