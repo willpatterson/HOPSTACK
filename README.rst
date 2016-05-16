@@ -19,10 +19,12 @@ Planned Features of LASubway:
 - Tools to interface software pipelines (metros) with popular sechudulers (Slurm, SGE)
 - Tools to distribue software pipelines (metros) over ad-hoc clusters with SSH
 
+As the LASubway project evolves the planned features might evolve with it. This documentation will updated continuously as LAS is developed.
+
 Overview of Basic Structure:
 ============================
 
-In it's current state of development and planning LASubway has three different object types: ``stations``, ``metro lines`` and ``metros``, each comprised of the previous in the list. All LAS objects are linked together with LASubway's ``data interpreter`` LASDI. LASDI and the LAS objects are described more below.
+In it's current state of development and planning LASubway has three different object types: ``stations``, ``metro lines`` and ``metros``, each comprised of the previous in the list. All LAS data objects are defined with ``YAML`` files inside a metro base directory. All LAS objects are linked together with LASubway's ``data interpreter`` LASDI. LASDI and the LAS objects are described more below.
 
 Stations:
 ---------
@@ -39,7 +41,7 @@ Metros:
 
 ``Metros`` are the highest layer of LAS objects. ``Metros`` link linear ``metro lines`` together to provide a unidirectional (and potentially parallel) graph. In the future I plan on implementing conditional control flow to ``metros`` to allow for dynamic 'smart' ``metros``. 
 
-The ``metro`` format software pipeline standard that LASubway intends to provide. However, ``stations`` and ``metro lines`` can be run independenly from ``metros``.
+The ``metro`` format is the software pipeline standard that LASubway intends to provide, however, ``stations`` and ``metro lines`` can be run independenly from ``metros``.
 
 
 LAS Data Interpreter (LASDI):
