@@ -26,7 +26,7 @@ class IndecipherableStringError(Exception):
         super(IndecipherableStringError, self).__init__(message)
 
 def data_interpreter(data_string, tmp_data_dump):
-    """Generates strings to pass to a station to be used as the input"""
+    """Generates a string(s) to pass to a station to be used as the input path(s)"""
 
     if os.path.isfile(data_string):
         comp_file = check_compression(data_string)
@@ -52,6 +52,7 @@ def data_interpreter(data_string, tmp_data_dump):
         raise NotImplementedError
     elif data_string.startswith("http://") or data_string.startswith("https://"):
         raise NotImplementedError
+
     else:
         raise IndecipherableStringError("Indecipherable string!!!")
 
