@@ -1,6 +1,18 @@
-- Metro:
-  Name: "Test Metro"
+---
+Metro:
+  Name: Test Metro
   Base_dir: "." #optoinal. Default is cwd of this file
   
-  comments: "Designated comment section"
+  comments: | Designated comment section
 
+  required_packages:
+    - OS: Example OS
+      versions: 3.11 -> 7.11 ~4.6 #Example of version denotation syntax
+      packages:
+        - name: cowsay
+          versions: 4.11 
+
+    - OS: Example OS 2
+      versions: 
+
+...
