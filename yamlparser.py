@@ -12,28 +12,17 @@ class Station:
        self.name = station_data["name"]
        self.
 
-    def format_command(self, unique_item=None):
-        """
-        Formats a command from the base command with class variables
-        and adds them the the batches' command list
-        """
+def format_command(replace_items, command):
+    """
+    """
 
-        inserts = {}
-        if '{exe}' in self.command_base:
-            inserts["exe"] = self.executable
-        if '{out}' in self.command_base:
-            inserts["out"] = '{out}'
-        if '{mod}' in self.command_base:
-            inserts["mod"] = self.model_path
+    inserts = {}
+    for key, item in replace_items.itmes():
+        if '\{{}\}'.format(key) in command: #TODO: Revise this. 
+            inserts[key] = item             # Ask for forgiveness or permission?
+        else:                               #
+            print('Warning, item not found')#
 
-        if '{in}' in self.command_base:
-            inserts["in"] = os.path.join(self.model_path, 'in')
-        if '{unique}' in self.command_base:
-            inserts["unique"] = unique_item
-
-        if '{cpus}' in self.command_base:
-            inserts["cpus"] = self.cpus
-
-        self.commands.append(self.command_base.format(**inserts))
+    return command_base.format(**inserts)
 
 
