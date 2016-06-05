@@ -1,11 +1,11 @@
 """
-
+TODO:
+    Turn read_yaml() into LASDO factory
+    explore multiple yaml files per actual file
 """
 
 import yaml
 from collections import namedtuple
-
-
 
 def read_yaml(yaml_path):
     """
