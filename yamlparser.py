@@ -1,28 +1,50 @@
-class YamlFile:
-    def __init__(self, yaml_path):
-        pass
+"""
 
-class Metro:
-    def __init__(self, metro_file):
-        base_dir = None
+"""
 
+import yaml
+from collections import namedtuple
 
-class Station:
-    def __init__(self, station_data):
-       self.name = station_data["name"]
-       self.
-
-def format_command(replace_items, command):
+class LASDataObject(object):
     """
     """
+    def __init__(self, init_data):
+        name = init_data['name']
+        base_directory = init_data['base_dir']
+        comments = init_data['comments']
 
-    inserts = {}
-    for key, item in replace_items.itmes():
-        if '\{{}\}'.format(key) in command: #TODO: Revise this. 
-            inserts[key] = item             # Ask for forgiveness or permission?
-        else:                               #
-            print('Warning, item not found')#
+class Metro(LASDataObject):
+    """
+    """
+    def __init__(self, init_data):
+        super.__init__(self, init_data)
+        required_pacakges = init_data['required_pacakges']
 
-    return command_base.format(**inserts)
+class Station(LASDataObject):
+    """
+    """
+    def __init__(self, init_data):
+        super.__init__(self, init_data)
+        in_stream = init_data['in']
+        out_stream = init_data['out']
+
+def read_yaml(yaml_path):
+    """
+    Reads YAML file and yields its objects
+    """
+    YmlObj = namedtuple('YmlObj', ['name', 'data'])
+
+    with open(yaml_path, 'r') as yfile:
+        raw_yaml_data = yaml.load(yfile)
+
+    print(raw_yaml_data)
+    for yobj in raw_yaml_data:
+        #yield YmlObj(name=yobj, data=yobj[
+        print(yobj.keys())
+        yield yobj
 
 
+if __name__ == '__main__':
+    yaml_path = './test/yaml_reader_test.yml'
+    for i in read_yaml(yaml_path):
+        pass 
