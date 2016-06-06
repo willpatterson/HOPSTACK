@@ -68,6 +68,55 @@ Protocols (Soon to be) Supported:
 
 LASDI is currently under development.
 
+LAS Data Interpreter String Syntax (DISS):
+------------------------------------------
+
+``DISS`` is used to create data strings with filters for LASDI to parse.
+
+- Filter with a python Regex expressoin:
+
+.. code-block:: sh 
+
+    "/datastring/path/thing`r`python-regex-expression`"
+
+- Filter by one or more extentions:
+
+.. code-block:: sh 
+
+    "/datastring/path/thing`e`.fasta,.log,.etc`"
+
+    "/datastring/path/thing`e`.fasta .log .etc`"
+
+    "/datastring/path/thing`e`.fasta, .log, .etc`"
+
+- Filter by filename one or more substrings:
+
+.. code-block:: sh 
+
+    "/datastring/path/thing`s`subtring, substring1`
+
+- Filter by range (looks for a complete numbers in file names):
+
+.. code-block:: sh 
+
+    "/datasrting/path/thing`r`0-100`"
+
+- Filter by range unique (throws error or prompt user if not more than one file in range):
+
+.. code-block:: sh 
+
+    "/datasrting/path/thing`ru`0-100`"
+
+- Combine Filters:
+
+.. code-block:: sh 
+
+    "/datasrting/path/thing/`e`.fasta`r`75-94`"
+
+    "/datasrting/path/thing/`r`25-30`r`50-80`"
+
+
+
 Getting Involved:
 =================
 
