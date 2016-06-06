@@ -1,0 +1,31 @@
+metroline:
+  name: "ML1"
+  description: "A sample metroline"
+  comments: "comment"
+
+  stations:
+    - station:
+      name:        "staion_1"
+      description: "the first station in ML1"
+      comments:    "comment"
+
+      enabled:     true
+      command:     "{exe} --model {mod}/BUPwithMUASimple1.nlogo --experiment {in} --table {out} --threads {cpus}"
+      exe:         "/share/apps/user/stow/netlogo-5.2.1/netlogo-headless.sh"
+      cpus:        5 #optional
+      in: "" #optional. Defaults to the output of previous station
+      in_1:        "ftp://some_single_file"  #optional can be used as {in_1} or {in_2} etc in the command
+      in_2:        "ftp://some_single_file2" #
+      in_all:      "/path/to/some/dir/or/tar/" #optional allows you to use all of the file names in that dir inside {} in the command
+
+    - station:
+      name:        "staion_2"
+      description: "the second station in ML1"
+      comments:    "The input string will default to the output path of the previous station"
+
+      enabled:     true
+      command:     "{exe} --model {mod}/BUPwithMUASimple1.nlogo --experiment {in} --table {out} --threads {cpus}"
+      exe:         "/share/apps/user/stow/netlogo-5.2.1/netlogo-headless.sh"
+      cpus:        5 #optional
+
+
