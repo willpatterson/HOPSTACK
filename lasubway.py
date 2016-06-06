@@ -91,6 +91,10 @@ class Box(object):
         """Adds one line to the box"""
         self.box_lines.append('|{}{}|'.format(string, self.repeat_char(' ', self.width-len(string)-2)))
 
+    def resize_width(self, new_width):
+        """"""
+        raise NotImplementedError
+
     @staticmethod
     def repeat_char(char, ntimes):
         """returns a string of chars repeated ntimes"""
@@ -98,6 +102,13 @@ class Box(object):
         for i in range(ntimes):
             s += char
         return s
+
+class Structure(object):
+    """A box that can contain mulitple boxes"""
+
+    def __init__(self, width, title, body):
+        pass
+
 
 
 if __name__ == '__main__':
