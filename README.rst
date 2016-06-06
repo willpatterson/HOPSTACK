@@ -107,6 +107,12 @@ LAS Data Interpreter String Syntax (DISS):
 
     "/datasrting/path/thing`ru`0-100`"
 
+- Filter by list of file names using a station in file (sin file should be located in the station directory):
+
+.. cod-block:: sh
+
+    "/datasrting/path/thing`sin`sin_file_name.sin`
+
 **Combine Filters:**
 
 .. code-block:: sh 
