@@ -24,7 +24,7 @@ As the LASubway project evolves the planned features might evolve with it. This 
 Overview of Basic Structure:
 ============================
 
-In it's current state of development and planning LASubway has three different object types: ``stations``, ``metro lines`` and ``metros``, each comprised of the previous in the list. All LAS data objects are defined with ``YAML`` files inside a metro base directory. All LAS objects are linked together with LASubway's ``data interpreter`` LASDI. LASDI and the LAS objects are described more below.
+In it's current state of development and planning there are three types of LASubway Objects (``LASOs``): ``stations``, ``metro lines`` and ``metros``, each comprised of the previous in the list. All LAS data objects are defined with ``YAML`` files inside a metro base directory. All LAS objects are linked together with LASubway's ``data interpreter`` LASDI. LASDI and the LAS objects are described more below.
 
 Stations:
 ---------
