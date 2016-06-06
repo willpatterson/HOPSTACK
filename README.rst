@@ -107,7 +107,7 @@ LAS Data Interpreter String Syntax (DISS):
 
     "/datasrting/path/thing`ru`0-100`"
 
-- Combine Filters:
+**Combine Filters:**
 
 .. code-block:: sh 
 
