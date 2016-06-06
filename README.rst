@@ -59,7 +59,7 @@ Strings LASDI can decode:
 - IP addresses
 - URLs
 
-Protocols Supported:
+Protocols (Soon to be) Supported:
 
 - FTP
 - FSTP
