@@ -115,7 +115,7 @@ LAS Data Interpreter String Syntax (DISS):
 
     "/datasrting/path/thing/`r`25-30`r`50-80`"
 
-
+DISS has not been implemented in LASDI
 
 Getting Involved:
 =================
