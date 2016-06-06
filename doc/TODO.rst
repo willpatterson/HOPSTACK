@@ -23,6 +23,8 @@ General:
   - with installed LASubway scripts
   - with standalone .sh script created by LASubway when building Metro
 
+- Define, Outline and Document the Station Input (sin) file format
+
 Text Structure Representation:
 ------------------------------
 
