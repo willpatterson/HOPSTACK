@@ -1,0 +1,214 @@
+*****
+Notes
+*****
+
+LASubway Home (LASH):
+---------------------
+
+Would be a user or system-wide directory containing:
+
+1. LAS Metro dependency source installations
+2. LAS host list
+3. Credentials (database, AWS, etc)
+
+LASubway Data Interpreter String Syntax (LASDISS, DISS):
+--------------------------------------------------------
+
+Filter with a python Regex expressoin:
+
+"/datastring/path/thing`r`python-regex-expression`"
+
+Filter by one or more extentions:
+
+"/datastring/path/thing`e`.fasta,.log,.etc`"
+
+"/datastring/path/thing`e`.fasta .log .etc`"
+
+"/datastring/path/thing`e`.fasta, .log, .etc`"
+
+Filter by filename one or more substrings:
+
+"/datastring/path/thing`s`subtring, substring1`
+
+Filter by range (looks for a complete numbers in file names):
+
+"/datasrting/path/thing`r`0-100`"
+
+Filter by range unique (throws error or prompt user if not more than one file in range):
+
+"/datasrting/path/thing`ru`0-100`"
+
+Combine Filters:
+
+"/datasrting/path/thing/`e`.fasta`r`75-94`"
+
+"/datasrting/path/thing/`r`25-30`r`50-80`"
+
+
+ASCII charts of LASOs
+
+Station:
+
++----------------+
+|Station Name:   |
+|                |
++----------------+-+     +-+
+|                  |     | |
+| +----------------+-----+ |
+| |Input String:         | |
+| |                      | |
+| +----------+-----------+ |
+|            |             |
+|            |             |
+|            v             |
+| +----------+-----------+ |
+| |LASDI:                | |
+| |                      | |
+| |                      | |
+| |                      | |
+| +----------+-----------+ |
+|            |             |
+|            |             |
+|            v             |
+| +----------+-----------+ |
+| |Action:               | |
+| |                      | |
+| |                      | |
+| |                      | |
+| +----------+-----------+ |
+|            |             |
+|            |             |
+|            v             |
+| +----------+-----------+ |
+| |LASOF:                | |
+| |Output formatter      | |
+| |                      | |
+| |                      | |
+| +----------+-----------+ |
+|            |             |
+|            |             |
+|            v             |
+| +----------+-----------+ |
+| |Output String:        | |
+| |                      | |
+| +----------------+-----+ |
+|                  |     | |
++------------------+     +-+
+
+Metro Line:
+
++--------------------+
+|Metro Line Name:    |
+|                    |
++--------------------+-+     +-+
+|                      |     | |
+| +--------------------+-----+ |
+| |Input String:             | |
+| |                          | |
+| +------------+-------------+ |
+|              |               |
+|              |               |
+|              v               |
+| +------------+-------------+ |
+| |LASDI:                    | |
+| |(Incase you don't want    | |
+| |to change the first       | |
+| |station)                  | |
+| +---------------------+----+ |
+|                       |      |
+|                       |      |
+| +----------------+    |      |
+| |Station Name:   |    |      |
+| |                |    |      |
+| +----------------+-+  v  +-+ |
+| |                  |     | | |
+| | +----------------+-----+ | |
+| | |Input String:         | | |
+| | |                      | | |
+| | +----------+-----------+ | |
+| |            |             | |
+| |            |             | |
+| |            v             | |
+| | +----------+-----------+ | |
+| | |LASDI:                | | |
+| | |                      | | |
+| | |                      | | |
+| | |                      | | |
+| | +----------+-----------+ | |
+| |            |             | |
+| |            |             | |
+| |            v             | |
+| | +----------+-----------+ | |
+| | |Action:               | | |
+| | |                      | | |
+| | |                      | | |
+| | |                      | | |
+| | +----------+-----------+ | |
+| |            |             | |
+| |            |             | |
+| |            v             | |
+| | +----------+-----------+ | |
+| | |LASOF:                | | |
+| | |Output formatter      | | |
+| | |                      | | |
+| | |                      | | |
+| | +----------+-----------+ | |
+| |            |             | |
+| |            |             | |
+| |            v             | |
+| | +----------+-----------+ | |
+| | |Output String:        | | |
+| | |                      | | |
+| | +----------------+--+--+ | |
+| |                  |  |  | | |
+| +------------------+  |  +-+ |
+|                       |      |
+| +----------------+    |      |
+| |Station Name:   |    |      |
+| |                |    |      |
+| +----------------+-+  v  +-+ |
+| |                  |     | | |
+| | +----------------+-----+ | |
+| | |Input String:         | | |
+| | |                      | | |
+| | +----------+-----------+ | |
+| |            |             | |
+| |            |             | |
+| |            v             | |
+| | +----------+-----------+ | |
+| | |LASDI:                | | |
+| | |                      | | |
+| | |                      | | |
+| | |                      | | |
+| | +----------+-----------+ | |
+| |            |             | |
+| |            |             | |
+| |            v             | |
+| | +----------+-----------+ | |
+| | |Action:               | | |
+| | |                      | | |
+| | |                      | | |
+| | |                      | | |
+| | +----------+-----------+ | |
+| |            |             | |
+| |            |             | |
+| |            v             | |
+| | +----------+-----------+ | |
+| | |LASOF:                | | |
+| | |Output formatter      | | |
+| | |                      | | |
+| | |                      | | |
+| | +----------+-----------+ | |
+| |            |             | |
+| |            |             | |
+| |            v             | |
+| | +----------+-----------+ | |
+| | |Output String:        | | |
+| | |                      | | |
+| | +----------------+-----+ | |
+| |                  |     | | |
+| +------------------+     +-+ |
+|                    |     |   |
++--------------------+     +---+
+
+
