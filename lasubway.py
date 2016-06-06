@@ -49,49 +49,55 @@ class Station(LASDataObject):
         self.cmd = init_data['cmd']
 
 class Box(object):
+    """ASCII box drawing class"""
 
     def __init__(self, width, title, body):
+        """Sets up class variables and creates box"""
+
         self.box_lines = []
         self.width = width
         self.title = title
         self.body = body
 
-        boxend = '+{}+'.format(repeat_char('-', self.width-2))
+        boxend = '+{}+'.format(self.repeat_char('-', self.width-2))
         self.box_lines.append(boxend)
-        self.box_lines = self.box_lines + self.format_box_string(title)
-        self.box_lines.append('+{}+'.format(repeat_char('=', width-2)))
-        self.box_lines = self.box_lines + self.format_box_string(body)
+        self.format_box_string(title) #Add title
+        self.box_lines.append('+{}+'.format(self.repeat_char('=', width-2)))
+        self.format_box_string(body)  #Add body
         self.box_lines.append(boxend)
 
     def print_box(self):
+        """Prints box"""
         for line in self.box_lines:
             print(line)
 
     def box_to_string(self):
+        """Returns box as one string"""
         return '\n'.join(self.box_lines)
 
     def format_box_string(self, string):
-        box_lines = []
+        """adds a multiline string to the box"""
+
+        string.lstrip() #Remove begining whitespace
         while len(string) > self.width-2:
             try:
-                line = self.format_box_line(string[:self.width-2])
-                string = string[(self.width-2):]
+                self.format_box_line(string[:self.width-2])
+                string = string[(self.width-2):].lstrip()
             except IndexError:
-                line = self.format_box_line(string)
-            box_lines.append(line)
-
-        box_lines.append(self.format_box_line(string))
-        return box_lines
+                self.format_box_line(string)
+        self.format_box_line(string)
 
     def format_box_line(self, string):
-        return '|{}{}|'.format(string, repeat_char(' ', self.width-len(string)-2))
+        """Adds one line to the box"""
+        self.box_lines.append('|{}{}|'.format(string, self.repeat_char(' ', self.width-len(string)-2)))
 
-def repeat_char(char, ntimes):
-    """returns a string of chars repeated ntimes"""
-    s = ""
-    for i in range(ntimes):
-        s += char
-    return s
+    @staticmethod
+    def repeat_char(char, ntimes):
+        """returns a string of chars repeated ntimes"""
+        s = ""
+        for i in range(ntimes):
+            s += char
+        return s
 
 
 if __name__ == '__main__':
