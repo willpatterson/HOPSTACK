@@ -23,7 +23,6 @@ General:
   - with installed LASubway scripts
   - with standalone .sh script created by LASubway when building Metro
 
-
 Text Structure Representation:
 ------------------------------
 
@@ -46,6 +45,7 @@ LAS Source Manager (LASSM):
 
 Source manager for LASubway
 
+- Create custom station LASO for installing software from source
 - Create local source manager (~/.las/software)
 - Create metro-local source manager (/metro_base/software)
 
