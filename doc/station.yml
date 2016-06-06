@@ -1,12 +1,21 @@
----
-#This is a station file template.
-
 - station:
-  Name: "Example station YAML file"
-  cmd: "shell_command --input {in} --output {out}"
-  in: "/path/to/directory/of/like/files"
-  out: "{in}.out"
+    name:        "staion_1"
+    description: "the first station"
+    comments:    "comment"
 
-  comments: "This is a designated comment section, Comments can also be included in-file with the pound sign"
+    enabled:     true
+    command:     "{exe} --model {mod}/BUPwithMUASimple1.nlogo --experiment {in} --table {out} --threads {cpus}"
+    exe:         "/share/apps/user/stow/netlogo-5.2.1/netlogo-headless.sh"
+    cpus:        5 #optional
+    in: "" #optional. Defaults to the output of previous station
+    in_1:        "ftp://some_single_file"  #optional can be used as {in_1} or {in_2} etc in the command
+    in_2:        "ftp://some_single_file2" #
+    in_all:      "/path/to/some/dir/or/tar/" #optional allows you to use all of the file names in that dir inside {} in the command
 
-...
+# Short Cut strings:
+# {exe}
+# {out}
+# {in}
+# {in_<#>}
+# {cpus} optional
+#
