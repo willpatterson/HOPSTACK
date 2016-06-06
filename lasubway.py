@@ -107,7 +107,7 @@ class Structure(object):
     """A box that can contain mulitple boxes"""
 
     def __init__(self, width, title, body):
-        pass
+        raise NotImplementedError
 
 
 
