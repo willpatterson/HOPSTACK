@@ -44,8 +44,12 @@ Combine Filters:
 
 "/datasrting/path/thing/`r`25-30`r`50-80`"
 
+LASubway Output Formatter LASOF:
+--------------------------------
+LASOF is the inverse function of LASDI. It takes the output of a station and converts it into a single string that can be passed to the next LASO.
 
-ASCII charts of LASOs
+ASCII charts of LASOs:
+----------------------
 
 Station:
 
