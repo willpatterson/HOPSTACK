@@ -154,25 +154,6 @@ class BZ2File(CompressedFile):
         with bz2.open(self.path, 'rb') as bfile:
             return bfile.read()
 
-"""
-****Replaced by extract_zip_file because of similarity with tar extraction****
-
-class ZIPFile(CompressedFile):
-    magic_signature = "\x50\x4b\x03\x04"
-    filetype = "zip"
-    default_extention = ".zip"
-
-    def decompress(self):
-        zip_name = ntpath.basename(self.path)
-        un_zip_path = os.path.join(tar_file, tar_name)
-        tar_file.TarFile(tar_file)
-        tar_file.extractall(out_directory)
-
-    return data_interpreter(un_tar_path, out_directory)
-
-
-        return zipfile.ZipFile(self.path)
-"""
 
 def diss_interpreter(data_string):
     """Parses out filter statments denoted by `"""
