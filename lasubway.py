@@ -2,6 +2,7 @@
 This is a general starting file for LASubway
 
 TODO:
+    - Build Grid object (maybe rename to Graph before its too late)
 """
 
 #High Level LASO Objects: ####################################################################
