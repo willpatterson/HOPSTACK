@@ -58,13 +58,20 @@ class Box(object):
         self.width = width
         self.title = title
         self.body = body
+        self.build_box()
 
+    def build_box(self)
         boxend = '+{}+'.format(self.repeat_char('-', self.width-2))
         self.box_lines.append(boxend)
         self.format_box_string(title) #Add title
         self.box_lines.append('+{}+'.format(self.repeat_char('=', width-2)))
         self.format_box_string(body)  #Add body
         self.box_lines.append(boxend)
+
+    def resize_width(self, new_width):
+        """Resizes the box"""
+        self.width = new_width
+        self.build_box()
 
     def print_box(self):
         """Prints box"""
@@ -91,10 +98,6 @@ class Box(object):
         """Adds one line to the box"""
         self.box_lines.append('|{}{}|'.format(string, self.repeat_char(' ', self.width-len(string)-2)))
 
-    def resize_width(self, new_width):
-        """"""
-        raise NotImplementedError
-
     @staticmethod
     def repeat_char(char, ntimes):
         """returns a string of chars repeated ntimes"""
@@ -108,7 +111,6 @@ class Structure(object):
 
     def __init__(self, width, title, body):
         raise NotImplementedError
-
 
 
 if __name__ == '__main__':
