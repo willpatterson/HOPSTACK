@@ -177,6 +177,7 @@ class BaseFilter(object):
         return self.filter_statement.split('`')
 
     def filter_data(self, data):
+        """Iterate through data and yield filtered results"""
         raise NotImplementedError
 
 
