@@ -2,7 +2,7 @@
 Main file for the LASubway Data Interpreter (LASDI)
 
 TODO:
-    - Implement regex input string selection
+    - Implement DISS
     - Implement network file downloads
     - Implement file-path search on the "Metro Network" if a path is not found on file system
     - Implement local file path search within the metro directory **I now have doubts about this
@@ -53,6 +53,20 @@ def data_interpreter(data_string, tmp_data_dump):
 
     else:
         raise IndecipherableStringError("Indecipherable string!!!")
+
+def diss_interpreter(data_string):
+    """Parses out filter statments denoted by `"""
+    split_data = data_string.split('`')
+    if len(split_data) > 1:
+
+class BaseFilter(object):
+    """Base filter object"""
+    def __init__(self, filter_statement):
+        self.filter_statement = filter_statement
+
+    def filter_data(self, data):
+        raise NotImplementedError
+
 
 def extract_sin_files(sin_path, out_directory):
     """
