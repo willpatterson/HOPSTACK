@@ -49,7 +49,12 @@ class Station(LASDataObject):
         self.cmd = init_data['cmd']
 
 class Box(object):
-    """ASCII box drawing class"""
+    """
+    ASCII box drawing class
+    TODO
+        - Add support for optional title/body category field (ie Category Field: Title name)
+
+    """
 
     def __init__(self, width, title, body):
         """Sets up class variables and creates box"""
