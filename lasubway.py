@@ -172,6 +172,10 @@ class Structure(Box):
         #TODO fix arrow for last box in struct
         yield '+{}+'.format(self.repeat_char('-', self.width-2))
 
+class Grid(object):
+    """Contains a graph of structures and boxes"""
+    def __init__(self):
+        raise NotImplementedError
 
 
 if __name__ == '__main__':
