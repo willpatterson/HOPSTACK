@@ -61,6 +61,8 @@ class Box(object):
         self.build_box()
 
     def build_box(self)
+        """Creates the box by populating the box_lines list"""
+
         boxend = '+{}+'.format(self.repeat_char('-', self.width-2))
         self.box_lines.append(boxend)
         self.format_box_string(title) #Add title
@@ -106,11 +108,20 @@ class Box(object):
             s += char
         return s
 
-class Structure(object):
+class Structure(Box):
     """A box that can contain mulitple boxes"""
 
     def __init__(self, width, title, body):
-        raise NotImplementedError
+        super.__init__(self, width, title, body)
+
+        self.inside_box_width = width - 4
+
+    def add_box(self, box):
+        if isinstance(box, Box):
+            box.resize_width(self.inside_box_width)
+        else:
+            raise TypeError
+
 
 
 if __name__ == '__main__':
