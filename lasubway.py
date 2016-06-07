@@ -169,6 +169,7 @@ class Structure(Box):
                 yield "".join(tmp)
 
         #Add box end line
+        #TODO fix arrow for last box in struct
         yield '+{}+'.format(self.repeat_char('-', self.width-2))
 
 
