@@ -2,12 +2,12 @@
 This is a general starting file for LASubway
 
 TODO:
-    Get the full path for Base dir in metro
 """
 
+#High Level LASO Objects: ####################################################################
 class LASDataObject(object):
     """
-    Base object for all other LASDataObjects (metro, metro line, station)
+    Base object for Data vis objects (Box, Structure, Grid) which are the base of the LASOs (metro, metro line, station)
     """
     def __init__(self, init_data):
         self.name = init_data['name']
@@ -20,15 +20,7 @@ class LASDataObject(object):
         """
         raise NotImplementedError
 
-    @staticmethod
-    def create_box(width, title, body):
-        """
-        Creates a box with a title body and a specified width
-        """
-        pass #TODO Left off here
-
-
-class Metro(LASDataObject):
+class Metro(Box):
     """
     """
     def __init__(self, init_data):
@@ -38,8 +30,7 @@ class Metro(LASDataObject):
     def load_metro(self):
         pass
 
-
-class Station(LASDataObject):
+class Station(Structure):
     """
     """
     def __init__(self, init_data):
@@ -48,12 +39,14 @@ class Station(LASDataObject):
         self.out_stream = init_data['out'] #
         self.cmd = init_data['cmd']
 
-class Box(object):
+
+#Object Visualization Tools: #####################################################################
+class Box(LASDataObject):
     """
     ASCII box drawing class
     TODO
         - Add support for optional title/body category field (ie Category Field: Title name)
-
+        - Add support for multiple body fields per-box
     """
 
     def __init__(self, width, title, body):
@@ -129,9 +122,8 @@ class Box(object):
         self.iter_index += 1
         return line
 
-
 class Structure(Box):
-    """A box that can contain a linear set of boxes from the BOX class"""
+    """A box that can contain a linear set of boxes (connected by arrows) from the BOX class"""
 
     def __init__(self, width, title, body):
         super().__init__(width, title, body)
@@ -156,7 +148,7 @@ class Structure(Box):
             print(line)
 
     def format_boxes(self):
-        """Yiels the raw string lines of each box in the box list"""
+        """Yields the raw string lines of each box in the box list"""
         box_len = len(self.box_list)
         for count, box in enumerate(self.box_list):
             for line in box:
@@ -178,7 +170,7 @@ class Structure(Box):
         #TODO fix arrow for last box in struct
         yield '+{}+'.format(self.repeat_char('-', self.width-2))
 
-class Grid(object):
+class Grid(LASDataObject):
     """Contains a graph of structures and boxes"""
     def __init__(self):
         raise NotImplementedError
