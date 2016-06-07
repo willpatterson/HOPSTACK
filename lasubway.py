@@ -60,7 +60,7 @@ class Box(object):
         self.body = body
         self.build_box()
 
-    def build_box(self)
+    def build_box(self):
         """Creates the box by populating the box_lines list"""
 
         boxend = '+{}+'.format(self.repeat_char('-', self.width-2))
@@ -69,6 +69,8 @@ class Box(object):
         self.box_lines.append('+{}+'.format(self.repeat_char('=', width-2)))
         self.format_box_string(body)  #Add body
         self.box_lines.append(boxend)
+
+        self.iter_index = 0
 
     def resize_width(self, new_width):
         """Resizes the box"""
@@ -79,6 +81,22 @@ class Box(object):
         """Prints box"""
         for line in self.box_lines:
             print(line)
+
+    def generate_box(self):
+        """Yields each line of the box"""
+        for line in self.box_lines:
+            yield line
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        try:
+            line = self.box_lines[self.iter_index]
+        except IndexError:
+            raise StopIteration
+        self.iter_index += 1
+        return line
 
     def box_to_string(self):
         """Returns box as one string"""
@@ -130,3 +148,8 @@ if __name__ == '__main__':
     body = "How about this box formatting? Its looking pretty decient RN. I hope it translates into good stuff"
     tbox = Box(width, title, body)
     tbox.print_box()
+
+    print()
+
+    for i in tbox:
+        print(i)
