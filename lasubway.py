@@ -70,6 +70,7 @@ class Box(object):
         self.format_box_string(body)  #Add body
         self.box_lines.append(boxend)
 
+        #Iterator variable
         self.iter_index = 0
 
     def resize_width(self, new_width):
@@ -81,11 +82,6 @@ class Box(object):
         """Prints box"""
         for line in self.box_lines:
             print(line)
-
-    def generate_box(self):
-        """Yields each line of the box"""
-        for line in self.box_lines:
-            yield line
 
     def __iter__(self):
         return self
@@ -127,18 +123,50 @@ class Box(object):
         return s
 
 class Structure(Box):
-    """A box that can contain mulitple boxes"""
+    """A box that can contain a linear set of boxes from the BOX class"""
 
     def __init__(self, width, title, body):
         super.__init__(self, width, title, body)
 
         self.inside_box_width = width - 4
+        self.box_list = []
 
     def add_box(self, box):
+        """Adds a Box object to the ordered list of boxes"""
         if isinstance(box, Box):
-            box.resize_width(self.inside_box_width)
+            self.box_list.append(box.resize_width(self.inside_box_width))
         else:
             raise TypeError
+
+    def print_structure(self):
+        """prints the entire structure to the console"""
+        for line in self.box_lines:
+            print(line)
+
+    def format_boxes(self):
+        """Yiels the raw string lines of each box in the box list"""
+        box_len = len(self.box_list)
+        for count, box in enumerate(self.box_list):
+            for line in box:
+                yield '| {} |'.format(line)
+
+            #Create arrow at then end off the box
+            if count < box_len:
+                arrow_index = self.width//2
+
+                tmp = list('|{}|'.format(repeat_char(' ', self.width-2)))
+                tmp[arrow_index] = '|'
+                yield "".join(tmp)
+                yield "".join(tmp)
+
+                tmp[arrow_index] = 'V'
+                yield arrow_template
+
+
+
+
+
+
 
 
 
