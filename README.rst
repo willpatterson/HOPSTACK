@@ -53,12 +53,14 @@ LASDI Can also take any LAS object as input. LASDI will run the LAS object provi
 
 Strings LASDI can decode:
 
-- File Paths
-- Directory File Paths
-- Tar Files
-- Compressed Files (bz2, gz, zip)
-- IP addresses
+- Unix Paths
+
+  - Directory File Paths
+  - Tar Files
+  - Compressed Files (bz2, gz, zip)
+
 - URLs
+- SSH/SCP + Path 
 
 Protocols (Soon to be) Supported:
 
