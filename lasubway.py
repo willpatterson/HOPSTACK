@@ -90,17 +90,6 @@ class Box(object):
         for line in self.box_lines:
             print(line)
 
-    def __iter__(self):
-        return self
-
-    def __next__(self):
-        try:
-            line = self.box_lines[self.iter_index]
-        except IndexError:
-            raise StopIteration
-        self.iter_index += 1
-        return line
-
     def box_to_string(self):
         """Returns box as one string"""
         return '\n'.join(self.box_lines)
@@ -128,6 +117,18 @@ class Box(object):
         for i in range(ntimes):
             s += char
         return s
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        try:
+            line = self.box_lines[self.iter_index]
+        except IndexError:
+            raise StopIteration
+        self.iter_index += 1
+        return line
+
 
 class Structure(Box):
     """A box that can contain a linear set of boxes from the BOX class"""
