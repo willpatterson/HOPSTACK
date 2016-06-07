@@ -54,18 +54,6 @@ def data_interpreter(data_string, tmp_data_dump):
     else:
         raise IndecipherableStringError("Indecipherable string!!!")
 
-def diss_interpreter(data_string):
-    """Parses out filter statments denoted by `"""
-    split_data = data_string.split('`')
-    if len(split_data) > 1:
-
-class BaseFilter(object):
-    """Base filter object"""
-    def __init__(self, filter_statement):
-        self.filter_statement = filter_statement
-
-    def filter_data(self, data):
-        raise NotImplementedError
 
 
 def extract_sin_files(sin_path, out_directory):
@@ -185,3 +173,55 @@ class ZIPFile(CompressedFile):
 
         return zipfile.ZipFile(self.path)
 """
+
+def diss_interpreter(data_string):
+    """Parses out filter statments denoted by `"""
+    split_data = data_string.split('`')
+
+class BaseFilter(object):
+    """Base filter object"""
+    def __init__(self, filter_type, filter_statement):
+        self.filter_statement = filter_statement
+        self.filter_type = filter_type
+
+        #Check statement syntax
+        if (self.filter_statement.count != 3) or (!(self.filter_statement.startswith('`')) and !(self.filter_statement.endswith('`'))):
+            raise Exception #TODO create DISSSyntaxError for here
+        elif self.parse_filter_statement()[0] != filter_type:
+            raise Exception #TODO create DISSFilterTypeError 
+
+        raise NotImplementedError
+
+    def parse_filter_statement(self):
+        return self.filter_statement.split('`')
+
+    def filter_data(self, data):
+        raise NotImplementedError
+
+
+class RegexFilter(BaseFilter):
+    """"""
+    def __init__(self, filter_statement):
+        super().__init__('r', filter_statement)
+
+class ExentionFilter(BaseFilter):
+    """"""
+    def __init__(self, filter_statement):
+        super().__init__('e', filter_statement)
+
+class SubstringFilter(BaseFilter):
+    """"""
+    def __init__(self, filter_statement):
+        super().__init__('s', filter_statement)
+
+class RangeFilter(BaseFilter):
+    """"""
+    def __init__(self, filter_statement):
+        super().__init__('r', filter_statement)
+
+class RangeUniqueFilter(BaseFilter):
+    """"""
+    def __init__(self, filter_statement):
+        super().__init__('ru', filter_statement)
+
+
