@@ -14,6 +14,7 @@ LASubway is named after Los Angeles' 1990's metro system for two resasons:
 Planned Features of LASubway:
 
 - Tools to create, execute and document standardized, recusively modular software pipelines (metros)
+- Tools to visualize software pipelines (metros) in TUI
 - Tools to package software pipelines (metros) into linux containers (docker)
 - Tools to run and or distribute software pipelines (metros) on cloud services (AWS, Azure, etc)
 - Tools to interface software pipelines (metros) with popular sechudulers (Slurm, SGE)
