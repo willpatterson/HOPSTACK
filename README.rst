@@ -9,7 +9,7 @@ LASubway (LAS) is a software pipeliner/workflow managment system in active devel
 LASubway is named after Los Angeles' 1990's metro system for two resasons:
 
 1. Subway systems provide a rough metaphor for software pipelining, providing easy names for features and concepts
-2. Nobody uses the Los Angeles Metro Rail
+2. The LA subway is an ambitious project, is incomplete, and has low rider-ship -- all parrallel with the LASubway software suite in its current state.
 
 Planned Features of LASubway:
 
