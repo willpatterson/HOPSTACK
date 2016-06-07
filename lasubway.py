@@ -60,18 +60,20 @@ class Box(object):
         self.body = body
         self.build_box()
 
+        #Iterator variable
+        self.iter_index = 0
+
     def build_box(self):
         """Creates the box by populating the box_lines list"""
 
+        self.box_lines = []
         boxend = '+{}+'.format(self.repeat_char('-', self.width-2))
         self.box_lines.append(boxend)
-        self.format_box_string(title) #Add title
-        self.box_lines.append('+{}+'.format(self.repeat_char('=', width-2)))
-        self.format_box_string(body)  #Add body
+        self.format_box_string(self.title) #Add title
+        self.box_lines.append('+{}+'.format(self.repeat_char('=', self.width-2)))
+        self.format_box_string(self.body)  #Add body
         self.box_lines.append(boxend)
 
-        #Iterator variable
-        self.iter_index = 0
 
     def resize_width(self, new_width):
         """Resizes the box"""
@@ -126,7 +128,7 @@ class Structure(Box):
     """A box that can contain a linear set of boxes from the BOX class"""
 
     def __init__(self, width, title, body):
-        super.__init__(self, width, title, body)
+        super().__init__(width, title, body)
 
         self.inside_box_width = width - 4
         self.box_list = []
@@ -134,13 +136,17 @@ class Structure(Box):
     def add_box(self, box):
         """Adds a Box object to the ordered list of boxes"""
         if isinstance(box, Box):
-            self.box_list.append(box.resize_width(self.inside_box_width))
+            box.resize_width(self.inside_box_width)
+            self.box_list.append(box)
         else:
             raise TypeError
 
     def print_structure(self):
         """prints the entire structure to the console"""
         for line in self.box_lines:
+            print(line)
+
+        for line in self.format_boxes():
             print(line)
 
     def format_boxes(self):
@@ -154,30 +160,34 @@ class Structure(Box):
             if count < box_len:
                 arrow_index = self.width//2
 
-                tmp = list('|{}|'.format(repeat_char(' ', self.width-2)))
+                tmp = list('|{}|'.format(self.repeat_char(' ', self.width-2)))
                 tmp[arrow_index] = '|'
                 yield "".join(tmp)
                 yield "".join(tmp)
 
                 tmp[arrow_index] = 'V'
-                yield arrow_template
+                yield "".join(tmp)
 
-
-
-
-
-
+        #Add box end line
+        yield '+{}+'.format(self.repeat_char('-', self.width-2))
 
 
 
 if __name__ == '__main__':
     width = 20
-    title = "tsty testy testasdfasdfasd asdfjkdsfkljasdf"
-    body = "How about this box formatting? Its looking pretty decient RN. I hope it translates into good stuff"
+    title = "Test Box Title 1"
+    body = "How about this box formatting? Its lookin alright. Could use some word parsing when splitting strings across multiple lines"
     tbox = Box(width, title, body)
-    tbox.print_box()
 
-    print()
+    title2 = "Test Box Title 2"
+    body2 = "I need some words to fill up this space so I can get a feel for what this will look like."
+    tbox2 = Box(width, title2, body2)
 
-    for i in tbox:
-        print(i)
+    tstruct = Structure(50, "test_struct", "test struct_body")
+    tstruct.add_box(tbox)
+    tstruct.add_box(tbox2)
+    """
+    """
+
+    tstruct.print_structure()
+
