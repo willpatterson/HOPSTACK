@@ -20,7 +20,7 @@ Planned Features of LASubway:
 - Tools to interface software pipelines (metros) with popular sechudulers (Slurm, SGE)
 - Tools to distribue software pipelines (metros) over ad-hoc clusters with SSH
 
-As the LASubway project evolves the planned features might evolve with it. This documentation will updated continuously as LAS is developed.
+As the LASubway project evolves, the planned features will likely evolve with it. This documentation will updated continuously as LAS is developed.
 
 Overview of Basic Structure:
 ============================
