@@ -11,6 +11,12 @@ LASubway is named after Los Angeles' 1990's metro system for two resasons:
 1. Subway systems provide a rough metaphor for software pipelining, providing easy names for features and concepts
 2. The LA subway is an ambitious project, is incomplete, and has low rider-ship -- all parrallel with the LASubway software suite in its current state.
 
+**General Goals of LASubway:**
+
+- Remove programming from software pipelining
+- Provide a simple interface and tools working with software pipelines
+- Create a standard for modular, container-like software pipelines (metros) that run everywhere on Unix-like platforms
+
 Planned Features of LASubway:
 
 - Tools to create, execute and document standardized, recusively modular software pipelines (metros)
