@@ -17,14 +17,14 @@ LASubway is named after Los Angeles' 1990's metro system for two resasons:
 - Provide a simple interface and tools working with software pipelines
 - Create a standard for modular, container-like software pipelines (metros) that run everywhere on Unix-like platforms
 
-Planned Features of LASubway:
+**Planned Features of LASubway:**
 
-- Tools to create, execute and document standardized, recusively modular software pipelines (metros)
-- Tools to visualize software pipelines (metros) in TUI
-- Tools to package software pipelines (metros) into linux containers (docker)
-- Tools to run and or distribute software pipelines (metros) on cloud services (AWS, Azure, etc)
-- Tools to interface software pipelines (metros) with popular sechudulers (Slurm, SGE)
-- Tools to distribue software pipelines (metros) over ad-hoc clusters with SSH
+- Tools to create, execute, and document standardized, recusively modular software pipelines (metros)
+- Software pipeline visualization
+- Packaging software pipelines into linux containers (docker)
+- Interfaces to cloud services (AWS, Azure, etc)
+- Interfaces to popular sechudulers (Slurm, SGE)
+- Ad-hoc clustering with SSH
 
 As the LASubway project evolves, the planned features will likely evolve with it. This documentation will updated continuously as LAS is developed.
 
