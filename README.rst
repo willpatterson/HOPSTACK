@@ -26,7 +26,7 @@ LASubway is named after Los Angeles' 1990's metro system for two resasons:
 - Interfaces to popular sechudulers (Slurm, SGE)
 - Ad-hoc clustering with SSH
 
-As the LASubway project evolves, the planned features will likely evolve with it. This documentation will updated continuously as LAS is developed.
+As the LASubway project evolves, these planned features will likely evolve with it. This documentation will updated continuously as LAS is developed.
 
 Overview of Basic Structure:
 ============================
