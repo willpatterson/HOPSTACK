@@ -139,7 +139,7 @@ Example:
 
     "/datastring/`e`.fasta`"
 
-- Filter by filenames one substrings:
+- Filter by filenames or substrings:
 
 .. code-block:: sh 
 
