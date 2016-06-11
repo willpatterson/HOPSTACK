@@ -64,6 +64,7 @@ Strings LASDI can decode:
   - Directory File Paths
   - Tar Files
   - Compressed Files (bz2, gz, zip)
+  - Other LASOs (metro, metro line, station)
 
 - URLs
 - SSH/SCP + Path 
