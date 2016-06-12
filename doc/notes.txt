@@ -11,18 +11,21 @@ Would be a user or system-wide directory containing:
 2. LAS host list
 3. Credentials (database, AWS, etc)
 
-LAS General Ideas and goals:
-----------------------------
-1. Remove programming from software pipelining
-2. Be easy for non-techincal/non-programming people to use
-3. Recursive modularity for all LASOs
-4. software pipeline visualization
-5. source managment and build tools for software pipeline dependencies
-
-LAS aims to provide a framework to build software pipelines within. Some fringe cases may not be supported, though one should be able to simulate thoes cases with a combination of standard features. 
-
 LASubway Data Interpreter String Syntax (LASDISS, DISS):
---------------------------------------------------------
+========================================================
+
+** What about when you want to pass a tar or archive file to a program? There needs to be a data filter that tells LASDI that its okay pass a tar archive without untaring
+
+DISS Data Strings:
+------------------
+Data Strings can be two (maybe three) things:
+
+1. A file path
+2. URL
+3. RAW Data (maybe)
+
+DISS Filters:
+-------------
 
 Filter with a python Regex expressoin:
 
@@ -57,6 +60,16 @@ Combine Filters:
 LASubway Output Formatter LASOF:
 --------------------------------
 LASOF is the inverse function of LASDI. It takes the output of a station and converts it into a single string that can be passed to the next LASO.
+
+LAS General Ideas and goals:
+----------------------------
+1. Remove programming from software pipelining
+2. Be easy for non-techincal/non-programming people to use
+3. Recursive modularity for all LASOs
+4. software pipeline visualization
+5. source managment and build tools for software pipeline dependencies
+
+LAS aims to provide a framework to build software pipelines within. Some fringe cases may not be supported, though one should be able to simulate thoes cases with a combination of standard features. 
 
 ASCII charts of LASOs:
 ----------------------
