@@ -10,7 +10,8 @@ TODO:
 
 import os
 import ntpath
-import urllib
+#import urllib
+from urllib.parse import urlparse
 
 #Imports for compression/archive file interpreting:
 import gzip
@@ -25,6 +26,9 @@ class IndecipherableStringError(Exception):
 
 def data_interpreter(data_string, tmp_data_dump):
     """Generates a string(s) to pass to a station to be used as the input path(s)"""
+
+    parsed_data = urlparse(data_string)
+    #TODO left off here. Plan on using urlparse to figure out if its a url before checking for local file paths
 
     if os.path.isfile(data_string):
         comp_file = check_compression(data_string)
@@ -44,12 +48,14 @@ def data_interpreter(data_string, tmp_data_dump):
         return extract_dir_files()
 
     #External Download interfaces TODO Implement Please
+    """
     elif data_string.startswith("ftp://"):
         raise NotImplementedError
     elif data_string.startswith("sftp://"):
         raise NotImplementedError
     elif data_string.startswith("http://") or data_string.startswith("https://"):
         raise NotImplementedError
+        """
 
     else:
         raise IndecipherableStringError("Indecipherable string!!!")
