@@ -11,7 +11,7 @@ TODO:
 import os
 import ntpath
 #import urllib
-from urllib.parse import urlparse
+from urllib.parse import urlparse, ParseResult
 
 #Imports for compression/archive file interpreting:
 import gzip
@@ -27,9 +27,6 @@ class IndecipherableStringError(Exception):
 def data_interpreter(data_string, tmp_data_dump):
     """Generates a string(s) to pass to a station to be used as the input path(s)"""
 
-    parsed_data = urlparse(data_string)
-    #TODO left off here. Plan on using urlparse to figure out if its a url before checking for local file paths
-
     if os.path.isfile(data_string):
         comp_file = check_compression(data_string)
         if comp_file != None:
@@ -42,23 +39,38 @@ def data_interpreter(data_string, tmp_data_dump):
         else:
             return data_string #This is where recursive calls end
 
+    #TODO Implement Network downloads
+    #TODO Implement automatic metro execution
+
     elif os.path.isdir(data_string):
         #if is_metro(data_string): TODO Implement please
         #    return run_metro(data_string)  
         return extract_dir_files()
 
-    #External Download interfaces TODO Implement Please
-    """
-    elif data_string.startswith("ftp://"):
-        raise NotImplementedError
-    elif data_string.startswith("sftp://"):
-        raise NotImplementedError
-    elif data_string.startswith("http://") or data_string.startswith("https://"):
-        raise NotImplementedError
-        """
-
     else:
         raise IndecipherableStringError("Indecipherable string!!!")
+
+class DataStatement(ParseResult):
+    """""""
+    def __init__(self, statement_string):
+        """
+        TODO:
+            Parse out Data Filters before passing the string to urlparse
+        """
+        if (statement_string == "" or statement_string is None):
+            raise Exception #TODO Create exception for this
+        parsed_statement = urlparse(statement_string)
+        super.__init__([getattr(parsed_statement, field) for field in parsed_statement._fields]) #TODO add user name and password info 
+
+    def is_local(self):
+        if (self.scheme == "" and
+            self.netloc == "" and
+            self.params == "" and
+            self.query == "" and
+            self.fragment == ""):
+            return True
+        return False
+
 
 
 
