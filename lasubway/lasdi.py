@@ -217,13 +217,13 @@ class BaseParameter(object):
 
     def factory(parameter_type):
         """"""
-        if parameter_type == 're': return RegexFilter()
-        if parameter_type == 'r': return RangeFilter()
-        if parameter_type == 'ru': return RangeUniqueFilter()
-        if parameter_type == 'e': return ExentionFilter()
-        if parameter_type == 's': return SubstringFilter()
-        if parameter_type == 'sin': return SinFileParameter()
-        if parameter_type == 'rd': return RawDelimiter()
+        if (parameter_type == 're') or (parameter_type == 'regex'): return RegexFilter()
+        if (parameter_type == 'r') or (parameter_type == 'range'): return RangeFilter()
+        if (parameter_type == 'ru') or (parameter_type == 'range-unique'): return RangeUniqueFilter()
+        if (parameter_type == 'e') or (parameter_type == 'extention'): return ExentionFilter()
+        if (parameter_type == 's') or (parameter_type == 'substring'): return SubstringFilter()
+        if (parameter_type == 'sin') or (parameter_type == 'station-in-file'): return SinFileParameter()
+        if (parameter_type == 'rd') or (parameter_type == 'raw-delimiter'): return RawDelimiter()
         assert 0, "Bad parameter: " + parameter_type
     factory = starticmethod(factory)
 
