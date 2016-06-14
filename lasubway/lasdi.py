@@ -182,51 +182,46 @@ class DataStatement(ParseResult):
         return False
 
 
-class BaseFilter(object):
-    """Base filter object"""
-    def __init__(self, filter_type, filter_statement):
-        self.filter_statement = filter_statement
+class BaseParameter(object):
+    """Base parameter object"""
+    def __init__(self, parameter_type, parameter_statement):
+        self.parameter_statement = parameter_statement
         self.filter_type = filter_type
 
         #Check statement syntax
-        if (self.filter_statement.count != 3) or (!(self.filter_statement.startswith('`')) and !(self.filter_statement.endswith('`'))):
+        if (self.parameter_statement.count != 3) or (!(self.parameter_statement.startswith('`')) and !(self.parameter_statement.endswith('`'))):
             raise Exception #TODO create DISSSyntaxError for here
-        elif self.parse_filter_statement()[0] != filter_type:
-            raise Exception #TODO create DISSFilterTypeError 
+        elif self.parse_parameter_statement()[0] != filter_type:
+            raise Exception #TODO create DISSParameterTypeError 
 
         raise NotImplementedError
 
-    def parse_filter_statement(self):
-        return self.filter_statement.split('`')
+    def parse_parameter_statement(self):
+        return self.parameter_statement.split('`')
 
-    def filter_data(self, data):
-        """Iterate through data and yield filtered results"""
-        raise NotImplementedError
-
-
-class RegexFilter(BaseFilter):
+class RegexFilter(BaseParameter):
     """"""
-    def __init__(self, filter_statement):
-        super().__init__('r', filter_statement)
+    def __init__(self, parameter_statement):
+        super().__init__('r', parameter_statement)
 
-class ExentionFilter(BaseFilter):
+class ExentionFilter(BaseParameter):
     """"""
-    def __init__(self, filter_statement):
-        super().__init__('e', filter_statement)
+    def __init__(self, parameter_statement):
+        super().__init__('e', parameter_statement)
 
-class SubstringFilter(BaseFilter):
+class SubstringFilter(BaseParameter):
     """"""
-    def __init__(self, filter_statement):
-        super().__init__('s', filter_statement)
+    def __init__(self, parameter_statement):
+        super().__init__('s', parameter_statement)
 
-class RangeFilter(BaseFilter):
+class RangeFilter(BaseParameter):
     """"""
-    def __init__(self, filter_statement):
-        super().__init__('r', filter_statement)
+    def __init__(self, parameter_statement):
+        super().__init__('r', parameter_statement)
 
-class RangeUniqueFilter(BaseFilter):
+class RangeUniqueFilter(BaseParameter):
     """"""
-    def __init__(self, filter_statement):
-        super().__init__('ru', filter_statement)
+    def __init__(self, parameter_statement):
+        super().__init__('ru', parameter_statement)
 
 
