@@ -225,7 +225,7 @@ class BaseParameter(object):
         if (parameter_type == 'sin') or (parameter_type == 'station-in-file'): return SinFileParameter()
         if (parameter_type == 'rd') or (parameter_type == 'raw-delimiter'): return RawDelimiter()
         assert 0, "Bad parameter: " + parameter_type
-    factory = starticmethod(factory)
+    factory = staticmethod(factory)
 
     def parse_parameter_statement(self):
         return self.parameter_statement.split('`')
