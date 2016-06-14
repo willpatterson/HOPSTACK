@@ -173,6 +173,13 @@ class DataStatement(ParseResult):
 
 
     def is_local(self):
+        """
+        RETURNS TRUE: if self.path is the only field that is set (assuming that empty strings are caught)
+        RETURNS FALSE: if other fields besides self.path are set
+        TODO:
+            this needs to be fully tested
+        """
+
         if (self.scheme == "" and
             self.netloc == "" and
             self.params == "" and
@@ -220,6 +227,11 @@ class RangeFilter(BaseParameter):
         super().__init__('r', parameter_statement)
 
 class RangeUniqueFilter(BaseParameter):
+    """"""
+    def __init__(self, parameter_statement):
+        super().__init__('ru', parameter_statement)
+
+class SinFileParameter(BaseParameter):
     """"""
     def __init__(self, parameter_statement):
         super().__init__('ru', parameter_statement)
