@@ -11,10 +11,29 @@ Would be a user or system-wide directory containing:
 2. LAS host list
 3. Credentials (database, AWS, etc)
 
+LASDI:
+=========
+=========
+
+** What about when you want to pass a tar or archive file to a program? There needs to be a data filter that tells LASDI that its okay pass a tar archive without untaring
+
+Raw Data Handeling:
+-------------------
+To ways of passing raw data:
+
+1. Unix Pipes/redirects
+    * How do you DIRECTLY pipe the output of the previous station to the current station (without saving output into a file)?
+2. string via command line
+    * use a delimiter and a verified file path
+
+Tasks for both:
+* build a few default parsers for fasta, fastq, genbank, etc
+* build an class to extend to create parsers easily
+
+
 LASubway Data Interpreter String Syntax (LASDISS, DISS):
 ========================================================
 
-** What about when you want to pass a tar or archive file to a program? There needs to be a data filter that tells LASDI that its okay pass a tar archive without untaring
 
 DISS Data Strings:
 ------------------
@@ -24,8 +43,10 @@ Data Strings can be two (maybe three) things:
 2. URL
 3. RAW Data (maybe)
 
-DISS Filters:
--------------
+DISS Parameters:
+----------------
+
+** Might have to consider parameter precidence (which parameter is operated first) **
 
 Filter with a python Regex expressoin:
 
