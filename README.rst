@@ -53,10 +53,9 @@ The ``metro`` format is the software pipeline standard that LASubway intends to 
 
 LAS Data Interpreter (LASDI):
 ==========================================
-The LAS Data Interpreter is one of LASubway's key abstractions. LASDI's main function is to fetch/prepare data for the start of a pipeline as well as pipe data between different parts of the pipeline. At it's most basic level, LASDI takes a string as input, attempts to find verified data files with it, downloads and prepares data if nessesary, and then outputs every verified file path found with the input string. This may sound complex but in the contex of UNIX, where everything is a string it acutally makes a lot of sense. You pass LASDI a path to a directory in the file system, LASDI will return every file inside that directory. Pass LASDI the URL of a tar.gz file, LASDI will download the tar.gz file into a tmp direcotry, decompress and untar the archive and return the true file paths of every file inside the archive. 
+The LAS Data Interpreter is one of LASubway's key abstractions. 
 
-LASDI Can also take any LAS object as input. LASDI will run the LAS object provided as input and pipe it's data into an existing pipeline.
-
+LASDI's main function is to fetch/prepare data for the start of a pipeline as well as pipe data between different parts of the pipeline. At it's most basic level, LASDI takes a string as input, attempts to find verified data files with it, downloads and prepares data if nessesary, then depending on parameters passed in with the input string, outputs either verified filepaths or raw strings parsed from the files found from the input string. This may sound complex but in the contex of UNIX, where everything is a string it acutally makes a lot of sense. You pass LASDI a path to a directory in the file system, LASDI will return every file inside that directory. Pass LASDI the URL of a tar.gz file, LASDI will download the tar.gz file into a tmp direcotry, decompress and untar the archive and return the true file paths of every file inside the archive. LASDI Can also take any LAS object as input. LASDI will run the LAS object provided as input and pipe it's data into an existing pipeline.  
 Strings LASDI can decode:
 
 - Unix Paths
