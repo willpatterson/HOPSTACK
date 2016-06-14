@@ -188,6 +188,15 @@ class DataStatement(ParseResult):
             return True
         return False
 
+class DISSSyntaxError(Exception):
+    """Error thrown for bad DISS syntax"""
+    def __init__(self, message):
+        super(DISSSyntaxError, self).__init__(message)
+
+class DISSParameterTypeError(Exception):
+    """Error thrown when the Parameter type string is incorrect"""
+    def __init__(self, message):
+        super(DISSParameterTypeError, self).__init__(message)
 
 class BaseParameter(object):
     """Base parameter object"""
@@ -197,9 +206,9 @@ class BaseParameter(object):
 
         #Check statement syntax
         if (self.parameter_statement.count != 3) or (!(self.parameter_statement.startswith('`')) and !(self.parameter_statement.endswith('`'))):
-            raise Exception #TODO create DISSSyntaxError for here
+            raise DISSSyntaxError
         elif self.parse_parameter_statement()[0] != filter_type:
-            raise Exception #TODO create DISSParameterTypeError 
+            raise DISSParameterTypeError
 
         raise NotImplementedError
 
