@@ -234,6 +234,10 @@ class RangeUniqueFilter(BaseParameter):
 class SinFileParameter(BaseParameter):
     """"""
     def __init__(self, parameter_statement):
-        super().__init__('ru', parameter_statement)
+        super().__init__('sin', parameter_statement)
 
+class RawDelimiter(BaseParameter):
+    """"""
+    def __init__(self, parameter_statement):
+        super().__init__('dr', parameter_statement)
 
