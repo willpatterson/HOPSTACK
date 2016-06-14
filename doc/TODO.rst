@@ -5,7 +5,10 @@ LASDI:
 
 - Test
 - Implement network protocols
-- Implement DISS filters
+- Implement DISS parameters
+- Implement Raw data interpretation
+  * pipes and redirects
+  * raw strings via command line
 
 LAS Output Formatter LASOF:
 ===========================
