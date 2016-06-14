@@ -188,6 +188,7 @@ class DataStatement(ParseResult):
             return True
         return False
 
+
 class DISSSyntaxError(Exception):
     """Error thrown for bad DISS syntax"""
     def __init__(self, message):
@@ -197,6 +198,8 @@ class DISSParameterTypeError(Exception):
     """Error thrown when the Parameter type string is incorrect"""
     def __init__(self, message):
         super(DISSParameterTypeError, self).__init__(message)
+
+#Data String Classes: #############################################
 
 class BaseParameter(object):
     """Base parameter object"""
@@ -211,6 +214,18 @@ class BaseParameter(object):
             raise DISSParameterTypeError
 
         raise NotImplementedError
+
+    def factory(parameter_type):
+        """"""
+        if parameter_type == 're': return RegexFilter()
+        if parameter_type == 'r': return RangeFilter()
+        if parameter_type == 'ru': return RangeUniqueFilter()
+        if parameter_type == 'e': return ExentionFilter()
+        if parameter_type == 's': return SubstringFilter()
+        if parameter_type == 'sin': return SinFileParameter()
+        if parameter_type == 'rd': return RawDelimiter()
+        assert 0, "Bad parameter: " + parameter_type
+    factory = starticmethod(factory)
 
     def parse_parameter_statement(self):
         return self.parameter_statement.split('`')
@@ -248,5 +263,5 @@ class SinFileParameter(BaseParameter):
 class RawDelimiter(BaseParameter):
     """"""
     def __init__(self, parameter_statement):
-        super().__init__('dr', parameter_statement)
+        super().__init__('rd', parameter_statement)
 
