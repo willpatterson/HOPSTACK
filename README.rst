@@ -103,7 +103,7 @@ Example Data parameter statement:
 
 Data  must accompany a Data String to be valid.
 
-**All Data Parameter Types can take a list of parameters:**
+**All Data Parameters Types can take a list of parameters:**
 Example of valid lists:
 
 .. code-block:: sh 
@@ -115,7 +115,7 @@ Example of valid lists:
     "/datastring/`e`.fasta, .log, .etc`"
 
 
-**Use Multiple Parameter Types on One Data String:**
+**Use Multiple Parameters Types on One Data String:**
 Example:
 
 .. code-block:: sh 
