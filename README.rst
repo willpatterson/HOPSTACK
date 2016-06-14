@@ -131,7 +131,7 @@ Example:
 
 .. code-block:: sh 
 
-    "/datastring/`r`python-regex`"
+    "/datastring/`re`python-regex`"
 
 - Filter by file extention:
 
