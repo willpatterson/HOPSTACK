@@ -180,11 +180,11 @@ class DataStatement(ParseResult):
             this needs to be fully tested
         """
 
-        if (self.scheme == "" and
-            self.netloc == "" and
-            self.params == "" and
-            self.query == "" and
-            self.fragment == ""):
+        if (self.scheme == ""
+            and self.netloc == ""
+            and self.params == ""
+            and self.query == ""
+            and self.fragment == ""):
             return True
         return False
 
