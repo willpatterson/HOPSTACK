@@ -216,27 +216,27 @@ class BaseParameter(object):
         return self.parameter_statement.split('`')
 
 class RegexFilter(BaseParameter):
-    """"""
+    """Parameter object that filters strings with a python regex"""
     def __init__(self, parameter_statement):
         super().__init__('re', parameter_statement)
 
 class ExentionFilter(BaseParameter):
-    """"""
+    """Parameter object that filters verified file paths by extention"""
     def __init__(self, parameter_statement):
         super().__init__('e', parameter_statement)
 
 class SubstringFilter(BaseParameter):
-    """"""
+    """Parameter object that filters all strings by substring inclusion"""
     def __init__(self, parameter_statement):
         super().__init__('s', parameter_statement)
 
 class RangeFilter(BaseParameter):
-    """"""
+    """Parameter object that filters out all files not in the specified range"""
     def __init__(self, parameter_statement):
         super().__init__('r', parameter_statement)
 
 class RangeUniqueFilter(BaseParameter):
-    """"""
+    """Parameter object that filters out all files not in the specified range but will throw error if not all number in range found"""
     def __init__(self, parameter_statement):
         super().__init__('ru', parameter_statement)
 
