@@ -50,30 +50,6 @@ def data_interpreter(data_string, tmp_data_dump):
     else:
         raise IndecipherableStringError("Indecipherable string!!!")
 
-class DataStatement(ParseResult):
-    """""""
-    def __init__(self, statement_string):
-        """
-        TODO:
-            Parse out Data Filters before passing the string to urlparse
-        """
-        if (statement_string == "" or statement_string is None):
-            raise Exception #TODO Create exception for this
-        parsed_statement = urlparse(statement_string)
-        super.__init__([getattr(parsed_statement, field) for field in parsed_statement._fields]) #TODO add user name and password info 
-
-    def is_local(self):
-        if (self.scheme == "" and
-            self.netloc == "" and
-            self.params == "" and
-            self.query == "" and
-            self.fragment == ""):
-            return True
-        return False
-
-
-
-
 def extract_sin_files(sin_path, out_directory):
     """
     Opens a Station Input File and returns a list of verified input strings
@@ -176,6 +152,35 @@ class BZ2File(CompressedFile):
 def diss_interpreter(data_string):
     """Parses out filter statments denoted by `"""
     split_data = data_string.split('`')
+
+class DataStatement(ParseResult):
+    """""""
+    def __init__(self, statement_string):
+        """
+        TODO:
+            Parse out Data Filters before passing the string to urlparse
+        """
+        if (statement_string == "" or statement_string is None):
+            raise Exception #TODO Create exception for this
+
+        self.parameters = []
+        parsed_statement = statement_string.split('`')
+        parsed_data_string = urlparse(parsed_statement[0])
+        super.__init__([getattr(parsed_data_string, field) for field in parsed_data_string._fields]) #TODO add user name and password info 
+
+    @staticmethod
+    def _create_data_parameters(parameters):
+
+
+    def is_local(self):
+        if (self.scheme == "" and
+            self.netloc == "" and
+            self.params == "" and
+            self.query == "" and
+            self.fragment == ""):
+            return True
+        return False
+
 
 class BaseFilter(object):
     """Base filter object"""
