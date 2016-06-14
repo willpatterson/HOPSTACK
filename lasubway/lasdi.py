@@ -209,7 +209,7 @@ class BaseParameter(object):
 class RegexFilter(BaseParameter):
     """"""
     def __init__(self, parameter_statement):
-        super().__init__('r', parameter_statement)
+        super().__init__('re', parameter_statement)
 
 class ExentionFilter(BaseParameter):
     """"""
