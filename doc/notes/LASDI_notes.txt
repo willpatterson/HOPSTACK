@@ -53,11 +53,26 @@ Filter by range (looks for a complete numbers in file names):
 
 "/datasrting/path/thing`r`0-100`"
 
-Filter by range unique (throws error or prompt user if not more than one file in range):
+Filter by reference type and Level #:
+
+"/datasrting/path/`L<level#>`reference type`"
+
+    Reference types supported:
+        * directory   -- d
+        * file        -- f
+        * symlink     -- s
+        * raw-text    -- r
+        * tar-archive -- t
+        * bzip2       -- 2
+        * zip         -- z
+        * gzip        -- g
+        * url         -- u
+
+**Filter by range unique (throws error or prompt user if not more than one file in range):**
 
 "/datasrting/path/thing`ru`0-100`"
 
-Combine Filters:
+**Combine Filters:**
 
 "/datasrting/path/thing/`e`.fasta`r`75-94`"
 
@@ -69,4 +84,10 @@ LASOF is the inverse function of LASDI. It takes the output of a station and con
 
 LASOF would take some output filter parameters defined in DISS as input. It would then use thoes parameters to find the desired output files and create symlinks to them all in a neat LASO output directory whoes file path will be passed to the next LASO in the pipeline.
 
+DISS Parameter Behavoir Settings:
+---------------------------------
+`r-d`regex` -- Only preforms regex on directories
+`r-d-L1`regex` -- Only prefroms regex on directories in level one of the recursive call stack 
+`r-d-Lr5`regex` -- Same as above but throws errors if level 5 is not reached ('r' stands for required)
+`r-d-L1-P1` -- Preforms regex on level one and is preformed first ('P' stands for priority)
 
