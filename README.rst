@@ -67,7 +67,6 @@ Strings LASDI can decode:
   - Other LASOs (metro, metro line, station)
 
 - URLs
-- SSH/SCP + Path 
 
 Protocols (Soon to be) Supported:
 
