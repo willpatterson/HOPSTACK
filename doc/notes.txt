@@ -82,6 +82,8 @@ LASubway Output Formatter LASOF:
 --------------------------------
 LASOF is the inverse function of LASDI. It takes the output of a station and converts it into a single string that can be passed to the next LASO.
 
+LASOF would take some output filter parameters defined in DISS as input. It would then use thoes parameters to find the desired output files and create symlinks to them all in a neat LASO output directory whoes file path will be passed to the next LASO in the pipeline.
+
 LAS General Ideas and goals:
 ----------------------------
 1. Remove programming from software pipelining
