@@ -9,6 +9,7 @@ LASDI:
 - Implement Raw data interpretation
   * pipes and redirects
   * raw strings via command line
+  * Address file path regex filtering vs file content regex filtering
 
 LAS Output Formatter LASOF:
 ===========================
