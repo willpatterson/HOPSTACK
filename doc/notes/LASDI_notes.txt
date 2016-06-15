@@ -1,0 +1,72 @@
+LASDI:
+=========
+
+** What about when you want to pass a tar or archive file to a program? There needs to be a data filter that tells LASDI that its okay pass a tar archive without untaring
+
+Raw Data Handeling:
+-------------------
+To ways of passing raw data:
+
+1. Unix Pipes/redirects
+    * How do you DIRECTLY pipe the output of the previous station to the current station (without saving output into a file)?
+2. string via command line
+    * use a delimiter and a verified file path
+
+Tasks for both:
+* build a few default parsers for fasta, fastq, genbank, etc
+* build an class to extend to create parsers easily
+
+
+LASubway Data Interpreter String Syntax (LASDISS, DISS):
+========================================================
+
+DISS Data Strings:
+------------------
+Data Strings can be two (maybe three) things:
+
+1. A file path
+2. URL
+3. RAW Data (maybe)
+
+DISS Parameters:
+----------------
+
+** Might have to consider parameter precidence (which parameter is operated first) **
+
+Filter with a python Regex expressoin:
+
+"/datastring/path/thing`r`python-regex-expression`"
+
+Filter by one or more extentions:
+
+"/datastring/path/thing`e`.fasta,.log,.etc`"
+
+"/datastring/path/thing`e`.fasta .log .etc`"
+
+"/datastring/path/thing`e`.fasta, .log, .etc`"
+
+Filter by filename one or more substrings:
+
+"/datastring/path/thing`s`subtring, substring1`
+
+Filter by range (looks for a complete numbers in file names):
+
+"/datasrting/path/thing`r`0-100`"
+
+Filter by range unique (throws error or prompt user if not more than one file in range):
+
+"/datasrting/path/thing`ru`0-100`"
+
+Combine Filters:
+
+"/datasrting/path/thing/`e`.fasta`r`75-94`"
+
+"/datasrting/path/thing/`r`25-30`r`50-80`"
+
+LASubway Output Formatter LASOF:
+--------------------------------
+LASOF is the inverse function of LASDI. It takes the output of a station and converts it into a single string that can be passed to the next LASO.
+
+LASOF would take some output filter parameters defined in DISS as input. It would then use thoes parameters to find the desired output files and create symlinks to them all in a neat LASO output directory whoes file path will be passed to the next LASO in the pipeline.
+
+
