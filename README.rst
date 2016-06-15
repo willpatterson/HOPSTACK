@@ -70,10 +70,9 @@ Strings LASDI can decode:
 
 Protocols (Soon to be) Supported:
 
-- FTP
-- SFTP
+- (S)FTP
 - SSH
-- HTTP/s
+- HTTP(S)
 
 LASDI is currently under development.
 
