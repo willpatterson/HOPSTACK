@@ -14,7 +14,7 @@ LASubway is named after Los Angeles' 1990's metro system for two resasons:
 **General Goals of LASubway:**
 
 - Remove programming from software pipelining
-- Provide a simple interface and tools working with software pipelines
+- Provide a simple interface and tools for working with software pipelines
 - Create a standard for modular, container-like software pipelines (metros) that run everywhere on Unix-like platforms
 
 **Planned Features of LASubway:**
@@ -31,22 +31,22 @@ As the LASubway project evolves, these planned features will likely evolve with 
 Overview of Basic Structure:
 ============================
 
-In it's current state of development and planning there are three types of LASubway Objects (``LASOs``): ``stations``, ``metro lines`` and ``metros``, each comprised of the previous in the list. All LAS data objects are defined with ``YAML`` files inside a metro base directory. All LAS objects are linked together with LASubway's ``data interpreter`` LASDI. LASDI and the LAS objects are described more below.
+In it's current state of development and planning LASubway defines three distinct object types (called ``LASOs`` for LASubway Objects): ``stations``, ``metro lines`` and ``metros``, each comprised of the previous in the list. All LAS data objects are defined with ``YAML`` files inside a metro base directory. All LAS objects are linked together with LASubway's ``data interpreter`` LASDI. LASDI and the LAS objects are described more below.
 
 Stations:
 ---------
 
-``Station`` objects are the most basic LAS object. A station defines one shell command or LAS module and the type of input and output data expected. Stations are the building blocks of all other LAS objects. ``Stations`` are linked together with LASDI in ``metro lines`` to provide a simple way of pipeing data between different shell commands and or LAS modules.
+``Stations`` are the most basic of the LASOs. A station defines one shell command or LAS module and the type of input and output data expected. Stations are the building blocks of all other LAS objects. ``Stations`` are linked together using ``LASDI`` in ``metro lines`` to provide a simple way of pipeing data between different shell commands and or LAS modules.
 
 Metro Lines:
 ------------
 
-``Metro lines`` are the next object layer above ``stations``. ``Metro lines`` are simply a linear set of ``stations`` that pipe data from one end to the other. 
+``Metro lines`` are the next object layer above ``stations``. ``Metro lines`` are simply a linear set of ``stations`` that pipe data from one end to the other using ``LASDI``. 
 
 Metros:
 -------
 
-``Metros`` are the highest layer of LAS objects. ``Metros`` link linear ``metro lines`` together to provide a unidirectional (and potentially parallel) graph. In the future I plan on implementing conditional control flow to ``metros`` to allow for dynamic 'smart' ``metros``. 
+``Metros`` are the highest layer of the LASOs. ``Metros`` link linear ``metro lines`` together to provide a unidirectional (and potentially parallel) graph. In the future I plan on implementing conditional control flow to ``metros`` to allow for dynamic 'smart' ``metros``. 
 
 The ``metro`` format is the software pipeline standard that LASubway intends to provide, however, ``stations`` and ``metro lines`` can be run independenly from ``metros``.
 
