@@ -3,6 +3,12 @@ LASDI:
 
 ** What about when you want to pass a tar or archive file to a program? There needs to be a data filter that tells LASDI that its okay pass a tar archive without untaring
 
+Tunnel Interfaces:
+------------------
+Tunnel interfaces structures that define the any combination of the number, type, and order of files passed between LASOs
+
+Example Scenario: station_1 is expecting to output one fasta file, and one genbank file. Station_2 expects one fasta file and one genbank file. If station_2 gets something else, it will throw an error or warning
+
 Raw Data Handeling:
 -------------------
 To ways of passing raw data:
