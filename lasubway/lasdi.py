@@ -265,3 +265,22 @@ class RawDelimiter(BaseParameter):
     def __init__(self, parameter_statement):
         super().__init__('rd', parameter_statement)
 
+
+
+if __name__ == '__main__':
+    ################# TESTING ##################
+
+    # Data Statement Parameter parsing tests
+    #### Basic parameter
+    #### Compound parameter
+    #### Multiple parameters
+
+    # Full Data statement parsing tests
+
+    # LASDI file path tests
+
+    # LASDI Raw Data tests
+
+    pass
+
+
