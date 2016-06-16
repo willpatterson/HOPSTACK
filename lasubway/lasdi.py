@@ -230,6 +230,12 @@ class BaseParameter(object):
         """"""
         return self.parameter_statement.split('`')
 
+    def parse_parameter_settings(self):
+        """
+        This method will parse out the settings defined after parameter type but in the parameter type field
+        """
+        pass
+
 class RegexFilter(BaseParameter):
     """Parameter object that filters strings with a python regex"""
     def __init__(self, parameter_statement):
@@ -264,6 +270,11 @@ class RawDelimiter(BaseParameter):
     """"""
     def __init__(self, parameter_statement):
         super().__init__('rd', parameter_statement)
+
+class LevelIntercept(BaseParameter):
+    """"""
+    def __init__(self, parameter_statement):
+        super().__init__('L', parameter_statement)
 
 
 
