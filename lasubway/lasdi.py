@@ -59,7 +59,7 @@ def extract_sin_files(sin_path, out_directory):
     in_strings = []
     with open(sin_path, 'r') as sinfile:
         for line in sinfile:
-            return data_interpreter(line, out_directory):
+            return data_interpreter(line, out_directory)
 
 def extract_dir_files(dir_path, out_directory):
     """Opens a directory and returns a list of verified input strings"""
