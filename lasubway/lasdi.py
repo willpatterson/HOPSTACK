@@ -65,7 +65,7 @@ def extract_dir_files(dir_path, out_directory):
     """Opens a directory and returns a list of verified input strings"""
 
     for path in [os.path.join(dir_path, i) for i in os.listdir(dir_path)]:
-        return data_interpreter(path, out_directory):
+        return data_interpreter(path, out_directory)
 
 def extract_tar_files(tar_file, out_directory):
     """
