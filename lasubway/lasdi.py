@@ -170,7 +170,7 @@ class DataStatement(ParseResult):
 
     @staticmethod
     def _create_data_parameters(parameters):
-
+        pass
 
     def is_local(self):
         """
