@@ -208,7 +208,7 @@ class BaseParameter(object):
         self.filter_type = filter_type
 
         #Check statement syntax
-        if (self.parameter_statement.count != 3) or (!(self.parameter_statement.startswith('`')) and !(self.parameter_statement.endswith('`'))):
+        if (self.parameter_statement.count != 3) or ((not self.parameter_statement.startswith('`')) and (not self.parameter_statement.endswith('`'))):
             raise DISSSyntaxError
         elif self.parse_parameter_statement()[0] != filter_type:
             raise DISSParameterTypeError
