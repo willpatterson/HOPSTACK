@@ -213,7 +213,6 @@ class BaseParameter(object):
         elif self.parse_parameter_statement()[0] != filter_type:
             raise DISSParameterTypeError
 
-        raise NotImplementedError
 
     def factory(parameter_type):
         """"""
@@ -228,6 +227,7 @@ class BaseParameter(object):
     factory = staticmethod(factory)
 
     def parse_parameter_statement(self):
+        """"""
         return self.parameter_statement.split('`')
 
 class RegexFilter(BaseParameter):
