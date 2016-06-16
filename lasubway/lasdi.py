@@ -154,7 +154,7 @@ def diss_interpreter(data_string):
     split_data = data_string.split('`')
 
 class DataStatement(ParseResult):
-    """""""
+    """"""
     def __init__(self, statement_string):
         """
         TODO:
