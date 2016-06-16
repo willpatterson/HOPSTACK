@@ -223,6 +223,7 @@ class BaseParameter(object):
         if (parameter_type == 's') or (parameter_type == 'substring'): return SubstringFilter()
         if (parameter_type == 'sin') or (parameter_type == 'station-in-file'): return SinFileParameter()
         if (parameter_type == 'rd') or (parameter_type == 'raw-delimiter'): return RawDelimiter()
+
         assert 0, "Bad parameter: " + parameter_type
     factory = staticmethod(factory)
 
@@ -282,6 +283,10 @@ if __name__ == '__main__':
     ################# TESTING ##################
 
     # Data Statement Parameter parsing tests
+    #### Factory Test
+    parameter_type = "r"
+    print(type(BaseParameter.factory(parameter_type)))
+
     #### Basic parameter
     #### Compound parameter
     #### Multiple parameters
