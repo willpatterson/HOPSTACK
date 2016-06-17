@@ -59,9 +59,9 @@ Filter by range (looks for a complete numbers in file names):
 
 "/datasrting/path/thing`r`0-100`"
 
-Filter by reference type and Level #:
+Filter by reference type and Level #: (cannot be used as a list)
 
-"/datasrting/path/`L<level#>`reference type`"
+"/datasrting/path/`li`level #,reference type`" 
 
     Reference types supported:
         * directory   -- d
