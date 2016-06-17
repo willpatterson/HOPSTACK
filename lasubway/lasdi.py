@@ -10,7 +10,7 @@ TODO:
 
 import os
 import ntpath
-#import urllib
+from collections import namedtuple
 from urllib.parse import urlparse, ParseResult
 
 #Imports for compression/archive file interpreting:
@@ -240,11 +240,63 @@ class BaseParameter(object):
     @staticmethod
     def parse_parameter_type_settings(parameter_type_statement):
         """
-        This method will parse out the settings defined after parameter type but in the parameter type field
+        This method parses out the settings defined after parameter type but in the parameter type field
+        TODO:
+            Catch and handel exceptions for no int in settings
+            Catch and handle exceptions for imporper statements when stripping integers
+            Create a method of identifying and setting reference types
+            Reconsider benifits of removing items from list
+            Consider creating a fucntion to combine searching for Level limits and priority
+            Also consider making valid references more accesable to other objects and functions that might need it
+            **Implement this method in the factory and __init__ methods**
         """
-        split_statement = parameter_type_statement.split('-')
-        parameter_type = split_statement[0]
+        ParameterSettings = namedtuple('ParameterSettings', ['parameter_type', 'level_limit', 'level_requried', 'priority', 'allowed_reference_types'])
 
+        split_statement = parameter_type_statement.split('-')
+        psettings = ParameterSettings(parameter_type=split_statement[0])
+        split_statement.remove(psettings.parameter_type) #REMOVE ITEM FROM LIST
+
+        #Parses Out level interception settings
+        #TODO catch and handel exceptions for no int 
+        level_limit = [x for x in split_statement if x.startswith('L')]
+        if len(level_limit) > 1:
+            raise Exception #Exception for having multiple level limit statements
+        elif len(level_limit) == 0:
+            psettings.level_limit = None
+            psettings.level_requried = False
+        elif len(level_limit) == 1:
+            level_limit = level_limit[0]
+            split_statement.remove(level_limit) #REMOVE ITEM FROM LIST
+            if level_limit.startswith('Lr'):
+                psettings.level_requried = True
+            level_limit = int("".join(i for i in level_limit if x.isdigit())) #Integer stripping
+            psettings.level_limit = level_limit
+
+        priority = [x for x in split_statement if x.startswith('P')]
+        if len(priority) > 1:
+            raise Exception #Exception for having multiple priority statements
+        elif len(priority) == 0:
+            psettings.priority = None
+        elif len(priority) == 1:
+            priority = priority[0]
+            split_statement.remove(priority[0]) #REMOVE ITEM FROM LIST
+            priority = int("".join(i for i in level_limit if x.isdigit())) #Integer stripping
+            psettings.priority = priority
+
+        #TODO: Left off here. Need to implement reference type identification
+        valid_references = ['directory', 'file', 'symlink', 'raw-text', 'tar-archive', 'gzip', 'bz2', 'zip', 'url']
+        valid_references = [i[0] for i in valid_references] + valid_references
+
+        for reference_type in split_statement:
+            if reference_type in valid_references:
+                if type(psettings.allowed_reference_types) == str:
+                    psettings.allowed_reference_types = [psettings.allowed_reference_types, reference_type]
+                else:
+                    psettings.allowed_reference_types = reference_type
+            else:
+                raise Exception #Exception for having unknown settings
+
+        return psettings
 
 
 class RegexFilter(BaseParameter):
