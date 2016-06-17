@@ -206,39 +206,68 @@ class DISSParameterTypeError(Exception):
 class BaseParameter(object):
     """Base parameter object"""
     def __init__(self, parameter_type, parameter_statement):
-        self.parameter_statement = parameter_statement
         self.parameter_type = parameter_type
+        parameter_statement = parse_parameter_statement(parameter_statement)
 
-        self.level_limit = None
-        self.level_requried = False
-        self.priority = None
-        self.allowed_reference_types = []
+        self.parameter_type_settings = re.split(',| ', parameter_statement.type_settings)
+        self.level_limit = parameter_statement.type_statement.level_limit
+        self.level_requried = parameter_statement.type_statement.level_requried
+        self.priority = parameter_statement.type_statement.priority
+        self.allowed_reference_types = parameter_statement.type_statement.allowed_reference_types
 
         if (self.parameter_statement.count != 3) or ((not self.parameter_statement.startswith('`')) and (not self.parameter_statement.endswith('`'))):
             raise DISSSyntaxError
         elif self.parse_parameter_statement()[0] != self.parameter_type:
             raise DISSParameterTypeError
 
+    def parse_type_settings(self):
+        """To be defined and called by the child classes in __init__"""
+        raise NotImplementedError
 
     def factory(parameter_type):
         """"""
-        if (parameter_type == 're') or (parameter_type == 'regex'): return RegexFilter()
-        if (parameter_type == 'r') or (parameter_type == 'range'): return RangeFilter()
-        if (parameter_type == 'ru') or (parameter_type == 'range-unique'): return RangeUniqueFilter()
-        if (parameter_type == 'e') or (parameter_type == 'extention'): return ExentionFilter()
-        if (parameter_type == 's') or (parameter_type == 'substring'): return SubstringFilter()
-        if (parameter_type == 'sin') or (parameter_type == 'station-in-file'): return SinFileParameter()
-        if (parameter_type == 'rd') or (parameter_type == 'raw-delimiter'): return RawDelimiter()
+        if (parameter_type == 're') or (parameter_type == 'regex'):
+            return RegexFilter()
+        if (parameter_type == 'r') or (parameter_type == 'range'):
+            return RangeFilter()
+        if (parameter_type == 'ru') or (parameter_type == 'range-unique'):
+            return RangeUniqueFilter()
+        if (parameter_type == 'e') or (parameter_type == 'extention'):
+            return ExentionFilter()
+        if (parameter_type == 's') or (parameter_type == 'substring'):
+            return SubstringFilter()
+        if (parameter_type == 'sin') or (parameter_type == 'station-in-file'):
+            return SinFileParameter()
+        if (parameter_type == 'rd') or (parameter_type == 'raw-delimiter'):
+            return RawDelimiter()
 
         assert 0, "Bad parameter: " + parameter_type
     factory = staticmethod(factory)
 
-    def parse_parameter_statement(self):
+    @staticmethod
+    def split_parameter_statement(parameter_statement):
         """"""
-        return self.parameter_statement.split('`')
+        ParameterStatement = namedtuple('ParameterStatement',
+                                        ['type_statement', 'type_settings'])
+
+        split_statement = parameter_statement.strip('`').split('`')
+        if len(split_statement) != 2:
+            raise Exception #TODO
+
+        parameter_statement = ParameterStatement(type_statement=split_statement[0],
+                                                 type_settings=split_statement[0])
+        return parameter_statement
 
     @staticmethod
-    def parse_parameter_type_settings(parameter_type_statement):
+    def parse_parameter_statement(parameter_statement):
+        """"""
+        parameter_statement = split_parameter_statement(parameter_statement)
+        parameter_statement.type_settings = parse_type_statement(parameter_statement.type_settings)
+        return parameter_statement
+
+
+    @staticmethod
+    def parse_type_statement(parameter_type_statement):
         """
         This method parses out the settings defined after parameter type but in the parameter type field
         TODO:
