@@ -209,6 +209,11 @@ class BaseParameter(object):
         self.parameter_statement = parameter_statement
         self.parameter_type = parameter_type
 
+        self.level_limit = None
+        self.level_requried = False
+        self.priority = None
+        self.allowed_reference_types = []
+
         if (self.parameter_statement.count != 3) or ((not self.parameter_statement.startswith('`')) and (not self.parameter_statement.endswith('`'))):
             raise DISSSyntaxError
         elif self.parse_parameter_statement()[0] != self.parameter_type:
@@ -232,11 +237,15 @@ class BaseParameter(object):
         """"""
         return self.parameter_statement.split('`')
 
-    def parse_parameter_settings(self):
+    @staticmethod
+    def parse_parameter_type_settings(parameter_type_statement):
         """
         This method will parse out the settings defined after parameter type but in the parameter type field
         """
-        pass
+        split_statement = parameter_type_statement.split('-')
+        parameter_type = split_statement[0]
+
+
 
 class RegexFilter(BaseParameter):
     """Parameter object that filters strings with a python regex"""
