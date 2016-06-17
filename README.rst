@@ -31,7 +31,7 @@ As the LASubway project evolves, these planned features will likely evolve with 
 Overview of Basic Structure:
 ============================
 
-In it's current state of development and planning LASubway defines three distinct object types (called ``LASOs`` for LASubway Objects): ``stations``, ``metro lines`` and ``metros``, each comprised of the previous in the list. All LAS data objects are defined with ``YAML`` files inside a metro base directory. All LAS objects are linked together with LASubway's ``data interpreter`` LASDI. LASDI and the LAS objects are described more below.
+In it's current state of development and planning LASubway defines three distinct object types (called ``LASOs`` for LASubway Objects): ``stations``, ``metro lines`` and ``metros``, each comprised of the previous in the list. All LAS data objects are defined with ``YAML`` files inside a metro's base directory. All LAS objects are linked together with LASubway's ``data interpreter`` LASDI. LASDI and the LAS objects are described more below.
 
 Stations:
 ---------
@@ -41,12 +41,12 @@ Stations:
 Metro Lines:
 ------------
 
-``Metro lines`` are the next object layer above ``stations``. ``Metro lines`` are simply a linear set of ``stations`` that pipe data from one end to the other using ``LASDI``. 
+``Metro lines``, the next object layer above ``stations``, are simply a linear set of ``stations`` that pipe data from one end to the other using ``LASDI``. 
 
 Metros:
 -------
 
-``Metros`` are the highest layer of the LASOs. ``Metros`` link linear ``metro lines`` together to provide a unidirectional (and potentially parallel) graph. In the future I plan on implementing conditional control flow to ``metros`` to allow for dynamic 'smart' ``metros``. 
+``Metros``, the highest layer of the LASOs, link linear ``metro lines`` together to provide a unidirectional (and potentially parallel) graph. In the future I plan on implementing conditional control flow to ``metros`` to allow for dynamic 'smart' ``metros``. 
 
 The ``metro`` format is the software pipeline standard that LASubway intends to provide, however, ``stations`` and ``metro lines`` can be run independenly from ``metros``.
 
