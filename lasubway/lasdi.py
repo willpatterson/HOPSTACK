@@ -207,12 +207,11 @@ class BaseParameter(object):
     """Base parameter object"""
     def __init__(self, parameter_type, parameter_statement):
         self.parameter_statement = parameter_statement
-        self.filter_type = filter_type
+        self.parameter_type = parameter_type
 
-        #Check statement syntax
         if (self.parameter_statement.count != 3) or ((not self.parameter_statement.startswith('`')) and (not self.parameter_statement.endswith('`'))):
             raise DISSSyntaxError
-        elif self.parse_parameter_statement()[0] != filter_type:
+        elif self.parse_parameter_statement()[0] != self.parameter_type:
             raise DISSParameterTypeError
 
 
