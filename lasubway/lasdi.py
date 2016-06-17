@@ -224,8 +224,9 @@ class BaseParameter(object):
         """To be defined and called by the child classes in __init__"""
         raise NotImplementedError
 
-    def factory(parameter_type):
+    def factory(parameter_statement):
         """"""
+        parameter_statement = parse_parameter_statement(parameter_statement)
         if (parameter_type == 're') or (parameter_type == 'regex'):
             return RegexFilter()
         if (parameter_type == 'r') or (parameter_type == 'range'):
@@ -278,8 +279,14 @@ class BaseParameter(object):
             Consider creating a fucntion to combine searching for Level limits and priority
             Also consider making valid references more accesable to other objects and functions that might need it
             **Implement this method in the factory and __init__ methods**
+            Change level_limit to target_level
         """
-        ParameterSettings = namedtuple('ParameterSettings', ['parameter_type', 'level_limit', 'level_requried', 'priority', 'allowed_reference_types'])
+        ParameterSettings = namedtuple('ParameterSettings',
+                                       ['parameter_type',
+                                        'level_limit',
+                                        'level_requried',
+                                        'priority',
+                                        'allowed_reference_types'])
 
         split_statement = parameter_type_statement.split('-')
         psettings = ParameterSettings(parameter_type=split_statement[0])
@@ -313,7 +320,15 @@ class BaseParameter(object):
             psettings.priority = priority
 
         #TODO: Left off here. Need to implement reference type identification
-        valid_references = ['directory', 'file', 'symlink', 'raw-text', 'tar-archive', 'gzip', 'bz2', 'zip', 'url']
+        valid_references = ['file',
+                            'directory',
+                            'symlink',
+                            'raw_text',
+                            'tar_archive',
+                            'gzip',
+                            'bz2',
+                            'zip',
+                            'url']
         valid_references = [i[0] for i in valid_references] + valid_references
 
         for reference_type in split_statement:
