@@ -368,11 +368,19 @@ class RegexFilter(BaseParameter):
     def __init__(self, parameter_statement):
         super().__init__(parameter_statement)
 
+    def parse_type_settings(self):
+        """"""
+        raise NotImplementedError
+
 class ExentionFilter(BaseParameter):
     """Parameter object that filters verified file paths by extention"""
     parameter_type = ['e', 'extention']
     def __init__(self, parameter_statement):
         super().__init__(parameter_statement)
+
+    def parse_type_settings(self):
+        """"""
+        raise NotImplementedError
 
 class SubstringFilter(BaseParameter):
     """Parameter object that filters all strings by substring inclusion"""
@@ -380,11 +388,19 @@ class SubstringFilter(BaseParameter):
     def __init__(self, parameter_statement):
         super().__init__(parameter_statement)
 
+    def parse_type_settings(self):
+        """"""
+        raise NotImplementedError
+
 class RangeFilter(BaseParameter):
     """Parameter object that filters out all files not in the specified range"""
     parameter_type = ['r', 'range']
     def __init__(self, parameter_statement):
         super().__init__(parameter_statement)
+
+    def parse_type_settings(self):
+        """"""
+        raise NotImplementedError
 
 class RangeUniqueFilter(BaseParameter):
     """Parameter object that filters out all files not in the specified range but will throw error if not all number in range found"""
@@ -392,11 +408,19 @@ class RangeUniqueFilter(BaseParameter):
     def __init__(self, parameter_statement):
         super().__init__(parameter_statement)
 
+    def parse_type_settings(self):
+        """"""
+        raise NotImplementedError
+
 class SinFileParameter(BaseParameter):
     """"""
     parameter_type = ['sin', 'station_in']
     def __init__(self, parameter_statement):
         super().__init__(parameter_statement)
+
+    def parse_type_settings(self):
+        """"""
+        raise NotImplementedError
 
 class RawDelimiter(BaseParameter):
     """"""
@@ -404,18 +428,28 @@ class RawDelimiter(BaseParameter):
     def __init__(self, parameter_statement):
         super().__init__(parameter_statement)
 
+    def parse_type_settings(self):
+        """"""
+        raise NotImplementedError
+
 class TargetLevel(BaseParameter):
     """"""
     parameter_type = ['tl', 'target_level']
     def __init__(self, parameter_statement):
         super().__init__(parameter_statement)
 
+    def parse_type_settings(self):
+        """"""
+        raise NotImplementedError
+
 class HyperlinkFilter(BaseParameter):
     """"""
     parameter_type = ['h', 'hyperlink']
     def __init__(self, parameter_statement):
         super().__init__(parameter_statement)
-
+    def parse_type_settings(self):
+        """"""
+        raise NotImplementedError
 
 
 
@@ -423,7 +457,7 @@ if __name__ == '__main__':
     ################# TESTING ##################
 
     # Data Statement Parameter parsing tests
-    #### Factory Test
+    #### Factory Test: PASSED!!
     parameter_type = "r"
     parameter_statement = "`r`stuff`"
     print(type(BaseParameter.factory(parameter_statement)))
