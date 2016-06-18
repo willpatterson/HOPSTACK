@@ -251,7 +251,7 @@ class BaseParameter(object):
         if (parameter_type == 'tl') or (parameter_type == 'target_level'):
             return TargetLevel(parameter_statement)
 
-        assert 0, "Bad parameter: " + parameter_type
+        assert 0, "Bad parameter: " + parameter_type #TODO Change to exception
 
     @staticmethod
     def parse_parameter_statement(parameter_statement):
