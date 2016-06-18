@@ -225,6 +225,7 @@ class BaseParameter(object):
         """To be defined and called by the child classes in __init__"""
         raise NotImplementedError
 
+    @staticmethod
     def factory(parameter_statement):
         """
         Static method that takes a raw parameter statement, creates the proper object type and returns it
@@ -251,7 +252,6 @@ class BaseParameter(object):
             return TargetLevel(parameter_statement)
 
         assert 0, "Bad parameter: " + parameter_type
-    factory = staticmethod(factory)
 
     @staticmethod
     def parse_parameter_statement(parameter_statement):
