@@ -269,29 +269,6 @@ class BaseParameter(object):
 
         return parameter_statement
 
-    """
-    Integrated this into parameter_statement because of named tuples not being mutable
-    @staticmethod
-    def split_parameter_statement(parameter_statement):
-    """
-    """
-        Splits a parameter statement into the type statement and the type settings (separated by a `)
-        Input : Raw parameter statement
-        Output: ParameterStatement Named tuple without type statement or type settings parsed
-    """
-    """
-        ParameterStatement = namedtuple('ParameterStatement',
-                                        ['type_statement', 'type_settings'])
-
-        split_statement = parameter_statement.strip('`').split('`')
-        if len(split_statement) != 2:
-            raise Exception #TODO
-
-        parameter_statement = ParameterStatement(type_statement=split_statement[0],
-                                                 type_settings=split_statement[0])
-        return parameter_statement
-    """
-
     @staticmethod
     def parse_type_statement(parameter_type_statement):
         """
@@ -301,11 +278,8 @@ class BaseParameter(object):
         TODO:
             Catch and handel exceptions for no int in settings
             Catch and handle exceptions for imporper statements when stripping integers
-            Create a method of identifying and setting reference types
             Reconsider benifits of removing items from list
             Consider creating a fucntion to combine searching for Level limits and priority
-            Also consider making valid references more accesable to other objects and functions that might need it
-            **Implement this method in the factory and __init__ methods**
             Change level_limit to target_level
             Provide support for multiple level targets in one statement
         """
