@@ -226,7 +226,11 @@ class BaseParameter(object):
         raise NotImplementedError
 
     def factory(parameter_statement):
-        """"""
+        """
+        Static method that takes a raw parameter statement, creates the proper object type and returns it
+        Input : Raw parameter statement
+        Output: BaseParameter child object of the type denoted int the parameter_statement string
+        """
         parsed_parameter_statement = parse_parameter_statement(parameter_statement)
         parameter_type = parsed_parameter_statement.type_statement.parameter_type
         if (parameter_type == 're') or (parameter_type == 'regex'):
@@ -251,14 +255,22 @@ class BaseParameter(object):
 
     @staticmethod
     def parse_parameter_statement(parameter_statement):
-        """"""
+        """
+        Static method that takes a raw parameter statement and parses it completely
+        Input : parameter statement (string)
+        Output: ParameterStatement Named Tuple
+        """
         parameter_statement = split_parameter_statement(parameter_statement)
         parameter_statement.type_settings = parse_type_statement(parameter_statement.type_settings)
         return parameter_statement
 
     @staticmethod
     def split_parameter_statement(parameter_statement):
-        """"""
+        """
+        Splits a parameter statement into the type statement and the type settings (separated by a `)
+        Input : Raw parameter statement
+        Output: ParameterStatement Named tuple without type statement or type settings parsed
+        """
         ParameterStatement = namedtuple('ParameterStatement',
                                         ['type_statement', 'type_settings'])
 
@@ -273,7 +285,9 @@ class BaseParameter(object):
     @staticmethod
     def parse_type_statement(parameter_type_statement):
         """
-        This method parses out the settings defined after parameter type but in the parameter type field
+        Parses a type statement
+        Input : raw type statement string
+        OutPut: TypeStatement Named Tuple
         TODO:
             Catch and handel exceptions for no int in settings
             Catch and handle exceptions for imporper statements when stripping integers
@@ -285,15 +299,15 @@ class BaseParameter(object):
             Change level_limit to target_level
             Provide support for multiple level targets in one statement
         """
-        ParameterSettings = namedtuple('ParameterSettings',
-                                       ['parameter_type',
-                                        'level_limit',
-                                        'level_requried',
-                                        'priority',
-                                        'allowed_reference_types'])
+        TypeStatement = namedtuple('TypeStatement',
+                                   ['parameter_type',
+                                    'level_limit',
+                                    'level_requried',
+                                    'priority',
+                                    'allowed_reference_types'])
 
         split_statement = parameter_type_statement.split('-')
-        psettings = ParameterSettings(parameter_type=split_statement[0])
+        psettings = TypeStatement(parameter_type=split_statement[0])
         split_statement.remove(psettings.parameter_type) #REMOVE ITEM FROM LIST
 
         #Parses Out level interception settings
