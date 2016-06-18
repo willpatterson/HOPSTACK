@@ -19,3 +19,9 @@ Would be a user or system-wide directory containing:
 3. Credentials (database, AWS, etc)
 
 
+Different Cluster Frameworks and software to consider interfacing with:
+-----------------------------------------------------------------------
+
+1. kubernetes
+2. Apache Mesos
+3. Hadoop
