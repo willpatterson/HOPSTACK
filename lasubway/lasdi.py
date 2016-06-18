@@ -206,11 +206,21 @@ class DISSParameterTypeError(Exception):
 
 class BaseParameter(object):
     """Base parameter object"""
+    valid_references = [('f','file'),
+                        ('f', 'directory'),
+                        ('s', 'symlink'),
+                        ('r', 'raw_text'),
+                        ('t', 'tar_archive'),
+                        ('g', 'gzip'),
+                        ('b', 'bz2'),
+                        ('z', 'zip'),
+                        ('u', 'url')]
+
     def __init__(self, parameter_statement):
         """ """
         parameter_statement = BaseParameter.parse_parameter_statement(parameter_statement)
 
-        self.parameter_type_settings = re.split(',| ', parameter_statement.type_settings) #TODO call parse_type_settings instead
+        self.parameter_type_settings = re.split(',| ', parameter_statement.type_settings)
         self.level_limit = parameter_statement.type_statement.level_limit
         self.level_requried = parameter_statement.type_statement.level_requried
         self.priority = parameter_statement.type_statement.priority
@@ -338,26 +348,15 @@ class BaseParameter(object):
             priority = int("".join(i for i in level_limit if x.isdigit())) #Integer stripping
             psettings.priority = priority
 
-        #TODO: Left off here. Need to implement reference type identification
-        valid_references = ['file',
-                            'directory',
-                            'symlink',
-                            'raw_text',
-                            'tar_archive',
-                            'gzip',
-                            'bz2',
-                            'zip',
-                            'url']
-        valid_references = [i[0] for i in valid_references] + valid_references
-
+        #Check for valid reference types
         for reference_type in split_statement:
-            if reference_type in valid_references:
+            if reference_type in [ref for duo in valid_references for ref in duo]:
                 if type(psettings.allowed_reference_types) == str:
                     psettings.allowed_reference_types = [psettings.allowed_reference_types, reference_type]
                 else:
                     psettings.allowed_reference_types = reference_type
             else:
-                raise Exception #Exception for having unknown settings
+                raise Exception #TODO: Exception for having unknown settings
 
         return psettings
 
