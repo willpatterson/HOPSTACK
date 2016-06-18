@@ -9,6 +9,7 @@ TODO:
 """
 
 import os
+import re
 import ntpath
 from collections import namedtuple
 from urllib.parse import urlparse, ParseResult
@@ -208,18 +209,14 @@ class BaseParameter(object):
     def __init__(self, parameter_type, parameter_statement):
         """ """
         self.parameter_type = parameter_type
-        parameter_statement = parse_parameter_statement(parameter_statement)
+        parameter_statement = BaseParameter.parse_parameter_statement(parameter_statement)
 
-        self.parameter_type_settings = re.split(',| ', parameter_statement.type_settings)
+        self.parameter_type_settings = re.split(',| ', parameter_statement.type_settings) #TODO call parse_type_settings instead
         self.level_limit = parameter_statement.type_statement.level_limit
         self.level_requried = parameter_statement.type_statement.level_requried
         self.priority = parameter_statement.type_statement.priority
         self.allowed_reference_types = parameter_statement.type_statement.allowed_reference_types
 
-        if (self.parameter_statement.count != 3) or ((not self.parameter_statement.startswith('`')) and (not self.parameter_statement.endswith('`'))):
-            raise DISSSyntaxError
-        elif self.parse_parameter_statement()[0] != self.parameter_type:
-            raise DISSParameterTypeError
 
     def parse_type_settings(self):
         """To be defined and called by the child classes in __init__"""
@@ -251,7 +248,7 @@ class BaseParameter(object):
         if (parameter_type == 'tl') or (parameter_type == 'target_level'):
             return TargetLevel(parameter_statement)
 
-        assert 0, "Bad parameter: " + parameter_type #TODO Change to exception
+        raise DISSParameterTypeError("Bad parameter: {}".format(parameter_type))
 
     @staticmethod
     def parse_parameter_statement(parameter_statement):
@@ -277,13 +274,13 @@ class BaseParameter(object):
     Integrated this into parameter_statement because of named tuples not being mutable
     @staticmethod
     def split_parameter_statement(parameter_statement):
-        """
-        """
+    """
+    """
         Splits a parameter statement into the type statement and the type settings (separated by a `)
         Input : Raw parameter statement
         Output: ParameterStatement Named tuple without type statement or type settings parsed
-        """
-        """
+    """
+    """
         ParameterStatement = namedtuple('ParameterStatement',
                                         ['type_statement', 'type_settings'])
 
