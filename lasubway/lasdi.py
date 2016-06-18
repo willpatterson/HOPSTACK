@@ -228,6 +228,9 @@ class BaseParameter(object):
         Static method that takes a raw parameter statement, creates the proper object type and returns it
         Input : Raw parameter statement
         Output: BaseParameter child object of the type denoted int the parameter_statement string
+
+        TODO:
+            Rethink method of checking for subclass types. Maybe use the __subclasses__ method or something
         """
         parsed_parameter_statement = BaseParameter.parse_parameter_statement(parameter_statement)
         parameter_type = parsed_parameter_statement.type_statement.parameter_type
