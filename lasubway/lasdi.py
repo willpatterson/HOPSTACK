@@ -265,7 +265,7 @@ class BaseParameter(object):
 
         split_statement = parameter_statement.strip('`').split('`')
         if len(split_statement) != 2:
-            raise Exception #TODO
+            raise DISSSyntaxError("Parameter statements must have excatly two sections")
 
         parsed_type_statement = BaseParameter.parse_type_statement(split_statement[0])
         parameter_statement = ParameterStatement(type_statement=parsed_type_statement,
