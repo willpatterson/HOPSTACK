@@ -1,5 +1,5 @@
 """
-Setup script
+Mostly Blank Setup script
 """
 
 from setuptools import setup, find_packages
@@ -12,6 +12,6 @@ setup(name="LASubway",
       author="William Patterson",
       packages=find_packages(),
       package_data={} #TODO Fill in
-      install_requires=['PyYAML'],
+      install_requires=['PyYaml'],
       long_description=long_description(),
       entry_points={}) #TODO Fill in
