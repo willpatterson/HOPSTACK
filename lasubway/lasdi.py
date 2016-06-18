@@ -337,7 +337,7 @@ class BaseParameter(object):
 
 class RegexFilter(BaseParameter):
     """Parameter object that filters strings with a python regex"""
-    parameter_type = ['re', 'regex']
+    parameter_type = ('re', 'regex')
     def __init__(self, parameter_statement):
         super().__init__(parameter_statement)
 
@@ -347,7 +347,7 @@ class RegexFilter(BaseParameter):
 
 class ExentionFilter(BaseParameter):
     """Parameter object that filters verified file paths by extention"""
-    parameter_type = ['e', 'extention']
+    parameter_type = ('e', 'extention')
     def __init__(self, parameter_statement):
         super().__init__(parameter_statement)
 
@@ -357,7 +357,7 @@ class ExentionFilter(BaseParameter):
 
 class SubstringFilter(BaseParameter):
     """Parameter object that filters all strings by substring inclusion"""
-    parameter_type = ['s', 'substring']
+    parameter_type = ('s', 'substring')
     def __init__(self, parameter_statement):
         super().__init__(parameter_statement)
 
@@ -367,7 +367,7 @@ class SubstringFilter(BaseParameter):
 
 class RangeFilter(BaseParameter):
     """Parameter object that filters out all files not in the specified range"""
-    parameter_type = ['r', 'range']
+    parameter_type = ('r', 'range')
     def __init__(self, parameter_statement):
         super().__init__(parameter_statement)
 
@@ -377,7 +377,7 @@ class RangeFilter(BaseParameter):
 
 class RangeUniqueFilter(BaseParameter):
     """Parameter object that filters out all files not in the specified range but will throw error if not all number in range found"""
-    parameter_type = ['ru', 'range_unique']
+    parameter_type = ('ru', 'range_unique')
     def __init__(self, parameter_statement):
         super().__init__(parameter_statement)
 
@@ -387,7 +387,7 @@ class RangeUniqueFilter(BaseParameter):
 
 class SinFileParameter(BaseParameter):
     """"""
-    parameter_type = ['sin', 'station_in']
+    parameter_type = ('sin', 'station_in')
     def __init__(self, parameter_statement):
         super().__init__(parameter_statement)
 
@@ -397,7 +397,7 @@ class SinFileParameter(BaseParameter):
 
 class RawDelimiter(BaseParameter):
     """"""
-    parameter_type = ['rd', 'raw_dilimeter']
+    parameter_type = ('rd', 'raw_dilimeter')
     def __init__(self, parameter_statement):
         super().__init__(parameter_statement)
 
@@ -407,7 +407,7 @@ class RawDelimiter(BaseParameter):
 
 class TargetLevel(BaseParameter):
     """"""
-    parameter_type = ['tl', 'target_level']
+    parameter_type = ('tl', 'target_level')
     def __init__(self, parameter_statement):
         super().__init__(parameter_statement)
 
@@ -417,7 +417,7 @@ class TargetLevel(BaseParameter):
 
 class HyperlinkFilter(BaseParameter):
     """"""
-    parameter_type = ['h', 'hyperlink']
+    parameter_type = ('h', 'hyperlink')
     def __init__(self, parameter_statement):
         super().__init__(parameter_statement)
     def parse_type_settings(self):
