@@ -416,6 +416,12 @@ class TargetLevel(BaseParameter):
     def __init__(self, parameter_statement):
         super().__init__('tl', parameter_statement)
 
+class HyperlinkFilter(BaseParameter):
+    """"""
+    def __init__(self, parameter_statement):
+        super().__init__('h', parameter_statement)
+
+
 
 
 if __name__ == '__main__':
