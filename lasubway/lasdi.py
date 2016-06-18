@@ -206,9 +206,8 @@ class DISSParameterTypeError(Exception):
 
 class BaseParameter(object):
     """Base parameter object"""
-    def __init__(self, parameter_type, parameter_statement):
+    def __init__(self, parameter_statement):
         """ """
-        self.parameter_type = parameter_type
         parameter_statement = BaseParameter.parse_parameter_statement(parameter_statement)
 
         self.parameter_type_settings = re.split(',| ', parameter_statement.type_settings) #TODO call parse_type_settings instead
@@ -230,28 +229,15 @@ class BaseParameter(object):
         Output: BaseParameter child object of the type denoted int the parameter_statement string
 
         TODO:
-            Rethink method of checking for subclass types. Maybe use the __subclasses__ method or something
         """
         parsed_parameter_statement = BaseParameter.parse_parameter_statement(parameter_statement)
         parameter_type = parsed_parameter_statement.type_statement.parameter_type
-        if (parameter_type == 're') or (parameter_type == 'regex'):
-            return RegexFilter(parameter_statement)
-        if (parameter_type == 'r') or (parameter_type == 'range'):
-            return RangeFilter(parameter_statement)
-        if (parameter_type == 'ru') or (parameter_type == 'range_unique'):
-            return RangeUniqueFilter(parameter_statement)
-        if (parameter_type == 'e') or (parameter_type == 'extention'):
-            return ExentionFilter(parameter_statement)
-        if (parameter_type == 's') or (parameter_type == 'substring'):
-            return SubstringFilter(parameter_statement)
-        if (parameter_type == 'sin') or (parameter_type == 'station_in_file'):
-            return SinFileParameter(parameter_statement)
-        if (parameter_type == 'rd') or (parameter_type == 'raw_delimiter'):
-            return RawDelimiter(parameter_statement)
-        if (parameter_type == 'tl') or (parameter_type == 'target_level'):
-            return TargetLevel(parameter_statement)
 
-        raise DISSParameterTypeError("Bad parameter: {}".format(parameter_type))
+        for cls in BaseParameter.__subclasses__():
+            if parameter_type in cls.parameter_type:
+                return cls(parameter_statement)
+
+        raise DISSParameterTypeError("Bad parameter type: '{}'".format(parameter_type))
 
     @staticmethod
     def parse_parameter_statement(parameter_statement):
@@ -378,48 +364,57 @@ class BaseParameter(object):
 
 class RegexFilter(BaseParameter):
     """Parameter object that filters strings with a python regex"""
+    parameter_type = ['re', 'regex']
     def __init__(self, parameter_statement):
-        super().__init__('re', parameter_statement)
+        super().__init__(parameter_statement)
 
 class ExentionFilter(BaseParameter):
     """Parameter object that filters verified file paths by extention"""
+    parameter_type = ['e', 'extention']
     def __init__(self, parameter_statement):
-        super().__init__('e', parameter_statement)
+        super().__init__(parameter_statement)
 
 class SubstringFilter(BaseParameter):
     """Parameter object that filters all strings by substring inclusion"""
+    parameter_type = ['s', 'substring']
     def __init__(self, parameter_statement):
-        super().__init__('s', parameter_statement)
+        super().__init__(parameter_statement)
 
 class RangeFilter(BaseParameter):
     """Parameter object that filters out all files not in the specified range"""
+    parameter_type = ['r', 'range']
     def __init__(self, parameter_statement):
-        super().__init__('r', parameter_statement)
+        super().__init__(parameter_statement)
 
 class RangeUniqueFilter(BaseParameter):
     """Parameter object that filters out all files not in the specified range but will throw error if not all number in range found"""
+    parameter_type = ['ru', 'range_unique']
     def __init__(self, parameter_statement):
-        super().__init__('ru', parameter_statement)
+        super().__init__(parameter_statement)
 
 class SinFileParameter(BaseParameter):
     """"""
+    parameter_type = ['sin', 'station_in']
     def __init__(self, parameter_statement):
-        super().__init__('sin', parameter_statement)
+        super().__init__(parameter_statement)
 
 class RawDelimiter(BaseParameter):
     """"""
+    parameter_type = ['rd', 'raw_dilimeter']
     def __init__(self, parameter_statement):
-        super().__init__('rd', parameter_statement)
+        super().__init__(parameter_statement)
 
 class TargetLevel(BaseParameter):
     """"""
+    parameter_type = ['tl', 'target_level']
     def __init__(self, parameter_statement):
-        super().__init__('tl', parameter_statement)
+        super().__init__(parameter_statement)
 
 class HyperlinkFilter(BaseParameter):
     """"""
+    parameter_type = ['h', 'hyperlink']
     def __init__(self, parameter_statement):
-        super().__init__('h', parameter_statement)
+        super().__init__(parameter_statement)
 
 
 
