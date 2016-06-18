@@ -232,7 +232,7 @@ class BaseParameter(object):
         Input : Raw parameter statement
         Output: BaseParameter child object of the type denoted int the parameter_statement string
         """
-        parsed_parameter_statement = parse_parameter_statement(parameter_statement)
+        parsed_parameter_statement = BaseParameter.parse_parameter_statement(parameter_statement)
         parameter_type = parsed_parameter_statement.type_statement.parameter_type
         if (parameter_type == 're') or (parameter_type == 'regex'):
             return RegexFilter(parameter_statement)
@@ -260,16 +260,29 @@ class BaseParameter(object):
         Input : parameter statement (string)
         Output: ParameterStatement Named Tuple
         """
-        parameter_statement = split_parameter_statement(parameter_statement)
-        parameter_statement.type_settings = parse_type_statement(parameter_statement.type_settings)
+        ParameterStatement = namedtuple('ParameterStatement',
+                                        ['type_statement', 'type_settings'])
+
+        split_statement = parameter_statement.strip('`').split('`')
+        if len(split_statement) != 2:
+            raise Exception #TODO
+
+        parsed_type_statement = BaseParameter.parse_type_statement(split_statement[0])
+        parameter_statement = ParameterStatement(type_statement=parsed_type_statement,
+                                                 type_settings=split_statement[1])
+
         return parameter_statement
 
+    """
+    Integrated this into parameter_statement because of named tuples not being mutable
     @staticmethod
     def split_parameter_statement(parameter_statement):
+        """
         """
         Splits a parameter statement into the type statement and the type settings (separated by a `)
         Input : Raw parameter statement
         Output: ParameterStatement Named tuple without type statement or type settings parsed
+        """
         """
         ParameterStatement = namedtuple('ParameterStatement',
                                         ['type_statement', 'type_settings'])
@@ -281,6 +294,7 @@ class BaseParameter(object):
         parameter_statement = ParameterStatement(type_statement=split_statement[0],
                                                  type_settings=split_statement[0])
         return parameter_statement
+    """
 
     @staticmethod
     def parse_type_statement(parameter_type_statement):
@@ -307,7 +321,8 @@ class BaseParameter(object):
                                     'allowed_reference_types'])
 
         split_statement = parameter_type_statement.split('-')
-        psettings = TypeStatement(parameter_type=split_statement[0])
+        psettings = TypeStatement
+        psettings.parameter_type = split_statement[0]
         split_statement.remove(psettings.parameter_type) #REMOVE ITEM FROM LIST
 
         #Parses Out level interception settings
@@ -409,7 +424,8 @@ if __name__ == '__main__':
     # Data Statement Parameter parsing tests
     #### Factory Test
     parameter_type = "r"
-    print(type(BaseParameter.factory(parameter_type)))
+    parameter_statement = "`r`stuff`"
+    print(type(BaseParameter.factory(parameter_statement)))
 
     #### Basic parameter
     #### Compound parameter
