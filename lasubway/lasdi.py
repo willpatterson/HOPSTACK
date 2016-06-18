@@ -154,6 +154,8 @@ def diss_interpreter(data_string):
     """Parses out filter statments denoted by `"""
     split_data = data_string.split('`')
 
+# Data String Classes: #############################################
+
 class DataStatement(ParseResult):
     """
     This class will be used for parsing and operating a single data statement
@@ -208,7 +210,6 @@ class UnknownTypeSetting(Exception):
         super(DISSSyntaxError, self).__init__(message)
 
 
-#Data String Classes: #############################################
 
 class BaseParameter(object):
     """Base parameter object"""
@@ -393,7 +394,7 @@ class RangeUniqueFilter(BaseParameter):
         raise NotImplementedError
 
 class SinFileParameter(BaseParameter):
-    """"""
+    """Takes in a sin file, returns its contents iteratively"""
     parameter_type = ('sin', 'station_in')
     def __init__(self, parameter_statement):
         super().__init__(parameter_statement)
@@ -403,7 +404,7 @@ class SinFileParameter(BaseParameter):
         raise NotImplementedError
 
 class RawDelimiter(BaseParameter):
-    """"""
+    """Parameter object that opens files and returns chuncks of delimited text"""
     parameter_type = ('rd', 'raw_dilimeter')
     def __init__(self, parameter_statement):
         super().__init__(parameter_statement)
@@ -413,7 +414,7 @@ class RawDelimiter(BaseParameter):
         raise NotImplementedError
 
 class TargetLevel(BaseParameter):
-    """"""
+    """Parameter object that dictates operations on a target level"""
     parameter_type = ('tl', 'target_level')
     def __init__(self, parameter_statement):
         super().__init__(parameter_statement)
@@ -423,7 +424,7 @@ class TargetLevel(BaseParameter):
         raise NotImplementedError
 
 class HyperlinkFilter(BaseParameter):
-    """"""
+    """Parameter object that searches for and returns hyperlinks on webpages"""
     parameter_type = ('h', 'hyperlink')
     def __init__(self, parameter_statement):
         super().__init__(parameter_statement)
