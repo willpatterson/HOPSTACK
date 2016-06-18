@@ -154,7 +154,23 @@ def diss_interpreter(data_string):
     """Parses out filter statments denoted by `"""
     split_data = data_string.split('`')
 
-# Data String Classes: #############################################
+# Data Statement Classes: #############################################
+
+class DISSSyntaxError(Exception):
+    """Error thrown for bad DISS syntax"""
+    def __init__(self, message):
+        super(DISSSyntaxError, self).__init__(message)
+
+class DISSParameterTypeError(Exception):
+    """Error thrown when the Parameter type string is incorrect"""
+    def __init__(self, message):
+        super(DISSParameterTypeError, self).__init__(message)
+
+class UnknownTypeSetting(Exception):
+    """Error thrown for unknown type setting in DISS"""
+    def __init__(self, message):
+        super(DISSSyntaxError, self).__init__(message)
+
 
 class DataStatement(ParseResult):
     """
@@ -192,23 +208,6 @@ class DataStatement(ParseResult):
             and self.fragment == ""):
             return True
         return False
-
-
-class DISSSyntaxError(Exception):
-    """Error thrown for bad DISS syntax"""
-    def __init__(self, message):
-        super(DISSSyntaxError, self).__init__(message)
-
-class DISSParameterTypeError(Exception):
-    """Error thrown when the Parameter type string is incorrect"""
-    def __init__(self, message):
-        super(DISSParameterTypeError, self).__init__(message)
-
-class UnknownTypeSetting(Exception):
-    """Error thrown for unknown type setting in DISS"""
-    def __init__(self, message):
-        super(DISSSyntaxError, self).__init__(message)
-
 
 
 class BaseParameter(object):
