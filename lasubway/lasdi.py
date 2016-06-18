@@ -206,6 +206,7 @@ class DISSParameterTypeError(Exception):
 class BaseParameter(object):
     """Base parameter object"""
     def __init__(self, parameter_type, parameter_statement):
+        """ """
         self.parameter_type = parameter_type
         parameter_statement = parse_parameter_statement(parameter_statement)
 
@@ -226,24 +227,34 @@ class BaseParameter(object):
 
     def factory(parameter_statement):
         """"""
-        parameter_statement = parse_parameter_statement(parameter_statement)
+        parsed_parameter_statement = parse_parameter_statement(parameter_statement)
+        parameter_type = parsed_parameter_statement.type_statement.parameter_type
         if (parameter_type == 're') or (parameter_type == 'regex'):
-            return RegexFilter()
+            return RegexFilter(parameter_statement)
         if (parameter_type == 'r') or (parameter_type == 'range'):
-            return RangeFilter()
-        if (parameter_type == 'ru') or (parameter_type == 'range-unique'):
-            return RangeUniqueFilter()
+            return RangeFilter(parameter_statement)
+        if (parameter_type == 'ru') or (parameter_type == 'range_unique'):
+            return RangeUniqueFilter(parameter_statement)
         if (parameter_type == 'e') or (parameter_type == 'extention'):
-            return ExentionFilter()
+            return ExentionFilter(parameter_statement)
         if (parameter_type == 's') or (parameter_type == 'substring'):
-            return SubstringFilter()
-        if (parameter_type == 'sin') or (parameter_type == 'station-in-file'):
-            return SinFileParameter()
-        if (parameter_type == 'rd') or (parameter_type == 'raw-delimiter'):
-            return RawDelimiter()
+            return SubstringFilter(parameter_statement)
+        if (parameter_type == 'sin') or (parameter_type == 'station_in_file'):
+            return SinFileParameter(parameter_statement)
+        if (parameter_type == 'rd') or (parameter_type == 'raw_delimiter'):
+            return RawDelimiter(parameter_statement)
+        if (parameter_type == 'tl') or (parameter_type == 'target_level'):
+            return TargetLevel(parameter_statement)
 
         assert 0, "Bad parameter: " + parameter_type
     factory = staticmethod(factory)
+
+    @staticmethod
+    def parse_parameter_statement(parameter_statement):
+        """"""
+        parameter_statement = split_parameter_statement(parameter_statement)
+        parameter_statement.type_settings = parse_type_statement(parameter_statement.type_settings)
+        return parameter_statement
 
     @staticmethod
     def split_parameter_statement(parameter_statement):
@@ -260,14 +271,6 @@ class BaseParameter(object):
         return parameter_statement
 
     @staticmethod
-    def parse_parameter_statement(parameter_statement):
-        """"""
-        parameter_statement = split_parameter_statement(parameter_statement)
-        parameter_statement.type_settings = parse_type_statement(parameter_statement.type_settings)
-        return parameter_statement
-
-
-    @staticmethod
     def parse_type_statement(parameter_type_statement):
         """
         This method parses out the settings defined after parameter type but in the parameter type field
@@ -280,6 +283,7 @@ class BaseParameter(object):
             Also consider making valid references more accesable to other objects and functions that might need it
             **Implement this method in the factory and __init__ methods**
             Change level_limit to target_level
+            Provide support for multiple level targets in one statement
         """
         ParameterSettings = namedtuple('ParameterSettings',
                                        ['parameter_type',
@@ -378,10 +382,10 @@ class RawDelimiter(BaseParameter):
     def __init__(self, parameter_statement):
         super().__init__('rd', parameter_statement)
 
-class LevelIntercept(BaseParameter):
+class TargetLevel(BaseParameter):
     """"""
     def __init__(self, parameter_statement):
-        super().__init__('L', parameter_statement)
+        super().__init__('tl', parameter_statement)
 
 
 
