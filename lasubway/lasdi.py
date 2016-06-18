@@ -202,6 +202,12 @@ class DISSParameterTypeError(Exception):
     def __init__(self, message):
         super(DISSParameterTypeError, self).__init__(message)
 
+class UnknownTypeSetting(Exception):
+    """Error thrown for unknown type setting in DISS"""
+    def __init__(self, message):
+        super(DISSSyntaxError, self).__init__(message)
+
+
 #Data String Classes: #############################################
 
 class BaseParameter(object):
@@ -282,6 +288,7 @@ class BaseParameter(object):
             Consider creating a fucntion to combine searching for Level limits and priority
             Change level_limit to target_level
             Provide support for multiple level targets in one statement
+            Only provide support for a single required level
         """
         TypeStatement = namedtuple('TypeStatement',
                                    ['parameter_type',
@@ -330,7 +337,7 @@ class BaseParameter(object):
                 else:
                     psettings.allowed_reference_types = reference_type
             else:
-                raise Exception #TODO: Exception for having unknown settings
+                raise UnknownTypeSetting("Error: Unknown type setting: {}".format(reference_type))
 
         return psettings
 
