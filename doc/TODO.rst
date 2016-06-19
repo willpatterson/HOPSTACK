@@ -29,6 +29,12 @@ General:
 
 - Define, Outline and Document the Station Input (sin) file format
 
+Documentation:
+--------------
+
+- Update README with new info on DISS and LASDI
+- Create a project wiki on github and move techincal from README
+
 Text Structure Representation:
 ------------------------------
 
