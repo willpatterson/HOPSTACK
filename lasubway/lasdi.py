@@ -172,25 +172,25 @@ class UnknownTypeSetting(Exception):
         super(DISSSyntaxError, self).__init__(message)
 
 
-class DataStatement(ParseResult):
+class DataReference(ParseResult):
     """
-    This class will be used for parsing and operating a single data statement
+    This class will be used for parsing and operating a single Data Reference
     """
-    def __init__(self, statement_string):
+    def __init__(self, reference):
         """
         TODO:
             Parse out Data Filters before passing the string to urlparse
         """
-        if (statement_string == "" or statement_string is None):
+        if (== "" or reference is None):
             raise Exception #TODO Create exception for this
 
         self.parameters = []
-        parsed_statement = statement_string.split('`')
-        parsed_data_string = urlparse(parsed_statement[0])
-        super.__init__([getattr(parsed_data_string, field) for field in parsed_data_string._fields]) #TODO add user name and password info 
+        split_reference = reference.split('`')
+        data_string = urlparse(split_reference[0])
+        super.__init__([getattr(data_string, field) for field in data_string._fields]) #TODO add user name and password info 
 
     @staticmethod
-    def _create_data_parameters(parameters):
+    def _load_parameters(parameters):
         pass
 
     def is_local(self):
@@ -340,6 +340,10 @@ class BaseParameter(object):
                 raise UnknownTypeSetting("Error: Unknown type setting: {}".format(reference_type))
 
         return psettings
+
+    @staticmethod
+    def split_settings(settings):
+        parameter_settings = re.split(',| ', parameter_statement.type_settings)
 
 
 class RegexFilter(BaseParameter):
