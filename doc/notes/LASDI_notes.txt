@@ -1,8 +1,6 @@
 LASDI:
 =========
 
-** What about when you want to pass a tar or archive file to a program? There needs to be a data filter that tells LASDI that its okay pass a tar archive without untaring
-
 New Name System for LASDI and DISS objects:
 -------------------------------------------
 
@@ -16,6 +14,22 @@ Parameter Settings      : L1-P1
 Return File Type        : directory
 Parameter Type Settings : 100-111
 
+
+Unix File type Support:
+-----------------------
+
+Unix file types:
+
+1. Regular File
+2. Directory
+3. Symbolic Link
+4. Named Pipe
+5. Socket
+6. Device File
+7. Door
+
+* Think about which (if not all) of the file type should be supported.
+* How could socket files be of use?
 
 Tunnel Interfaces:
 ------------------
