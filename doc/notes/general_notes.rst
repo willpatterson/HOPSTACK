@@ -1,3 +1,7 @@
+*****************
+General LAS Notes
+*****************
+
 LAS General Ideas and goals:
 ----------------------------
 1. Remove programming from software pipelining
