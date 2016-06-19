@@ -8,6 +8,7 @@ New Name System for LASDI and DISS objects:
 Example:
 
 ::
+
     "data-string`r-L1-P1-directory`100-111`"
 
     Data Reference          : "data-string`r-L1-P1-directory`100-111`"
@@ -107,17 +108,17 @@ Filter by reference type and Level #: (cannot be used as a list)
 
     "/datasrting/path/`li`level #,file type`" 
 
-Reference types supported:
+Reference type examples (more will be added):
 
-* directory   -- d
-* file        -- f
-* symlink     -- s
-* raw-text    -- r
-* tar-archive -- t
-* bzip2       -- 2
-* zip         -- z
-* gzip        -- g
-* url         -- u
+* directory, d
+* file, f
+* symlink, s
+* raw-text, r
+* tar-archive, t
+* bzip2, 2
+* zip, z
+* gzip, g
+* url, u
 
 **Filter by range unique (throws error or prompt user if not more than one file in range):**
 
