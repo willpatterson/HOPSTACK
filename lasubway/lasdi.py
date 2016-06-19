@@ -211,7 +211,12 @@ class DataReference(ParseResult):
 
 
 class BaseParameter(object):
-    """Base parameter object"""
+    """
+    Base parameter object
+
+    TODO:
+        Change variable names to fit new system
+    """
     valid_references = [('f','file'),
                         ('f', 'directory'),
                         ('s', 'symlink'),
