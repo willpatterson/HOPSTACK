@@ -3,6 +3,20 @@ LASDI:
 
 ** What about when you want to pass a tar or archive file to a program? There needs to be a data filter that tells LASDI that its okay pass a tar archive without untaring
 
+New Name System for LASDI and DISS objects:
+-------------------------------------------
+
+"data-string`r-L1-P1-directory`100-111`"
+
+Data Reference          : "data-string`r-L1-P1-directory`100-111`"
+Data String             : data-string
+Parameter Declairation  : `r-L1-P1-directory`100-111`
+Parameter Type          : r
+Parameter Settings      : L1-P1
+Return File Type        : directory
+Parameter Type Settings : 100-111
+
+
 Tunnel Interfaces:
 ------------------
 Tunnel interfaces structures that define the any combination of the number, type, and order of files passed between LASOs
