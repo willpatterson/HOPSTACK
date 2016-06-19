@@ -1,18 +1,22 @@
-LASDI:
-=========
+************
+LASDI Notes:
+************
 
 New Name System for LASDI and DISS objects:
 -------------------------------------------
 
-"data-string`r-L1-P1-directory`100-111`"
+Example:
 
-Data Reference          : "data-string`r-L1-P1-directory`100-111`"
-Data String             : data-string
-Parameter Declairation  : `r-L1-P1-directory`100-111`
-Parameter Type          : r
-Parameter Settings      : L1-P1
-Return File Type        : directory
-Parameter Type Settings : 100-111
+::
+    "data-string`r-L1-P1-directory`100-111`"
+
+    Data Reference          : "data-string`r-L1-P1-directory`100-111`"
+    Data String             : data-string
+    Parameter Declairation  : `r-L1-P1-directory`100-111`
+    Parameter Type          : r
+    Parameter Settings      : L1-P1
+    Return File Type        : directory
+    Parameter Type Settings : 100-111
 
 
 Unix File type Support:
@@ -33,12 +37,14 @@ Unix file types:
 
 Tunnel Interfaces:
 ------------------
+
 Tunnel interfaces structures that define the any combination of the number, type, and order of files passed between LASOs
 
 Example Scenario: station_1 is expecting to output one fasta file, and one genbank file. Station_2 expects one fasta file and one genbank file. If station_2 gets something else, it will throw an error or warning
 
 Raw Data Handeling:
 -------------------
+
 To ways of passing raw data:
 
 1. Unix Pipes/redirects
@@ -46,7 +52,8 @@ To ways of passing raw data:
 2. string via command line
     * use a delimiter and a verified file path
 
-Tasks for both:
+**Tasks for both:**
+
 * build a few default parsers for fasta, fastq, genbank, etc
 * build an class to extend to create parsers easily
 
@@ -56,7 +63,6 @@ LASubway Data Interpreter String Syntax (LASDISS, DISS):
 
 DISS Data Strings:
 ------------------
-Data Strings can be two (maybe three) things:
 
 1. A file path
 2. URL
@@ -69,59 +75,78 @@ DISS Parameters:
 
 Filter with a python Regex expressoin:
 
-"/datastring/path/thing`r`python-regex-expression`"
+::
+
+    "/datastring/path/thing`r`python-regex-expression`"
 
 Filter by one or more extentions:
 
-"/datastring/path/thing`e`.fasta,.log,.etc`"
+::
 
-"/datastring/path/thing`e`.fasta .log .etc`"
+    "/datastring/path/thing`e`.fasta,.log,.etc`"
 
-"/datastring/path/thing`e`.fasta, .log, .etc`"
+    "/datastring/path/thing`e`.fasta .log .etc`"
+
+    "/datastring/path/thing`e`.fasta, .log, .etc`"
 
 Filter by filename one or more substrings:
 
-"/datastring/path/thing`s`subtring, substring1`
+::
+
+    "/datastring/path/thing`s`subtring, substring1`
 
 Filter by range (looks for a complete numbers in file names):
 
-"/datasrting/path/thing`r`0-100`"
+::
+
+    "/datasrting/path/thing`r`0-100`"
 
 Filter by reference type and Level #: (cannot be used as a list)
 
-"/datasrting/path/`li`level #,reference type`" 
+::
 
-    Reference types supported:
-        * directory   -- d
-        * file        -- f
-        * symlink     -- s
-        * raw-text    -- r
-        * tar-archive -- t
-        * bzip2       -- 2
-        * zip         -- z
-        * gzip        -- g
-        * url         -- u
+    "/datasrting/path/`li`level #,file type`" 
+
+Reference types supported:
+
+* directory   -- d
+* file        -- f
+* symlink     -- s
+* raw-text    -- r
+* tar-archive -- t
+* bzip2       -- 2
+* zip         -- z
+* gzip        -- g
+* url         -- u
 
 **Filter by range unique (throws error or prompt user if not more than one file in range):**
 
-"/datasrting/path/thing`ru`0-100`"
+::
+
+    "/datasrting/path/thing`ru`0-100`"
 
 **Combine Filters:**
 
-"/datasrting/path/thing/`e`.fasta`r`75-94`"
+::
 
-"/datasrting/path/thing/`r`25-30`r`50-80`"
+    "/datasrting/path/thing/`e`.fasta`r`75-94`"
+
+    "/datasrting/path/thing/`r`25-30`r`50-80`"
 
 LASubway Output Formatter LASOF:
 --------------------------------
+
 LASOF is the inverse function of LASDI. It takes the output of a station and converts it into a single string that can be passed to the next LASO.
 
 LASOF would take some output filter parameters defined in DISS as input. It would then use thoes parameters to find the desired output files and create symlinks to them all in a neat LASO output directory whoes file path will be passed to the next LASO in the pipeline.
 
 DISS Parameter Behavoir Settings:
 ---------------------------------
-`r-d`regex` -- Only preforms regex on directories
-`r-d-L1`regex` -- Only prefroms regex on directories in level one of the recursive call stack 
-`r-d-Lr5`regex` -- Same as above but throws errors if level 5 is not reached ('r' stands for required)
-`r-d-L1-P1` -- Preforms regex on level one and is preformed first ('P' stands for priority)
+
+::
+
+    `r-d`regex`     -- Only preforms regex on directories
+    `r-d-L1`regex`  -- Only prefroms regex on directories in level one of the recursive call stack 
+    `r-d-Lr5`regex` -- Same as above but throws errors if level 5 is not reached ('r' stands for required)
+    `r-d-L1-P1`     -- Preforms regex on level one and is preformed first ('P' stands for priority)
 
