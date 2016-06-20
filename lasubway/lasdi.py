@@ -241,11 +241,11 @@ class BaseParameter(object):
         """ """
         parameter = BaseParameter.parse_parameter(parameter)
 
-        self.parameter_type_settings = re.split(',| ', parameter_declaration.type_settings)
-        self.target_levels = parameter_declaration.type_statement.target_levels
-        self.required_level = parameter_declaration.type_statement.required_level
-        self.priority = parameter_declaration.type_statement.priority
-        self.allowed_reference_types = parameter_declaration.type_statement.allowed_reference_types
+        self.parameter_type_settings = parameter.parameter_type_settings
+        self.target_levels = parameter.parameter_declaration.target_levels
+        self.required_level = parameter.parameter_declaration.required_level
+        self.priority = parameter.parameter_declaration.priority
+        self.allowed_reference_types = parameter.parameter_declaration.allowed_reference_types
 
 
     def parse_type_settings(self):
@@ -262,11 +262,11 @@ class BaseParameter(object):
         TODO:
         """
         parameter = BaseParameter.parse_parameter(parameter)
-        parameter_type = parameter.type_statement.parameter_type
+        parameter_type = parameter.parameter_declaration.parameter_type
 
         for cls in BaseParameter.__subclasses__():
             if parameter_type in cls.parameter_type:
-                return cls(parameter_declaration)
+                return cls(parameter)
 
         raise DISSParameterTypeError("Bad parameter type: '{}'".format(parameter_type))
 
@@ -280,25 +280,27 @@ class BaseParameter(object):
         Parameter = namedtuple('Parameter',
                                ['parameter_declaration', 'parameter_type_settings'])
 
+        #Return parameter ntuple if passed in to avoid double parsing 
+        if type(parameter).__name__ is 'Parameter':
+            return parameter
+
         split_statement = parameter.strip('`').split('`')
         if len(split_statement) != 2:
             raise DISSSyntaxError("Parameter statements must have excatly two sections")
 
-        parsed_type_statement = BaseParameter.parse_type_statement(split_statement[0])
-        parameter_declaration = ParameterStatement(type_statement=parsed_type_statement,
-                                                 type_settings=split_statement[1])
-
-        return parameter_declaration
+        parameter_declaration = BaseParameter.parse_parameter_declaration(split_statement[0])
+        parameter_type_settings = re.split(',| ', split_statement[1])
+        return ParameterStatement(parameter_declaration=parameter_declaration,
+                                  parameter_type_settings=parameter_type_settings)
 
     @staticmethod
     def parse_parameter_declaration(parameter_declaration):
         """
-        Parses a type statement
+        Parses a paramter declaration
         Input : raw type statement string
         OutPut: TypeStatement Named Tuple
         TODO:
             Catch and handel exceptions for no int in settings
-            Catch and handle exceptions for imporper statements when stripping integers
         """
         ParameterDeclaration = namedtuple('ParameterDeclaration',
                                           ['parameter_type',
@@ -310,9 +312,8 @@ class BaseParameter(object):
         split_declaration = parameter_declaration.split('-')
         tmp_parameter_dec = ParameterDeclaration
         tmp_parameter_dec.parameter_type = split_declaration[0]
-        split_declaration.remove(psettings.parameter_type) #REMOVE Paramtype  FROM LIST
+        split_declaration.remove(tmp_parameter_dec.parameter_type) #REMOVE the parameter type from the list 
 
-        #TODO catch and handel exceptions for no int 
         target_levels = []
         level_requried = None
         priority = None
@@ -338,7 +339,7 @@ class BaseParameter(object):
             if declaration_setting in [ref for duo in BaseParameter.valid_file_references for ref in duo]:
                 allowed_file_references.append(declaration_setting)
             else:
-                raise UnknownParameterDeclarationSetting("Error: Unknown parameter declaration setting: {}".format(reference_type))
+                raise UnknownParameterDeclarationSetting("Error: Unknown parameter declaration setting: {}".format(declaration_setting))
 
         tmp_parameter_dec.target_levels = target_levels
         tmp_parameter_dec.required_level = required_level
