@@ -234,8 +234,8 @@ class BaseParameter(object):
         parameter_declaration = BaseParameter.parse_parameter_declaration(parameter_declaration)
 
         self.parameter_type_settings = re.split(',| ', parameter_declaration.type_settings)
-        self.level_limit = parameter_declaration.type_statement.level_limit
-        self.level_requried = parameter_declaration.type_statement.level_requried
+        self.target_levels = parameter_declaration.type_statement.target_levels
+        self.required_levels = parameter_declaration.type_statement.required_levels
         self.priority = parameter_declaration.type_statement.priority
         self.allowed_reference_types = parameter_declaration.type_statement.allowed_reference_types
 
@@ -293,14 +293,13 @@ class BaseParameter(object):
             Catch and handle exceptions for imporper statements when stripping integers
             Reconsider benifits of removing items from list
             Consider creating a fucntion to combine searching for Level limits and priority
-            Change level_limit to target_level
             Provide support for multiple level targets in one statement
             Only provide support for a single required level
         """
         TypeStatement = namedtuple('TypeStatement',
                                    ['parameter_type',
-                                    'level_limit',
-                                    'level_requried',
+                                    'target_levels',
+                                    'required_levels',
                                     'priority',
                                     'allowed_reference_types'])
 
@@ -311,19 +310,19 @@ class BaseParameter(object):
 
         #Parses Out level interception settings
         #TODO catch and handel exceptions for no int 
-        level_limit = [x for x in split_statement if x.startswith('L')]
-        if len(level_limit) > 1:
+        target_levels = [x for x in split_statement if x.startswith('L')]
+        if len(target_levels) > 1:
             raise Exception #Exception for having multiple level limit statements
-        elif len(level_limit) == 0:
-            psettings.level_limit = None
-            psettings.level_requried = False
-        elif len(level_limit) == 1:
-            level_limit = level_limit[0]
-            split_statement.remove(level_limit) #REMOVE ITEM FROM LIST
-            if level_limit.startswith('Lr'):
-                psettings.level_requried = True
-            level_limit = int("".join(i for i in level_limit if x.isdigit())) #Integer stripping
-            psettings.level_limit = level_limit
+        elif len(target_levels) == 0:
+            psettings.target_levels = None
+            psettings.required_levels = False
+        elif len(target_levels) == 1:
+            target_levels = target_levels[0]
+            split_statement.remove(target_levels) #REMOVE ITEM FROM LIST
+            if target_levels.startswith('Lr'):
+                psettings.required_levels = True
+            target_levels = int("".join(i for i in target_levels if x.isdigit())) #Integer stripping
+            psettings.target_levels = target_levels
 
         priority = [x for x in split_statement if x.startswith('P')]
         if len(priority) > 1:
@@ -333,7 +332,7 @@ class BaseParameter(object):
         elif len(priority) == 1:
             priority = priority[0]
             split_statement.remove(priority[0]) #REMOVE ITEM FROM LIST
-            priority = int("".join(i for i in level_limit if x.isdigit())) #Integer stripping
+            priority = int("".join(i for i in target_levels if x.isdigit())) #Integer stripping
             psettings.priority = priority
 
         #Check for valid reference types
@@ -423,9 +422,9 @@ class RawDelimiter(BaseParameter):
         """"""
         raise NotImplementedError
 
-class TargetLevel(BaseParameter):
+class TargetLevels(BaseParameter):
     """Parameter object that dictates operations on a target level"""
-    parameter_type = ('tl', 'target_level')
+    parameter_type = ('tl', 'target_levels')
     def __init__(self, parameter_declaration):
         super().__init__(parameter_declaration)
 
