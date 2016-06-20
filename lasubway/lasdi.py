@@ -186,6 +186,7 @@ class MulitpleParameterDeclarationSettingError(Exception):
 class DataReference(ParseResult):
     """
     This class will be used for parsing and operating a single Data Reference
+    Inherits from urllib's ParseResult
     """
     def __init__(self, reference):
         """
@@ -195,9 +196,20 @@ class DataReference(ParseResult):
         if (reference == "" or reference is None):
             raise Exception #TODO Create exception for this
 
-        self.parameters = []
-        split_reference = reference.split('`')
+        split_reference = reference.strip('`').split('`')
         data_string = urlparse(split_reference[0])
+        split_reference.remove(split_reference[0])
+
+        parameters = []
+        i = 0
+        while i<len(split_reference):
+            parameters.append('`'.join([split_reference[i], split_reference[i+1]]))
+            i+=2
+
+        self.parameters = BaseParameter.factory(parameters)
+
+
+
         super.__init__([getattr(data_string, field) for field in data_string._fields]) #TODO add user name and password info 
 
     @staticmethod
@@ -270,7 +282,7 @@ class BaseParameter(object):
         raise NotImplementedError
 
     @staticmethod
-    def factory(parameter):
+    def factory(parameters):
         """
         Static method that takes a raw parameter statement, creates the
             proper object type and returns it
@@ -281,14 +293,22 @@ class BaseParameter(object):
 
         TODO:
         """
-        parameter = BaseParameter.parse_parameter(parameter)
-        parameter_type = parameter.declaration.parameter_type
+        def match_subclass(parameter):
+            parameter_type = parameter.declaration.parameter_type
+            for cls in BaseParameter.__subclasses__():
+                if parameter_type in cls.parameter_type:
+                    return cls(parameter)
+            raise DISSParameterTypeError("Bad parameter type: '{}'".format(parameter_type))
 
-        for cls in BaseParameter.__subclasses__():
-            if parameter_type in cls.parameter_type:
-                return cls(parameter)
+        if type(parameters) is str:
+            parameters = [parameters]
+        elif type(parameters) is list:
+            pass
+        else: raise TypeError("parameters argument must be either a str or list of strs")
 
-        raise DISSParameterTypeError("Bad parameter type: '{}'".format(parameter_type))
+        parameters = [BaseParameter.parse_parameter(parameter) for parameter in parameters]
+        return [match_subclass(parameter) for parameter in parameters]
+
 
     @staticmethod
     def parse_parameter(parameter):
@@ -483,6 +503,7 @@ class HyperlinkFilter(BaseParameter):
     parameter_type = ('h', 'hyperlink')
     def __init__(self, parameter_declaration):
         super().__init__(parameter_declaration)
+
     def parse_type_settings(self):
         """"""
         raise NotImplementedError
@@ -491,23 +512,27 @@ class HyperlinkFilter(BaseParameter):
 if __name__ == '__main__':
     ################# TESTING ##################
 
-    # Data Statement Parameter parsing tests
-    #### Factory Test: PASSED!
-    """
+    # Data Reference parsing tests
+
+    ## Parameter Factory Test: PASSED!
+    ### Basic parameter: PASSED!
     parameter_type = "r"
     parameter_declaration = "`r`stuff`"
-    print(type(BaseParameter.factory(parameter_declaration)))
-    """
+    #print(type(BaseParameter.factory(parameter_declaration)))
 
-    #### Basic parameter    PASSED!
-    #### Compound parameter PASSED!
+    ### Compound parameter PASSED!
     parameter_declaration = "`r-L1-L2-Lr3-P1`stuff`"
-    p = BaseParameter.factory(parameter_declaration)
-    print(p.target_levels)
-    print(p.required_level)
-    print(p.priority)
+    ps = BaseParameter.factory(parameter_declaration)
+    print(type(ps))
+    [print(p.target_levels) for p in ps]
+    [print(p.required_level) for p in ps]
+    [print(p.priority) for p in ps]
 
-    #### Multiple parameters
+    """
+    ## Basic Full Data Reference Parsing:
+    data_reference = "/data/string`r-L1-L2-Lr3-P1`stuff`"
+    d = DataReference(data_reference)
+    """
 
     # Full Data statement parsing tests
 
