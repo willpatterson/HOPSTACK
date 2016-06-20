@@ -166,7 +166,7 @@ class DISSParameterTypeError(Exception):
     def __init__(self, message):
         super(DISSParameterTypeError, self).__init__(message)
 
-class UnknownTypeSetting(Exception):
+class UnknownParameterDeclarationSetting(Exception):
     """Error thrown for unknown type setting in DISS"""
     def __init__(self, message):
         super(DISSSyntaxError, self).__init__(message)
@@ -332,11 +332,10 @@ class BaseParameter(object):
                 else: raise Exception #TODO
                 continue
 
-
             if declaration_setting in [ref for duo in BaseParameter.valid_file_references for ref in duo]:
                 allowed_file_references.append(declaration_setting)
             else:
-                raise UnknownTypeSetting("Error: Unknown declaration_setting setting: {}".format(reference_type))
+                raise UnknownParameterDeclarationSetting("Error: Unknown declaration setting: {}".format(reference_type))
 
         tmp_parameter_dec.target_levels = target_levels
         tmp_parameter_dec.required_level = required_level
