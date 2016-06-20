@@ -346,18 +346,18 @@ class BaseParameter(object):
         for declaration_setting in split_declaration:
             setting = BaseParameter.match_declaration_setting('Level', declaration_setting)
             if setting:
-                target_levels.append(int(tmp_setting))
+                target_levels.append(int(setting))
                 continue
 
             setting = BaseParameter.match_declaration_setting('LevelRequired', declaration_setting)
             if setting:
-                if required_level is not None: required_level = int(setting)
+                if required_level is None: required_level = int(setting)
                 else: raise MulitpleParameterDeclarationSettingError("There can only be ONE 'Required Level' set in a 'Parameter Declaration'")
                 continue
 
             setting = BaseParameter.match_declaration_setting('Priority', declaration_setting)
             if setting:
-                if priority is not None: priority = int(setting)
+                if priority is None: priority = int(setting)
                 else: raise MulitpleParameterDeclarationSettingError("There can only be ONE 'Priority' setting in a 'Parameter Declaration'")
                 continue
 
@@ -380,8 +380,8 @@ class BaseParameter(object):
         Output: Returns the desired setting value if setting type is a
             match, returns None if nothing found
         """
-        for name in BaseParameter.declaration_settings[declaration_settings].names:
-            search = re.search(BaseParameter.declaration_settings[declaration_setting].regex_parse.format(name), declaration_setting)
+        for name in BaseParameter.declaration_settings[declaration_setting_name].names:
+            search = re.search(BaseParameter.declaration_settings[declaration_setting_name].regex_parse.format(name), declaration_setting)
             if search:
                 return search.group(1)
         return ""
@@ -492,13 +492,21 @@ if __name__ == '__main__':
     ################# TESTING ##################
 
     # Data Statement Parameter parsing tests
-    #### Factory Test: TODO: Test again with new implementation
+    #### Factory Test: PASSED!
+    """
     parameter_type = "r"
     parameter_declaration = "`r`stuff`"
     print(type(BaseParameter.factory(parameter_declaration)))
+    """
 
-    #### Basic parameter
-    #### Compound parameter
+    #### Basic parameter    PASSED!
+    #### Compound parameter PASSED!
+    parameter_declaration = "`r-L1-L2-Lr3-P1`stuff`"
+    p = BaseParameter.factory(parameter_declaration)
+    print(p.target_levels)
+    print(p.required_level)
+    print(p.priority)
+
     #### Multiple parameters
 
     # Full Data statement parsing tests
