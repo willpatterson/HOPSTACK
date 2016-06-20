@@ -316,18 +316,18 @@ class BaseParameter(object):
         priority = None
         allowed_file_references = []
         for declaration_setting in split_declaration:
-            tmp_setting = search_for_declaration_setting('Level', declaration_setting)
+            tmp_setting = BaseParameter.match_declaration_setting('Level', declaration_setting)
             if tmp_setting:
                 target_levels.append(int(tmp_setting))
                 pass
 
-            tmp_setting = search_for_declaration_setting('LevelRequired', declaration_setting)
+            tmp_setting = BaseParameter.match_declaration_setting('LevelRequired', declaration_setting)
             if tmp_setting:
                 if level_requried is not None: level_requried = int(tmp_setting)
                 else: raise Exception #TODO 
                 pass
 
-            tmp_setting = search_for_declaration_setting('Priority', declaration_setting)
+            tmp_setting = BaseParameter.match_declaration_setting('Priority', declaration_setting)
             if tmp_setting:
                 if priority is not None: priority = int(tmp_setting)
                 else: raise Exception #TODO
@@ -344,7 +344,7 @@ class BaseParameter(object):
         return tmp_parameter_dec
 
     @staticmethod
-    def search_for_declaration_setting(declaration_setting_name, declaration_setting):
+    def match_declaration_setting(declaration_setting_name, declaration_setting):
         """
         Input: Takes a declaration setting name to access data from, the string to look for the declaration setting name in
         Output: Returns the desired setting value if setting type is a match, returns None if nothing found
