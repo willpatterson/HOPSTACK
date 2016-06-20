@@ -309,7 +309,6 @@ class BaseParameter(object):
         tmp_parameter_dec.parameter_type = split_declaration[0]
         split_declaration.remove(psettings.parameter_type) #REMOVE Paramtype  FROM LIST
 
-        #Parses Out level interception settings
         #TODO catch and handel exceptions for no int 
         target_levels = []
         level_requried = None
@@ -319,18 +318,20 @@ class BaseParameter(object):
             tmp_setting = BaseParameter.match_declaration_setting('Level', declaration_setting)
             if tmp_setting:
                 target_levels.append(int(tmp_setting))
-                pass
+                continue
 
             tmp_setting = BaseParameter.match_declaration_setting('LevelRequired', declaration_setting)
             if tmp_setting:
                 if level_requried is not None: level_requried = int(tmp_setting)
                 else: raise Exception #TODO 
-                pass
+                continue
 
             tmp_setting = BaseParameter.match_declaration_setting('Priority', declaration_setting)
             if tmp_setting:
                 if priority is not None: priority = int(tmp_setting)
                 else: raise Exception #TODO
+                continue
+
 
             if declaration_setting in [ref for duo in BaseParameter.valid_file_references for ref in duo]:
                 allowed_file_references.append(declaration_setting)
@@ -353,7 +354,7 @@ class BaseParameter(object):
             search = re.search(BaseParameter.declaration_settings[declaration_setting].regex_parse.format(name), declaration_setting)
             if search:
                 return search.group(1)
-        return None
+        return ""
 
 
     @staticmethod
