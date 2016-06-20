@@ -169,8 +169,11 @@ class DISSParameterTypeError(Exception):
 class UnknownParameterDeclarationSetting(Exception):
     """Error thrown for unknown type setting in DISS"""
     def __init__(self, message):
-        super(DISSSyntaxError, self).__init__(message)
+        super(UnknownParameterDeclarationSetting, self).__init__(message)
 
+class MulitpleParameterDeclarationSettingError(Exception):
+    def __init__(self, message):
+        super(MulitpleParameterDeclarationSettingError, self).__init__(message)
 
 class DataReference(ParseResult):
     """
@@ -323,19 +326,19 @@ class BaseParameter(object):
             tmp_setting = BaseParameter.match_declaration_setting('LevelRequired', declaration_setting)
             if tmp_setting:
                 if level_requried is not None: level_requried = int(tmp_setting)
-                else: raise Exception #TODO 
+                else: raise MulitpleParameterDeclarationSettingError("There can only be ONE 'Required Level' set in a 'Parameter Declaration'")
                 continue
 
             tmp_setting = BaseParameter.match_declaration_setting('Priority', declaration_setting)
             if tmp_setting:
                 if priority is not None: priority = int(tmp_setting)
-                else: raise Exception #TODO
+                else: raise MulitpleParameterDeclarationSettingError("There can only be ONE 'Priority' setting in a 'Parameter Declaration'")
                 continue
 
             if declaration_setting in [ref for duo in BaseParameter.valid_file_references for ref in duo]:
                 allowed_file_references.append(declaration_setting)
             else:
-                raise UnknownParameterDeclarationSetting("Error: Unknown declaration setting: {}".format(reference_type))
+                raise UnknownParameterDeclarationSetting("Error: Unknown parameter declaration setting: {}".format(reference_type))
 
         tmp_parameter_dec.target_levels = target_levels
         tmp_parameter_dec.required_level = required_level
