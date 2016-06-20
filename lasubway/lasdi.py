@@ -229,15 +229,15 @@ class BaseParameter(object):
                              ('p', 'pipe'),
                              ('s', 'socket')]
 
-    def __init__(self, parameter_statement):
+    def __init__(self, parameter_declaration):
         """ """
-        parameter_statement = BaseParameter.parse_parameter_statement(parameter_statement)
+        parameter_declaration = BaseParameter.parse_parameter_declaration(parameter_declaration)
 
-        self.parameter_type_settings = re.split(',| ', parameter_statement.type_settings)
-        self.level_limit = parameter_statement.type_statement.level_limit
-        self.level_requried = parameter_statement.type_statement.level_requried
-        self.priority = parameter_statement.type_statement.priority
-        self.allowed_reference_types = parameter_statement.type_statement.allowed_reference_types
+        self.parameter_type_settings = re.split(',| ', parameter_declaration.type_settings)
+        self.level_limit = parameter_declaration.type_statement.level_limit
+        self.level_requried = parameter_declaration.type_statement.level_requried
+        self.priority = parameter_declaration.type_statement.priority
+        self.allowed_reference_types = parameter_declaration.type_statement.allowed_reference_types
 
 
     def parse_type_settings(self):
@@ -245,25 +245,25 @@ class BaseParameter(object):
         raise NotImplementedError
 
     @staticmethod
-    def factory(parameter_statement):
+    def factory(parameter_declaration):
         """
         Static method that takes a raw parameter statement, creates the proper object type and returns it
         Input : Raw parameter statement
-        Output: BaseParameter child object of the type denoted int the parameter_statement string
+        Output: BaseParameter child object of the type denoted int the parameter_declaration string
 
         TODO:
         """
-        parsed_parameter_statement = BaseParameter.parse_parameter_statement(parameter_statement)
-        parameter_type = parsed_parameter_statement.type_statement.parameter_type
+        parsed_parameter_declaration = BaseParameter.parse_parameter_declaration(parameter_declaration)
+        parameter_type = parsed_parameter_declaration.type_statement.parameter_type
 
         for cls in BaseParameter.__subclasses__():
             if parameter_type in cls.parameter_type:
-                return cls(parameter_statement)
+                return cls(parameter_declaration)
 
         raise DISSParameterTypeError("Bad parameter type: '{}'".format(parameter_type))
 
     @staticmethod
-    def parse_parameter_statement(parameter_statement):
+    def parse_parameter_declaration(parameter_declaration):
         """
         Static method that takes a raw parameter statement and parses it completely
         Input : parameter statement (string)
@@ -272,15 +272,15 @@ class BaseParameter(object):
         ParameterStatement = namedtuple('ParameterStatement',
                                         ['type_statement', 'type_settings'])
 
-        split_statement = parameter_statement.strip('`').split('`')
+        split_statement = parameter_declaration.strip('`').split('`')
         if len(split_statement) != 2:
             raise DISSSyntaxError("Parameter statements must have excatly two sections")
 
         parsed_type_statement = BaseParameter.parse_type_statement(split_statement[0])
-        parameter_statement = ParameterStatement(type_statement=parsed_type_statement,
+        parameter_declaration = ParameterStatement(type_statement=parsed_type_statement,
                                                  type_settings=split_statement[1])
 
-        return parameter_statement
+        return parameter_declaration
 
     @staticmethod
     def parse_type_statement(parameter_type_statement):
@@ -350,14 +350,14 @@ class BaseParameter(object):
 
     @staticmethod
     def split_settings(settings):
-        parameter_settings = re.split(',| ', parameter_statement.type_settings)
+        parameter_settings = re.split(',| ', parameter_declaration.type_settings)
 
 
 class RegexFilter(BaseParameter):
     """Parameter object that filters strings with a python regex"""
     parameter_type = ('re', 'regex')
-    def __init__(self, parameter_statement):
-        super().__init__(parameter_statement)
+    def __init__(self, parameter_declaration):
+        super().__init__(parameter_declaration)
 
     def parse_type_settings(self):
         """"""
@@ -366,8 +366,8 @@ class RegexFilter(BaseParameter):
 class ExentionFilter(BaseParameter):
     """Parameter object that filters verified file paths by extention"""
     parameter_type = ('e', 'extention')
-    def __init__(self, parameter_statement):
-        super().__init__(parameter_statement)
+    def __init__(self, parameter_declaration):
+        super().__init__(parameter_declaration)
 
     def parse_type_settings(self):
         """"""
@@ -376,8 +376,8 @@ class ExentionFilter(BaseParameter):
 class SubstringFilter(BaseParameter):
     """Parameter object that filters all strings by substring inclusion"""
     parameter_type = ('s', 'substring')
-    def __init__(self, parameter_statement):
-        super().__init__(parameter_statement)
+    def __init__(self, parameter_declaration):
+        super().__init__(parameter_declaration)
 
     def parse_type_settings(self):
         """"""
@@ -386,8 +386,8 @@ class SubstringFilter(BaseParameter):
 class RangeFilter(BaseParameter):
     """Parameter object that filters out all files not in the specified range"""
     parameter_type = ('r', 'range')
-    def __init__(self, parameter_statement):
-        super().__init__(parameter_statement)
+    def __init__(self, parameter_declaration):
+        super().__init__(parameter_declaration)
 
     def parse_type_settings(self):
         """"""
@@ -396,8 +396,8 @@ class RangeFilter(BaseParameter):
 class RangeUniqueFilter(BaseParameter):
     """Parameter object that filters out all files not in the specified range but will throw error if not all number in range found"""
     parameter_type = ('ru', 'range_unique')
-    def __init__(self, parameter_statement):
-        super().__init__(parameter_statement)
+    def __init__(self, parameter_declaration):
+        super().__init__(parameter_declaration)
 
     def parse_type_settings(self):
         """"""
@@ -406,8 +406,8 @@ class RangeUniqueFilter(BaseParameter):
 class SinFileParameter(BaseParameter):
     """Takes in a sin file, returns its contents iteratively"""
     parameter_type = ('sin', 'station_in')
-    def __init__(self, parameter_statement):
-        super().__init__(parameter_statement)
+    def __init__(self, parameter_declaration):
+        super().__init__(parameter_declaration)
 
     def parse_type_settings(self):
         """"""
@@ -416,8 +416,8 @@ class SinFileParameter(BaseParameter):
 class RawDelimiter(BaseParameter):
     """Parameter object that opens files and returns chuncks of delimited text"""
     parameter_type = ('rd', 'raw_dilimeter')
-    def __init__(self, parameter_statement):
-        super().__init__(parameter_statement)
+    def __init__(self, parameter_declaration):
+        super().__init__(parameter_declaration)
 
     def parse_type_settings(self):
         """"""
@@ -426,8 +426,8 @@ class RawDelimiter(BaseParameter):
 class TargetLevel(BaseParameter):
     """Parameter object that dictates operations on a target level"""
     parameter_type = ('tl', 'target_level')
-    def __init__(self, parameter_statement):
-        super().__init__(parameter_statement)
+    def __init__(self, parameter_declaration):
+        super().__init__(parameter_declaration)
 
     def parse_type_settings(self):
         """"""
@@ -436,8 +436,8 @@ class TargetLevel(BaseParameter):
 class HyperlinkFilter(BaseParameter):
     """Parameter object that searches for and returns hyperlinks on webpages"""
     parameter_type = ('h', 'hyperlink')
-    def __init__(self, parameter_statement):
-        super().__init__(parameter_statement)
+    def __init__(self, parameter_declaration):
+        super().__init__(parameter_declaration)
     def parse_type_settings(self):
         """"""
         raise NotImplementedError
@@ -450,8 +450,8 @@ if __name__ == '__main__':
     # Data Statement Parameter parsing tests
     #### Factory Test: PASSED!!
     parameter_type = "r"
-    parameter_statement = "`r`stuff`"
-    print(type(BaseParameter.factory(parameter_statement)))
+    parameter_declaration = "`r`stuff`"
+    print(type(BaseParameter.factory(parameter_declaration)))
 
     #### Basic parameter
     #### Compound parameter
