@@ -192,7 +192,7 @@ class DataReference(ParseResult):
         TODO:
             Parse out Data Filters before passing the string to urlparse
         """
-        if (== "" or reference is None):
+        if (reference == "" or reference is None):
             raise Exception #TODO Create exception for this
 
         self.parameters = []
@@ -241,7 +241,7 @@ class BaseParameter(object):
                              ('p', 'pipe'),
                              ('s', 'socket')]
 
-    Declaration_setting = namedtuple('DeclarationSetting',
+    DeclarationSetting = namedtuple('DeclarationSetting',
                                      ['names', 'regex_parse'])
 
     declaration_settings = {'Level':
@@ -282,7 +282,7 @@ class BaseParameter(object):
         TODO:
         """
         parameter = BaseParameter.parse_parameter(parameter)
-        parameter_type = parameter.parameter_declaration.parameter_type
+        parameter_type = parameter.declaration.parameter_type
 
         for cls in BaseParameter.__subclasses__():
             if parameter_type in cls.parameter_type:
@@ -313,8 +313,8 @@ class BaseParameter(object):
 
         declaration = BaseParameter.parse_parameter_declaration(split_statement[0])
         type_settings = re.split(',| ', split_statement[1])
-        return ParameterStatement(declaration=declaration,
-                                  type_settings=type_settings)
+        return Parameter(declaration=declaration,
+                         type_settings=type_settings)
 
     @staticmethod
     def parse_parameter_declaration(parameter_declaration):
@@ -340,7 +340,7 @@ class BaseParameter(object):
         split_declaration.remove(tmp_parameter_dec.parameter_type)
 
         target_levels = []
-        level_requried = None
+        required_level = None
         priority = None
         allowed_file_references = []
         for declaration_setting in split_declaration:
@@ -351,7 +351,7 @@ class BaseParameter(object):
 
             setting = BaseParameter.match_declaration_setting('LevelRequired', declaration_setting)
             if setting:
-                if level_requried is not None: level_requried = int(setting)
+                if required_level is not None: required_level = int(setting)
                 else: raise MulitpleParameterDeclarationSettingError("There can only be ONE 'Required Level' set in a 'Parameter Declaration'")
                 continue
 
