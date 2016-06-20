@@ -13,7 +13,8 @@ Example:
 
     Data Reference          : "data-string`r-L1-P1-directory`100-111`"
     Data String             : data-string
-    Parameter Declairation  : `r-L1-P1-directory`100-111`
+    Parameter               : `r-L1-P1-directory`100-111`
+    Parameter Declaration   : `r-L1-P1-directory`
     Parameter Type          : r
     Parameter Settings      : L1-P1
     Return File Type        : directory
