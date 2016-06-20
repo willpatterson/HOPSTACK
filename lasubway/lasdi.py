@@ -217,15 +217,17 @@ class BaseParameter(object):
     TODO:
         Change variable names to fit new system
     """
-    valid_references = [('f','file'),
-                        ('f', 'directory'),
-                        ('s', 'symlink'),
-                        ('r', 'raw_text'),
-                        ('t', 'tar_archive'),
-                        ('g', 'gzip'),
-                        ('b', 'bz2'),
-                        ('z', 'zip'),
-                        ('u', 'url')]
+    valid_file_references = [('f','file'),
+                             ('f', 'directory'),
+                             ('l', 'symlink'),
+                             ('r', 'raw_text'),
+                             ('t', 'tar_archive'),
+                             ('g', 'gzip'),
+                             ('b', 'bz2'),
+                             ('z', 'zip'),
+                             ('u', 'url'),
+                             ('p', 'pipe'),
+                             ('s', 'socket')]
 
     def __init__(self, parameter_statement):
         """ """
@@ -336,7 +338,7 @@ class BaseParameter(object):
 
         #Check for valid reference types
         for reference_type in split_statement:
-            if reference_type in [ref for duo in valid_references for ref in duo]:
+            if reference_type in [ref for duo in BaseParameter.valid_file_references for ref in duo]:
                 if type(psettings.allowed_reference_types) == str:
                     psettings.allowed_reference_types = [psettings.allowed_reference_types, reference_type]
                 else:

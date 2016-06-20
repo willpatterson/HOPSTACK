@@ -108,17 +108,19 @@ Filter by reference type and Level #: (cannot be used as a list)
 
     "/datasrting/path/`li`level #,file type`" 
 
-Reference type examples (more will be added):
+File Reference type examples:
 
 * directory, d
 * file, f
-* symlink, s
+* symlink, l
 * raw-text, r
 * tar-archive, t
 * bzip2, 2
 * zip, z
 * gzip, g
 * url, u
+* pipe, p
+* socket, s
 
 **Filter by range unique (throws error or prompt user if not more than one file in range):**
 
