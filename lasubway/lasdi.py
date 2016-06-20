@@ -229,13 +229,18 @@ class BaseParameter(object):
                              ('p', 'pipe'),
                              ('s', 'socket')]
 
-    def __init__(self, parameter_declaration):
+    Declaration_setting = namedtuple('DeclarationSetting', ['names', 'regex_parse'])
+    declaration_settings = {'Level': DeclarationSetting(names=['L', 'Level'], regex_parse='{}([0-9]+)$'),
+                            'LevelRequired': DeclarationSetting(names=['Lr', 'LevelRequired'], regex_parse='{}([0-9]+)$'),
+                            'Priority': DeclarationSetting(names=['P', 'Priority'], regex_parse='{}([0-9]+)$')}
+
+    def __init__(self, parameter):
         """ """
-        parameter_declaration = BaseParameter.parse_parameter_declaration(parameter_declaration)
+        parameter = BaseParameter.parse_parameter(parameter)
 
         self.parameter_type_settings = re.split(',| ', parameter_declaration.type_settings)
         self.target_levels = parameter_declaration.type_statement.target_levels
-        self.required_levels = parameter_declaration.type_statement.required_levels
+        self.required_level = parameter_declaration.type_statement.required_level
         self.priority = parameter_declaration.type_statement.priority
         self.allowed_reference_types = parameter_declaration.type_statement.allowed_reference_types
 
@@ -245,7 +250,7 @@ class BaseParameter(object):
         raise NotImplementedError
 
     @staticmethod
-    def factory(parameter_declaration):
+    def factory(parameter):
         """
         Static method that takes a raw parameter statement, creates the proper object type and returns it
         Input : Raw parameter statement
@@ -253,8 +258,8 @@ class BaseParameter(object):
 
         TODO:
         """
-        parsed_parameter_declaration = BaseParameter.parse_parameter_declaration(parameter_declaration)
-        parameter_type = parsed_parameter_declaration.type_statement.parameter_type
+        parameter = BaseParameter.parse_parameter(parameter)
+        parameter_type = parameter.type_statement.parameter_type
 
         for cls in BaseParameter.__subclasses__():
             if parameter_type in cls.parameter_type:
@@ -263,16 +268,16 @@ class BaseParameter(object):
         raise DISSParameterTypeError("Bad parameter type: '{}'".format(parameter_type))
 
     @staticmethod
-    def parse_parameter_declaration(parameter_declaration):
+    def parse_parameter(parameter):
         """
         Static method that takes a raw parameter statement and parses it completely
         Input : parameter statement (string)
         Output: ParameterStatement Named Tuple
         """
-        ParameterStatement = namedtuple('ParameterStatement',
-                                        ['type_statement', 'type_settings'])
+        Parameter = namedtuple('Parameter',
+                               ['parameter_declaration', 'parameter_type_settings'])
 
-        split_statement = parameter_declaration.strip('`').split('`')
+        split_statement = parameter.strip('`').split('`')
         if len(split_statement) != 2:
             raise DISSSyntaxError("Parameter statements must have excatly two sections")
 
@@ -283,7 +288,7 @@ class BaseParameter(object):
         return parameter_declaration
 
     @staticmethod
-    def parse_type_statement(parameter_type_statement):
+    def parse_parameter_declaration(parameter_declaration):
         """
         Parses a type statement
         Input : raw type statement string
@@ -291,61 +296,65 @@ class BaseParameter(object):
         TODO:
             Catch and handel exceptions for no int in settings
             Catch and handle exceptions for imporper statements when stripping integers
-            Reconsider benifits of removing items from list
-            Consider creating a fucntion to combine searching for Level limits and priority
-            Provide support for multiple level targets in one statement
-            Only provide support for a single required level
         """
-        TypeStatement = namedtuple('TypeStatement',
-                                   ['parameter_type',
-                                    'target_levels',
-                                    'required_levels',
-                                    'priority',
-                                    'allowed_reference_types'])
+        ParameterDeclaration = namedtuple('ParameterDeclaration',
+                                          ['parameter_type',
+                                           'target_levels',
+                                           'required_level',
+                                           'priority',
+                                           'allowed_reference_types'])
 
-        split_statement = parameter_type_statement.split('-')
-        psettings = TypeStatement
-        psettings.parameter_type = split_statement[0]
-        split_statement.remove(psettings.parameter_type) #REMOVE ITEM FROM LIST
+        split_declaration = parameter_declaration.split('-')
+        tmp_parameter_dec = ParameterDeclaration
+        tmp_parameter_dec.parameter_type = split_declaration[0]
+        split_declaration.remove(psettings.parameter_type) #REMOVE Paramtype  FROM LIST
 
         #Parses Out level interception settings
         #TODO catch and handel exceptions for no int 
-        target_levels = [x for x in split_statement if x.startswith('L')]
-        if len(target_levels) > 1:
-            raise Exception #Exception for having multiple level limit statements
-        elif len(target_levels) == 0:
-            psettings.target_levels = None
-            psettings.required_levels = False
-        elif len(target_levels) == 1:
-            target_levels = target_levels[0]
-            split_statement.remove(target_levels) #REMOVE ITEM FROM LIST
-            if target_levels.startswith('Lr'):
-                psettings.required_levels = True
-            target_levels = int("".join(i for i in target_levels if x.isdigit())) #Integer stripping
-            psettings.target_levels = target_levels
+        target_levels = []
+        level_requried = None
+        priority = None
+        allowed_file_references = []
+        for declaration_setting in split_declaration:
+            tmp_setting = search_for_declaration_setting('Level', declaration_setting)
+            if tmp_setting:
+                target_levels.append(int(tmp_setting))
+                pass
 
-        priority = [x for x in split_statement if x.startswith('P')]
-        if len(priority) > 1:
-            raise Exception #Exception for having multiple priority statements
-        elif len(priority) == 0:
-            psettings.priority = None
-        elif len(priority) == 1:
-            priority = priority[0]
-            split_statement.remove(priority[0]) #REMOVE ITEM FROM LIST
-            priority = int("".join(i for i in target_levels if x.isdigit())) #Integer stripping
-            psettings.priority = priority
+            tmp_setting = search_for_declaration_setting('LevelRequired', declaration_setting)
+            if tmp_setting:
+                if level_requried is not None: level_requried = int(tmp_setting)
+                else: raise Exception #TODO 
+                pass
 
-        #Check for valid reference types
-        for reference_type in split_statement:
-            if reference_type in [ref for duo in BaseParameter.valid_file_references for ref in duo]:
-                if type(psettings.allowed_reference_types) == str:
-                    psettings.allowed_reference_types = [psettings.allowed_reference_types, reference_type]
-                else:
-                    psettings.allowed_reference_types = reference_type
+            tmp_setting = search_for_declaration_setting('Priority', declaration_setting)
+            if tmp_setting:
+                if priority is not None: priority = int(tmp_setting)
+                else: raise Exception #TODO
+
+            if declaration_setting in [ref for duo in BaseParameter.valid_file_references for ref in duo]:
+                allowed_file_references.append(declaration_setting)
             else:
-                raise UnknownTypeSetting("Error: Unknown type setting: {}".format(reference_type))
+                raise UnknownTypeSetting("Error: Unknown declaration_setting setting: {}".format(reference_type))
 
-        return psettings
+        tmp_parameter_dec.target_levels = target_levels
+        tmp_parameter_dec.required_level = required_level
+        tmp_parameter_dec.priority = priority
+        tmp_parameter_dec.allowed_file_references = allowed_file_references
+        return tmp_parameter_dec
+
+    @staticmethod
+    def search_for_declaration_setting(declaration_setting_name, declaration_setting):
+        """
+        Input: Takes a declaration setting name to access data from, the string to look for the declaration setting name in
+        Output: Returns the desired setting value if setting type is a match, returns None if nothing found
+        """
+        for name in BaseParameter.declaration_settings[declaration_settings].names:
+            search = re.search(BaseParameter.declaration_settings[declaration_setting].regex_parse.format(name), declaration_setting)
+            if search:
+                return search.group(1)
+        return None
+
 
     @staticmethod
     def split_settings(settings):
