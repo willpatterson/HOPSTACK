@@ -26,7 +26,13 @@ class IndecipherableStringError(Exception):
         super(IndecipherableStringError, self).__init__(message)
 
 def data_interpreter(data_string, tmp_data_dump):
-    """Generates a string(s) to pass to a station to be used as the input path(s)"""
+    """
+    finds data with a Data Reference object and returns desired output if found
+    TODO:
+        Implement recursive execution of LASOs
+        Implement URL parseing
+        Implement DataReference Class
+    """
 
     if os.path.isfile(data_string):
         comp_file = check_compression(data_string)
@@ -40,12 +46,7 @@ def data_interpreter(data_string, tmp_data_dump):
         else:
             return data_string #This is where recursive calls end
 
-    #TODO Implement Network downloads
-    #TODO Implement automatic metro execution
-
     elif os.path.isdir(data_string):
-        #if is_metro(data_string): TODO Implement please
-        #    return run_metro(data_string)  
         return extract_dir_files()
 
     else:
@@ -154,7 +155,7 @@ def diss_interpreter(data_string):
     """Parses out filter statments denoted by `"""
     split_data = data_string.split('`')
 
-# Data Statement Classes: #############################################
+# Data Reference Classes: #####################################################
 
 class DISSSyntaxError(Exception):
     """Error thrown for bad DISS syntax"""
@@ -359,12 +360,6 @@ class BaseParameter(object):
                 return search.group(1)
         return ""
 
-
-    @staticmethod
-    def split_settings(settings):
-        parameter_settings = re.split(',| ', parameter_declaration.type_settings)
-
-
 class RegexFilter(BaseParameter):
     """Parameter object that filters strings with a python regex"""
     parameter_type = ('re', 'regex')
@@ -455,12 +450,11 @@ class HyperlinkFilter(BaseParameter):
         raise NotImplementedError
 
 
-
 if __name__ == '__main__':
     ################# TESTING ##################
 
     # Data Statement Parameter parsing tests
-    #### Factory Test: PASSED!!
+    #### Factory Test: TODO: Test again with new implementation
     parameter_type = "r"
     parameter_declaration = "`r`stuff`"
     print(type(BaseParameter.factory(parameter_declaration)))
