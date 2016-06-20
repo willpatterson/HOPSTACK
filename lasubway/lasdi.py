@@ -4,8 +4,10 @@ Main file for the LASubway Data Interpreter (LASDI)
 TODO:
     - Implement DISS
     - Implement network file downloads
-    - Implement file-path search on the "Metro Network" if a path is not found on file system
-    - Implement local file path search within the metro directory **I now have doubts about this
+    - Implement file-path search on the "Metro Network" if a path is
+      not found on file system
+    - Implement local file path search within the metro directory
+      **I now have doubts about this
 """
 
 import os
@@ -27,7 +29,9 @@ class IndecipherableStringError(Exception):
 
 def data_interpreter(data_string, tmp_data_dump):
     """
-    finds data with a Data Reference object and returns desired output if found
+    finds data with a Data Reference object and returns desired output
+    if found
+
     TODO:
         Implement recursive execution of LASOs
         Implement URL parseing
@@ -64,7 +68,9 @@ def extract_sin_files(sin_path, out_directory):
             return data_interpreter(line, out_directory)
 
 def extract_dir_files(dir_path, out_directory):
-    """Opens a directory and returns a list of verified input strings"""
+    """
+    Opens a directory and returns a list of verified input strings
+    """
 
     for path in [os.path.join(dir_path, i) for i in os.listdir(dir_path)]:
         return data_interpreter(path, out_directory)
@@ -105,7 +111,8 @@ def extract_compresson_file(compression_file, out_directory):
 def check_compression(filename):
     """
     Function that attempts to detect and compression type
-    The code used was found at: http://stackoverflow.com/questions/13044562/python-mechanism-to-identify-compressed-file-type-and-uncompress
+    The code used was found at:
+    http://stackoverflow.com/questions/13044562/python-mechanism-to-identify-compressed-file-type-and-uncompress
     """
     with file(filename, 'rb') as f:
         start_of_file = f.read(1024)
@@ -199,7 +206,8 @@ class DataReference(ParseResult):
 
     def is_local(self):
         """
-        RETURNS TRUE: if self.path is the only field that is set (assuming that empty strings are caught)
+        RETURNS TRUE: if self.path is the only field that is set
+            (assuming that empty strings are caught)
         RETURNS FALSE: if other fields besides self.path are set
         TODO:
             this needs to be fully tested
@@ -233,20 +241,28 @@ class BaseParameter(object):
                              ('p', 'pipe'),
                              ('s', 'socket')]
 
-    Declaration_setting = namedtuple('DeclarationSetting', ['names', 'regex_parse'])
-    declaration_settings = {'Level': DeclarationSetting(names=['L', 'Level'], regex_parse='{}([0-9]+)$'),
-                            'LevelRequired': DeclarationSetting(names=['Lr', 'LevelRequired'], regex_parse='{}([0-9]+)$'),
-                            'Priority': DeclarationSetting(names=['P', 'Priority'], regex_parse='{}([0-9]+)$')}
+    Declaration_setting = namedtuple('DeclarationSetting',
+                                     ['names', 'regex_parse'])
+
+    declaration_settings = {'Level':
+                            DeclarationSetting(names=['L', 'Level'],
+                                               regex_parse='{}([0-9]+)$'),
+                            'LevelRequired':
+                            DeclarationSetting(names=['Lr', 'LevelRequired'],
+                                               regex_parse='{}([0-9]+)$'),
+                            'Priority':
+                            DeclarationSetting(names=['P', 'Priority'],
+                                               regex_parse='{}([0-9]+)$')}
 
     def __init__(self, parameter):
         """ """
         parameter = BaseParameter.parse_parameter(parameter)
 
-        self.parameter_type_settings = parameter.parameter_type_settings
-        self.target_levels = parameter.parameter_declaration.target_levels
-        self.required_level = parameter.parameter_declaration.required_level
-        self.priority = parameter.parameter_declaration.priority
-        self.allowed_reference_types = parameter.parameter_declaration.allowed_reference_types
+        self.parameter_type_settings = parameter.type_settings
+        self.target_levels = parameter.declaration.target_levels
+        self.required_level = parameter.declaration.required_level
+        self.priority = parameter.declaration.priority
+        self.allowed_reference_types = parameter.declaration.allowed_reference_types
 
 
     def parse_type_settings(self):
@@ -256,9 +272,12 @@ class BaseParameter(object):
     @staticmethod
     def factory(parameter):
         """
-        Static method that takes a raw parameter statement, creates the proper object type and returns it
+        Static method that takes a raw parameter statement, creates the
+            proper object type and returns it
+
         Input : Raw parameter statement
-        Output: BaseParameter child object of the type denoted int the parameter_declaration string
+        Output: BaseParameter child object of the type denoted int the
+            parameter_declaration string
 
         TODO:
         """
@@ -274,12 +293,15 @@ class BaseParameter(object):
     @staticmethod
     def parse_parameter(parameter):
         """
-        Static method that takes a raw parameter statement and parses it completely
+        Static method that takes a raw parameter statement and parses
+            it completely
+
         Input : parameter statement (string)
         Output: ParameterStatement Named Tuple
         """
         Parameter = namedtuple('Parameter',
-                               ['parameter_declaration', 'parameter_type_settings'])
+                               ['declaration',
+                                'type_settings'])
 
         #Return parameter ntuple if passed in to avoid double parsing 
         if type(parameter).__name__ is 'Parameter':
@@ -289,10 +311,10 @@ class BaseParameter(object):
         if len(split_statement) != 2:
             raise DISSSyntaxError("Parameter statements must have excatly two sections")
 
-        parameter_declaration = BaseParameter.parse_parameter_declaration(split_statement[0])
-        parameter_type_settings = re.split(',| ', split_statement[1])
-        return ParameterStatement(parameter_declaration=parameter_declaration,
-                                  parameter_type_settings=parameter_type_settings)
+        declaration = BaseParameter.parse_parameter_declaration(split_statement[0])
+        type_settings = re.split(',| ', split_statement[1])
+        return ParameterStatement(declaration=declaration,
+                                  type_settings=type_settings)
 
     @staticmethod
     def parse_parameter_declaration(parameter_declaration):
@@ -313,27 +335,29 @@ class BaseParameter(object):
         split_declaration = parameter_declaration.split('-')
         tmp_parameter_dec = ParameterDeclaration
         tmp_parameter_dec.parameter_type = split_declaration[0]
-        split_declaration.remove(tmp_parameter_dec.parameter_type) #REMOVE the parameter type from the list 
+
+        #REMOVE the parameter type from the list 
+        split_declaration.remove(tmp_parameter_dec.parameter_type)
 
         target_levels = []
         level_requried = None
         priority = None
         allowed_file_references = []
         for declaration_setting in split_declaration:
-            tmp_setting = BaseParameter.match_declaration_setting('Level', declaration_setting)
-            if tmp_setting:
+            setting = BaseParameter.match_declaration_setting('Level', declaration_setting)
+            if setting:
                 target_levels.append(int(tmp_setting))
                 continue
 
-            tmp_setting = BaseParameter.match_declaration_setting('LevelRequired', declaration_setting)
-            if tmp_setting:
-                if level_requried is not None: level_requried = int(tmp_setting)
+            setting = BaseParameter.match_declaration_setting('LevelRequired', declaration_setting)
+            if setting:
+                if level_requried is not None: level_requried = int(setting)
                 else: raise MulitpleParameterDeclarationSettingError("There can only be ONE 'Required Level' set in a 'Parameter Declaration'")
                 continue
 
-            tmp_setting = BaseParameter.match_declaration_setting('Priority', declaration_setting)
-            if tmp_setting:
-                if priority is not None: priority = int(tmp_setting)
+            setting = BaseParameter.match_declaration_setting('Priority', declaration_setting)
+            if setting:
+                if priority is not None: priority = int(setting)
                 else: raise MulitpleParameterDeclarationSettingError("There can only be ONE 'Priority' setting in a 'Parameter Declaration'")
                 continue
 
@@ -351,8 +375,10 @@ class BaseParameter(object):
     @staticmethod
     def match_declaration_setting(declaration_setting_name, declaration_setting):
         """
-        Input: Takes a declaration setting name to access data from, the string to look for the declaration setting name in
-        Output: Returns the desired setting value if setting type is a match, returns None if nothing found
+        Input: Takes a declaration setting name to access data from,
+            the string to look for the declaration setting name in
+        Output: Returns the desired setting value if setting type is a
+            match, returns None if nothing found
         """
         for name in BaseParameter.declaration_settings[declaration_settings].names:
             search = re.search(BaseParameter.declaration_settings[declaration_setting].regex_parse.format(name), declaration_setting)
@@ -381,7 +407,9 @@ class ExentionFilter(BaseParameter):
         raise NotImplementedError
 
 class SubstringFilter(BaseParameter):
-    """Parameter object that filters all strings by substring inclusion"""
+    """
+    Parameter object that filters all strings by substring inclusion
+    """
     parameter_type = ('s', 'substring')
     def __init__(self, parameter_declaration):
         super().__init__(parameter_declaration)
@@ -391,7 +419,9 @@ class SubstringFilter(BaseParameter):
         raise NotImplementedError
 
 class RangeFilter(BaseParameter):
-    """Parameter object that filters out all files not in the specified range"""
+    """
+    Parameter object that filters out all files not in the specified range
+    """
     parameter_type = ('r', 'range')
     def __init__(self, parameter_declaration):
         super().__init__(parameter_declaration)
@@ -401,7 +431,10 @@ class RangeFilter(BaseParameter):
         raise NotImplementedError
 
 class RangeUniqueFilter(BaseParameter):
-    """Parameter object that filters out all files not in the specified range but will throw error if not all number in range found"""
+    """
+    Parameter object that filters out all files not in the specified
+    range but will throw error if not all number in range found
+    """
     parameter_type = ('ru', 'range_unique')
     def __init__(self, parameter_declaration):
         super().__init__(parameter_declaration)
@@ -421,7 +454,9 @@ class SinFileParameter(BaseParameter):
         raise NotImplementedError
 
 class RawDelimiter(BaseParameter):
-    """Parameter object that opens files and returns chuncks of delimited text"""
+    """
+    Parameter object that opens files and returns chuncks of delimited text
+    """
     parameter_type = ('rd', 'raw_dilimeter')
     def __init__(self, parameter_declaration):
         super().__init__(parameter_declaration)
@@ -441,7 +476,10 @@ class TargetLevels(BaseParameter):
         raise NotImplementedError
 
 class HyperlinkFilter(BaseParameter):
-    """Parameter object that searches for and returns hyperlinks on webpages"""
+    """
+    Parameter object that searches for and returns hyperlinks
+    on webpages
+    """
     parameter_type = ('h', 'hyperlink')
     def __init__(self, parameter_declaration):
         super().__init__(parameter_declaration)
