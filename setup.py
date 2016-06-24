@@ -13,5 +13,4 @@ setup(name="LASubway",
       packages=find_packages(),
       package_data={} #TODO Fill in
       install_requires=['PyYaml'],
-      long_description=long_description(),
       entry_points={}) #TODO Fill in
