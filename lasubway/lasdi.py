@@ -194,7 +194,7 @@ class DataReference(ParseResult):
             Parse out Data Filters before passing the string to urlparse
         """
         if (reference == "" or reference is None):
-            raise Exception #TODO Create exception for this
+            raise ValueError
 
         split_reference = reference.strip('`').split('`')
         data_string = urlparse(split_reference[0])
@@ -211,10 +211,6 @@ class DataReference(ParseResult):
 
 
         super.__init__([getattr(data_string, field) for field in data_string._fields]) #TODO add user name and password info 
-
-    @staticmethod
-    def _load_parameters(parameters):
-        pass
 
     def is_local(self):
         """
