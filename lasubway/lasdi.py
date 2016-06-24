@@ -191,7 +191,6 @@ class DataReference(ParseResult):
     def __init__(self, reference):
         """
         TODO:
-            Parse out Data Filters before passing the string to urlparse
         """
         if (reference == "" or reference is None):
             raise ValueError
@@ -207,8 +206,6 @@ class DataReference(ParseResult):
             i+=2
 
         self.parameters = BaseParameter.factory(parameters)
-
-
 
         super.__init__([getattr(data_string, field) for field in data_string._fields]) #TODO add user name and password info 
 
