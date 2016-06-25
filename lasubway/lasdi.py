@@ -193,6 +193,11 @@ class DataReference(ParseResult):
     """
     This class will be used for parsing and operating a single Data Reference
     Inherits from urllib's ParseResult
+
+    Duties of DataReference:
+        1) Parse Data References into: URL and Parameters
+        2) Create and store Parameter Objects
+        3) Fetch parse and filter data found with the URL
     TODO:
         support escape sequence for '`'
     """
@@ -255,8 +260,10 @@ class DataReference(ParseResult):
         TODO:
             figure out how to handle local file paths
             consider directory downloads from html pages with hyperlinks
-            ** Impliment custom URL schemes
+            ** Impliment custom URL schemes -- Now needs to be done in lasubway.py
         """
+
+        #Translate URL if using custom scheme 
         if self.scheme == "wrkspace":
             url = self.metro.generate_workspace_url(self.path)
         elif self.scheme == "prelaso":
@@ -265,13 +272,9 @@ class DataReference(ParseResult):
             url = urlunparse(self)
         file_name = os.path.basename(os.path.normpath(self.path))
         save_path = os.path.join(save_directory, file_name)
-        with closing(urlopen(self.get_data_string())) as request:
+        with closing(urlopen(url)) as request:
             with open(save_path, 'wb') as sfile:
                 shutil.copyfileobj(request, sfile)
-
-    def get_data_string(self):
-        """ """
-        return urlunparse(self)
 
 
 class BaseParameter(object):
