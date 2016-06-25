@@ -216,15 +216,14 @@ class DataReference(ParseResult):
         if url.scheme == '':
             url.scheme == 'file'
 
-        if url.scheme == 'workspace':
-            if self.metro is None:
-                raise Exception #TODO add exception for this
-            else: pass #Check metro workspace for file path
-        elif url.scheme == 'prelaso':
-            if self.metro is None:
-                raise Exception #TODO add exception for this
-            else: pass #Check previous metro 
-
+        #Translate URL if using custom scheme 
+        try:
+            if self.scheme == "wrkspace":
+                url = self.metro.generate_workspace_url(self.path)
+            elif self.scheme == "prelaso":
+                url = self.metro.generate_previous_laso_url(self.path)
+        except AttributeError:
+            assert 0, "Error: Data Reference must be run inside a metro to use schemes: wrkspace, prelaso" #TODO Create proper exception
 
         parameters = []
         i = 0
@@ -263,13 +262,7 @@ class DataReference(ParseResult):
             ** Impliment custom URL schemes -- Now needs to be done in lasubway.py
         """
 
-        #Translate URL if using custom scheme 
-        if self.scheme == "wrkspace":
-            url = self.metro.generate_workspace_url(self.path)
-        elif self.scheme == "prelaso":
-            url = self.metro.generate_previous_laso_url(self.path)
-        else:
-            url = urlunparse(self)
+        url = urlunparse(self)
         file_name = os.path.basename(os.path.normpath(self.path))
         save_path = os.path.join(save_directory, file_name)
         with closing(urlopen(url)) as request:
