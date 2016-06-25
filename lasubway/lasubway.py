@@ -35,7 +35,21 @@ class Metro(Box):
 
     def check_workspace(self, path):
         """Checks if path exists in workspace"""
-        pass
+        raise NotImplementedError
+
+    def generate_workspace_url(self, path):
+        """Generates a workspace URL for accessing the metro's workspace"""
+        raise NotImplementedError
+
+    def generate_previous_laso_url(self, path):
+        """
+        Generates a URL to access the previous LASO's output directory
+
+        I have a feeling that this method will likely be moved to
+        the station object
+        """
+        raise NotImplementedError
+
 
 
 class Station(Structure):

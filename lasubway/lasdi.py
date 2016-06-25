@@ -197,9 +197,7 @@ class DataReference(ParseResult):
         support escape sequence for '`'
     """
 
-    metro = None #To be set with setattr() if used in metro execution
-
-    def __init__(self, reference):
+    def __init__(self, reference, metro=None):
         """
         TODO:
         """
@@ -210,16 +208,18 @@ class DataReference(ParseResult):
         url = urlparse(split_reference[0])
         split_reference.remove(split_reference[0])
 
-        if url.scheme == '' and os.path.exists(url.path):
+        if url.scheme == '':
             url.scheme == 'file'
-        elif url.scheme == 'workspace':
-            if DataReference.metro is None:
+
+        if url.scheme == 'workspace':
+            if self.metro is None:
                 raise Exception #TODO add exception for this
             else: pass #Check metro workspace for file path
         elif url.scheme == 'prelaso':
-            if DataReference.metro is None:
+            if self.metro is None:
                 raise Exception #TODO add exception for this
             else: pass #Check previous metro 
+
 
         parameters = []
         i = 0
@@ -257,16 +257,17 @@ class DataReference(ParseResult):
             consider directory downloads from html pages with hyperlinks
             ** Impliment custom URL schemes
         """
-        try:
-            file_name = os.path.basename(os.path.normpath(self.path))
-            save_path = os.path.join(save_directory, file_name)
-            with closing(urlopen(self.get_data_string())) as request:
-                with open(save_path, 'wb') as sfile:
-                    shutil.copyfileobj(request, sfile)
-        except ValueError as ve:
-            if os.path.exists(self.path):
-                raise ValueError("Data String is local file path")
-            else: raise ve
+        if self.scheme == "wrkspace":
+            url = self.metro.generate_workspace_url(self.path)
+        elif self.scheme == "prelaso":
+            url = self.metro.generate_previous_laso_url(self.path)
+        else:
+            url = urlunparse(self)
+        file_name = os.path.basename(os.path.normpath(self.path))
+        save_path = os.path.join(save_directory, file_name)
+        with closing(urlopen(self.get_data_string())) as request:
+            with open(save_path, 'wb') as sfile:
+                shutil.copyfileobj(request, sfile)
 
     def get_data_string(self):
         """ """
