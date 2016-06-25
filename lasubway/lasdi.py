@@ -193,6 +193,8 @@ class DataReference(ParseResult):
     """
     This class will be used for parsing and operating a single Data Reference
     Inherits from urllib's ParseResult
+    TODO:
+        support escape sequence for '`'
     """
     def __init__(self, reference):
         """
@@ -262,6 +264,7 @@ class BaseParameter(object):
 
     TODO:
         Change variable names to fit new system
+        support escape sequence for '`'
     """
     valid_file_references = [('f','file'),
                              ('f', 'directory'),
@@ -429,7 +432,11 @@ class BaseParameter(object):
         return ""
 
 class RegexFilter(BaseParameter):
-    """Parameter object that filters strings with a python regex"""
+    """
+    Parameter object that filters strings with a python regex
+    TODO:
+        support escape sequence for '`'
+    """
     parameter_type = ('re', 'regex')
     def __init__(self, parameter_declaration):
         super().__init__(parameter_declaration)
