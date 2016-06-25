@@ -154,3 +154,9 @@ DISS Parameter Behavoir Settings:
     `r-d-Lr5`regex` -- Same as above but throws errors if level 5 is not reached ('r' stands for required)
     `r-d-L1-P1`     -- Preforms regex on level one and is preformed first ('P' stands for priority)
 
+Custom URL Schemes:
+-------------------
+
+* Previous LASO output
+* Metro Shared Directory (workspace)
+

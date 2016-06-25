@@ -29,3 +29,12 @@ Different Cluster Frameworks and software to consider interfacing with:
 1. kubernetes
 2. Apache Mesos
 3. Hadoop
+
+
+WorkSpace:
+----------
+
+WorkSpace is a shared directory space between all LASO objects in a metro.
+
+WorkSpace will not be limited to a single implementation. It should be able to work dynamically depeneding on the type of metro and the system it is running on
+

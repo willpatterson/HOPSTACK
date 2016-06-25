@@ -241,6 +241,7 @@ class DataReference(ParseResult):
         TODO:
             figure out how to handle local file paths
             consider directory downloads from html pages with hyperlinks
+            ** Impliment custom URL schemes
         """
         try:
             file_name = os.path.basename(os.path.normpath(self.path))
