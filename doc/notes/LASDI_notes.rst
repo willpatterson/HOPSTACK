@@ -154,3 +154,86 @@ DISS Parameter Behavoir Settings:
     `r-d-Lr5`regex` -- Same as above but throws errors if level 5 is not reached ('r' stands for required)
     `r-d-L1-P1`     -- Preforms regex on level one and is preformed first ('P' stands for priority)
 
+
+DISS Parameter Types:
+=====================
+
+**Template:**
+
++-----------+-------------+------+-----------------+
+| Type Name | Obriviation | List | File References |
++===========+=============+======+=================+
+|           |             |      |                 |
++-----------+-------------+------+-----------------+
+
+**Example(s):**
+
+:: 
+    
+    ```
+
+
+Python Regex Filter Parameter
+-----------------------------
+
++------------------+-------------+------+-----------------+
+| Type Name        | Obriviation | List | File References |
++==================+=============+======+=================+
+| regex_filter     | ref         | yes  | yes             |
++------------------+-------------+------+-----------------+
+
+**Example(s):**
+
+::
+
+    `ref`
+
+Python Regex Substring Parameter
+--------------------------------
+
+
++-----------+-------------+------+-----------------+
+| Type Name | Obriviation | List | File References |
++===========+=============+======+=================+
+| regex_sub | res         | yes  | yes             |
++-----------+-------------+------+-----------------+
+
+**Example(s):**
+
+::
+    
+    `res`
+
+
+Range Filter Parameter
+----------------------
+
++-----------+-------------+------+-----------------+
+| Type Name | Obriviation | List | File References |
++===========+=============+======+=================+
+| range     | r           | yes  | yes             |
++-----------+-------------+------+-----------------+
+
+**Example(s):**
+
+::
+
+    `r`1-50`
+
+Range Required Parameter
+------------------------
+
++----------------+-------------+------+-----------------+
+| Type Name      | Obriviation | List | File References |
++================+=============+======+=================+
+| range_required | rr          | yes  | yes             |
++----------------+-------------+------+-----------------+
+
+**Example(s):**
+
+::
+
+    `rr`1-10`
+
+
+
