@@ -11,12 +11,16 @@ TODO:
 """
 
 import os
+import shutil
 import re
 import ntpath
 from collections import namedtuple
 
 import urllib
 from urllib.parse import urlparse, urlunparse, ParseResult
+from urllib.request import urlopen
+from contextlib import closing
+
 
 #Imports for compression/archive file interpreting:
 import gzip
@@ -228,14 +232,27 @@ class DataReference(ParseResult):
             return True
         return False
 
-    def get_data(self, save_path):
-        """Retrieves data from remote location"""
-        pass
+    def get_data(self, save_directory):
+        """
+        Retrieves data from remote location
+        saves data in: save_directory
+        TODO:
+            figure out how to handle local file paths
+        """
+        try:
+            file_name = os.path.basename(os.path.normpath(self.path))
+            save_path = os.path.join(save_directory, file_name)
+            with closing(urlopen(self.get_data_string())) as request:
+                with open(save_path, 'wb') as sfile:
+                    shutil.copyfileobj(request, sfile)
+        except ValueError as ve:
+            if os.path.exists(self.path):
+                raise ValueError("Data String is local file path")
+            else: raise ve
 
     def get_data_string(self):
         """ """
         return urlunparse(self)
-
 
 
 class BaseParameter(object):
