@@ -456,12 +456,23 @@ class RegexFilter(BaseParameter):
     TODO:
         support escape sequence for '`'
     """
-    parameter_type = ('re', 'regex')
+    parameter_type = ('ref', 'regex_filter')
     def __init__(self, parameter_declaration):
         super().__init__(parameter_declaration)
 
     def parse_type_settings(self):
         """"""
+        raise NotImplementedError
+
+class RegexSubstring(BaseParameter):
+    """
+    """
+    parameter_type = ('res', 'regex_sub')
+    def __init__(self, parameter_declaration):
+        super().__init__(parameter_declaration)
+
+    def parse_type_settings(self):
+        """ """
         raise NotImplementedError
 
 class ExentionFilter(BaseParameter):
@@ -498,12 +509,12 @@ class RangeFilter(BaseParameter):
         """"""
         raise NotImplementedError
 
-class RangeUniqueFilter(BaseParameter):
+class RequiredRangeFilter(BaseParameter):
     """
     Parameter object that filters out all files not in the specified
     range but will throw error if not all number in range found
     """
-    parameter_type = ('ru', 'range_unique')
+    parameter_type = ('rr', 'required_range')
     def __init__(self, parameter_declaration):
         super().__init__(parameter_declaration)
 
