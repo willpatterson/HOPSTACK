@@ -196,6 +196,9 @@ class DataReference(ParseResult):
     TODO:
         support escape sequence for '`'
     """
+
+    metro = None #To be set with setattr() if used in metro execution
+
     def __init__(self, reference):
         """
         TODO:
@@ -204,8 +207,19 @@ class DataReference(ParseResult):
             raise ValueError
 
         split_reference = reference.strip('`').split('`')
-        data_string = urlparse(split_reference[0])
+        url = urlparse(split_reference[0])
         split_reference.remove(split_reference[0])
+
+        if url.scheme == '' and os.path.exists(url.path):
+            url.scheme == 'file'
+        elif url.scheme == 'workspace':
+            if DataReference.metro is None:
+                raise Exception #TODO add exception for this
+            else: pass #Check metro workspace for file path
+        elif url.scheme == 'prelaso':
+            if DataReference.metro is None:
+                raise Exception #TODO add exception for this
+            else: pass #Check previous metro 
 
         parameters = []
         i = 0
