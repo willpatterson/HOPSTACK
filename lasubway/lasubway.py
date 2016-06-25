@@ -23,6 +23,8 @@ class LASDataObject(object):
 
 class Metro(Box):
     """
+    TODO:
+        Implement WorkSpace
     """
     def __init__(self, init_data):
         super.__init__(self, init_data)
@@ -30,6 +32,11 @@ class Metro(Box):
 
     def load_metro(self):
         pass
+
+    def check_workspace(self, path):
+        """Checks if path exists in workspace"""
+        pass
+
 
 class Station(Structure):
     """
