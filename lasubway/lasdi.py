@@ -16,7 +16,7 @@ import ntpath
 from collections import namedtuple
 
 import urllib
-from urllib.parse import urlparse, ParseResult
+from urllib.parse import urlparse, urlunparse, ParseResult
 
 #Imports for compression/archive file interpreting:
 import gzip
@@ -231,6 +231,11 @@ class DataReference(ParseResult):
     def get_data(self, save_path):
         """Retrieves data from remote location"""
         pass
+
+    def get_data_string(self):
+        """ """
+        return urlunparse(self)
+
 
 
 class BaseParameter(object):
