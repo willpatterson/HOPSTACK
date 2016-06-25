@@ -238,6 +238,7 @@ class DataReference(ParseResult):
         saves data in: save_directory
         TODO:
             figure out how to handle local file paths
+            consider directory downloads from html pages with hyperlinks
         """
         try:
             file_name = os.path.basename(os.path.normpath(self.path))
