@@ -73,18 +73,22 @@ The strings decoded by LASDI are called ``LAS Data Interpreter References (LASDI
 LASDIR URL Schemes:
 -------------------
 
-LASDIR syntax provides several URL schemes that allow for interaction with higher-level LASubway processes:
+LASDIR syntax provides several custom URL schemes that allow for interaction with higher-level LASubway processes:
 
 **Previous LASO object output:** The base of the file path is the output directory of the previous LASubway Object in the pipeline
 
-prelaso:
+prelaso:/path/to/file/in/previous/LASO
 
-Paramters:
+**Workspace:** The base directory of the file path in the URL is the current Metro's shared space directory (called Workspace)
+
+wrkspace:/path/to/file/in/Workspace
+
+Parameters:
 ----------
 
 Parameters can be used to filter and format the output of LASDI.
 
-Parameters are denoted by appending a ``Data String`` with a filter statement.
+In Data References, Parameters are appened to URLs and surrounded by "`"s
 
 Example Parameter statement:
 
