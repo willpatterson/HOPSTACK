@@ -23,6 +23,11 @@ class LASDataObject(object):
 
 class Metro(Box):
     """
+    Class Duities:
+        1. Manage deployment of metro lines and stations over provided
+           infastructure
+        2. Provide and manage shared storage space (Workspace) for internal
+           LASO objects to read write to
     TODO:
         Implement WorkSpace
     """
