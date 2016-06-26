@@ -40,9 +40,12 @@ Unix file types:
 Tunnel Interfaces:
 ------------------
 
-Tunnel interfaces structures that define the any combination of the number, type, and order of files passed between LASOs
+Tunnel interfaces structures that define the any combination of the number, 
+type, and order of files passed between LASOs
 
-Example Scenario: station_1 is expecting to output one fasta file, and one genbank file. Station_2 expects one fasta file and one genbank file. If station_2 gets something else, it will throw an error or warning
+Example Scenario: station_1 is expecting to output one fasta file, and one
+genbank file. Station_2 expects one fasta file and one genbank file. If 
+station_2 gets something else, it will throw an error or warning
 
 Raw Data Handeling:
 -------------------
@@ -50,7 +53,8 @@ Raw Data Handeling:
 To ways of passing raw data:
 
 1. Unix Pipes/redirects
-    * How do you DIRECTLY pipe the output of the previous station to the current station (without saving output into a file)?
+    * How do you DIRECTLY pipe the output of the previous station to the
+      current station (without saving output into a file)?
 2. string via command line
     * use a delimiter and a verified file path
 
@@ -72,8 +76,6 @@ DISS Data Strings:
 
 DISS Parameters:
 ----------------
-
-** Might have to consider parameter precidence (which parameter is operated first) **
 
 Filter with a python Regex expressoin:
 
@@ -123,7 +125,8 @@ File Reference type examples:
 * pipe, p
 * socket, s
 
-**Filter by range unique (throws error or prompt user if not more than one file in range):**
+**Filter by range unique (throws error or prompt user if not more than one
+file in range):**
 
 ::
 
@@ -140,9 +143,13 @@ File Reference type examples:
 LASubway Output Formatter LASOF:
 --------------------------------
 
-LASOF is the inverse function of LASDI. It takes the output of a station and converts it into a single string that can be passed to the next LASO.
+LASOF is the inverse function of LASDI. It takes the output of a station and
+converts it into a single string that can be passed to the next LASO.
 
-LASOF would take some output filter parameters defined in DISS as input. It would then use thoes parameters to find the desired output files and create symlinks to them all in a neat LASO output directory whoes file path will be passed to the next LASO in the pipeline.
+LASOF would take some output filter parameters defined in DISS as input. It 
+would then use thoes parameters to find the desired output files and create 
+symlinks to them all in a neat LASO output directory whoes file path will be
+passed to the next LASO in the pipeline.
 
 DISS Parameter Behavoir Settings:
 ---------------------------------

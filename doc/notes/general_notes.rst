@@ -10,7 +10,9 @@ LAS General Ideas and goals:
 4. software pipeline visualization
 5. source managment and build tools for software pipeline dependencies
 
-LAS aims to provide a framework to build software pipelines within. Some fringe cases may not be supported, though one should be able to simulate thoes cases with a combination of standard features. 
+LAS aims to provide a framework to build software pipelines within. Some 
+fringe cases may not be supported, though one should be able to simulate thoes
+cases with a combination of standard features. 
 
 
 LASubway Home (LASH):
@@ -36,7 +38,9 @@ WorkSpace:
 
 WorkSpace is a shared directory space between all LASO objects in a metro.
 
-WorkSpace will not be limited to a single implementation. It should be able to work dynamically depeneding on the type of metro and the system it is running on
+WorkSpace will not be limited to a single implementation. It should be able
+to work dynamically depeneding on the type of metro and the system it is 
+running on
 
 
 LASO Notes:
