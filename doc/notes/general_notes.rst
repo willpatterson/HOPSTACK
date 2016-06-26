@@ -38,3 +38,18 @@ WorkSpace is a shared directory space between all LASO objects in a metro.
 
 WorkSpace will not be limited to a single implementation. It should be able to work dynamically depeneding on the type of metro and the system it is running on
 
+
+LASO Notes:
+===========
+
+Different Station Scenarios:
+----------------------------
+
+1. Run one command one time with one input
+2. Run one command N number of times with one input
+3. Run one command for every valid input given
+4. Run one command one time with multiple inputs
+5. Run one command N number of times with multiple inputs
+6. Run one command with one input N number of times sequentailly
+7. Run one command with multiple inputs N number of times sequentailly
+8. Run one command in a loop until specific output requirement met
