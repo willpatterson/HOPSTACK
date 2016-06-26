@@ -5,10 +5,11 @@ TODO:
     - Build Grid object (maybe rename to Graph before its too late)
 """
 
-#High Level LASO Objects: ####################################################################
+#High Level LASO Objects: #########################################################################
 class LASDataObject(object):
     """
-    Base object for Data vis objects (Box, Structure, Grid) which are the base of the LASOs (metro, metro line, station)
+    Base object for Data vis objects (Box, Structure, Grid) which are the
+    base of the LASOs (metro, metro line, station)
     """
     def __init__(self, init_data):
         self.name = init_data['name']
@@ -56,7 +57,6 @@ class Metro(Box):
         raise NotImplementedError
 
 
-
 class Station(Structure):
     """
     """
@@ -67,12 +67,13 @@ class Station(Structure):
         self.cmd = init_data['cmd']
 
 
-#Object Visualization Tools: #####################################################################
+#Object Visualization Tools: #######################################################################
 class Box(LASDataObject):
     """
     ASCII box drawing class
     TODO
-        - Add support for optional title/body category field (ie Category Field: Title name)
+        - Add support for optional title/body category field
+          (ie Category Field: Title name)
         - Add support for multiple body fields per-box
     """
 
@@ -95,7 +96,8 @@ class Box(LASDataObject):
         boxend = '+{}+'.format(self.repeat_char('-', self.width-2))
         self.box_lines.append(boxend)
         self.format_box_string(self.title) #Add title
-        self.box_lines.append('+{}+'.format(self.repeat_char('=', self.width-2)))
+        self.box_lines.append('+{}+'.format(self.repeat_char('=',
+                                            self.width-2)))
         self.format_box_string(self.body)  #Add body
         self.box_lines.append(boxend)
 
@@ -128,7 +130,9 @@ class Box(LASDataObject):
 
     def format_box_line(self, string):
         """Adds one line to the box"""
-        self.box_lines.append('|{}{}|'.format(string, self.repeat_char(' ', self.width-len(string)-2)))
+        self.box_lines.append('|{}{}|'.format(string,
+                                              self.repeat_char(' ',
+                                                               self.width-len(string)-2)))
 
     @staticmethod
     def repeat_char(char, ntimes):
@@ -150,7 +154,9 @@ class Box(LASDataObject):
         return line
 
 class Structure(Box):
-    """A box that can contain a linear set of boxes (connected by arrows) from the BOX class"""
+    """
+    A box that can contain a linear set of boxes (connected by arrows) from
+    the BOX class"""
 
     def __init__(self, width, title, body):
         super().__init__(width, title, body)
@@ -206,11 +212,13 @@ class Grid(LASDataObject):
 if __name__ == '__main__':
     width = 20
     title = "Test Box Title 1"
-    body = "How about this box formatting? Its lookin alright. Could use some word parsing when splitting strings across multiple lines"
+    body = ("How about this box formatting? Its lookin alright. Could use"
+            "some word parsing when splitting strings across multiple lines")
     tbox = Box(width, title, body)
 
     title2 = "Test Box Title 2"
-    body2 = "I need some words to fill up this space so I can get a feel for what this will look like."
+    body2 = ("I need some words to fill up this space so I can get a feel for"
+             "what this will look like.")
     tbox2 = Box(width, title2, body2)
 
     tstruct = Structure(50, "test_struct", "test struct_body")
