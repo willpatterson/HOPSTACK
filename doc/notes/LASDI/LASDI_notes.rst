@@ -11,8 +11,8 @@ Example:
 
     "data-string`r-L1-P1-directory`100-111`"
 
-    Data Reference          : "data-string`r-L1-P1-directory`100-111`"
-    Data String             : data-string
+    Data Reference          : "https://something.com/something.tar.gz`r-L1-P1-directory`100-111`"
+    URL                     : https://something.com/something.tar.gz
     Parameter               : `r-L1-P1-directory`100-111`
     Parameter Declaration   : `r-L1-P1-directory`
     Parameter Type          : r
