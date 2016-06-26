@@ -35,6 +35,21 @@ Python Regex Substring Parameter
     
     `res`
 
+Substring Filter Paramter
+-------------------------
+
+Strings are only vailid if they contain listed substrings.
+
++-----------+-------------+------+----------------------+---------------+-----------------+
+| Type Name | Obriviation | List | Declaration Settings | Type Settings | File References |
++===========+=============+======+======================+===============+=================+
+| substring | s           | yes  | yes                  | yes           | yes             |
++-----------+-------------+------+----------------------+---------------+-----------------+
+
+**Example(s):**
+
+::
+    `s`substring`
 
 Range Filter Parameter
 ----------------------
@@ -65,6 +80,21 @@ Range Required Parameter
 ::
 
     `rr`1-10`
+
+Extention Filter Paramter
+-------------------------
+
++-----------+-------------+------+----------------------+---------------+-----------------+
+| Type Name | Obriviation | List | Declaration Settings | Type Settings | File References |
++===========+=============+======+======================+===============+=================+
+| extention | e           | yes  | yes                  | yes           | yes             |
++-----------+-------------+------+----------------------+---------------+-----------------+
+
+**Example(s):**
+
+:: 
+    
+    `e`.fasta`
 
 
 Template:
