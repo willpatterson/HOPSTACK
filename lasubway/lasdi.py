@@ -200,6 +200,8 @@ class DataReference(ParseResult):
         3) Fetch parse and filter data found with the URL
     TODO:
         support escape sequence for '`'
+        Consider passing station instead of metro and moving url generation
+            methods to a station objects
     """
 
     def __init__(self, reference, metro=None):
@@ -260,6 +262,7 @@ class DataReference(ParseResult):
             figure out how to handle local file paths
             consider directory downloads from html pages with hyperlinks
             ** Impliment custom URL schemes -- Now needs to be done in lasubway.py
+            How does raw data fit into this function?
         """
 
         url = urlunparse(self)
