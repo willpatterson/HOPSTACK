@@ -47,6 +47,7 @@ Metros runing inside a metro cannot share volumes with it's parent metro.
 
 **Different Possible Implimentation Protocols:**
 
+* SSH pipes
 * SSH File System (SSHFS)
 * FTP File System (FTPFS)
 * NFS
@@ -58,9 +59,8 @@ Metros runing inside a metro cannot share volumes with it's parent metro.
 * Gluster/Lustre
 * AWS Elastic Block Storage
 
-Both kubernetes and docker use have interfaces to work with called volumes
 Kubernetes has many different volume types that could act as a rough list of
-different integrations and implimentations to use
+different integrations and implimentations to use for workspaces.
 
 
 LASO Notes:
