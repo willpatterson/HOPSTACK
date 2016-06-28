@@ -36,11 +36,31 @@ Different Cluster Frameworks and software to consider interfacing with:
 WorkSpace:
 ----------
 
-WorkSpace is a shared directory space between all LASO objects in a metro.
+WorkSpaces are directories shared between LASOs in a metro.
+WorkSpaces can be given different access groups and levels allowing sharing 
+between set groups and or different types of LASOs.
+WorkSpaces can be aliken to Volumes in Kubernetes. 
+WorkSpaces can be implemented with different protocols and file systems to 
+allow workspaces to be deployed on many different types of systems.
+Metros runing inside a metro cannot share volumes with it's parent metro.
 
-WorkSpace will not be limited to a single implementation. It should be able
-to work dynamically depeneding on the type of metro and the system it is 
-running on
+
+**Different Possible Implimentation Protocols:**
+
+* SSH File System (SSHFS)
+* FTP File System (FTPFS)
+* NFS
+
+**Possible Ingetrations:**
+
+* Docker
+* Kubernetes 
+* Gluster/Lustre
+* AWS Elastic Block Storage
+
+Both kubernetes and docker use have interfaces to work with called volumes
+Kubernetes has many different volume types that could act as a rough list of
+different integrations and implimentations to use
 
 
 LASO Notes:
