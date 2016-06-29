@@ -29,16 +29,6 @@ General:
 
 - Define, Outline and Document the Station Input (sin) file format
 
-Rename Variables and terms:
----------------------------
-
-1. Data Statement --> Data Reference
-2. Parameter_statement --> parameter_declaration
-3. data_reference --> return_data_type
-4. level_limit --> target_levels **DONE**
-5. level_requried --> required_levels **DONE**
-6. type_statement --> parameter_declaration
-
 Documentation:
 --------------
 
