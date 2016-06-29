@@ -49,6 +49,7 @@ Metros runing inside a metro cannot share volumes with it's parent metro.
 
 * SSH pipes
 * SSH File System (SSHFS)
+  - Make sure that the files are not being written by anything else on the host machine
 * FTP File System (FTPFS)
 * NFS
 
@@ -61,6 +62,11 @@ Metros runing inside a metro cannot share volumes with it's parent metro.
 
 Kubernetes has many different volume types that could act as a rough list of
 different integrations and implimentations to use for workspaces.
+
+Look into creating virtual file systems with FUSE to act as workspaces on the head machine.
+Link: FUSE_
+
+.. _FUSE: https://www.stavros.io/posts/python-fuse-filesystem/
 
 
 LASO Notes:
