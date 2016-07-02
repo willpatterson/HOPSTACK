@@ -32,7 +32,6 @@ General:
 Documentation:
 --------------
 
-- Update README with new info on DISS and LASDI
 - Create a project wiki on github and move techincal from README
 
 Text Structure Representation:
@@ -57,7 +56,7 @@ LAS Source Manager (LASSM):
 
 Source manager for LASubway
 
-- Create custom station LASO for installing software from source
+- Create station LASO for installing software from source
 - Create local source manager (~/.las/software)
 - Create metro-local source manager (/metro_base/software)
 
