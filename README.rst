@@ -4,8 +4,8 @@
 LASubway README
 ***************
 
-LASubway (LAS) is a software pipeliner/workflow managment system in active
-development. I started the LASubway project because I have experienced
+LASubway (LAS) is a software pipeliner/workflow managment system. 
+I started the LASubway project because I have experienced
 profound discontinuity in the way computational analyses are documented,
 written, and exectued within the acedemic community. This discontinuity makes
 computational research difficult to reproduce, often adding significant
