@@ -26,6 +26,8 @@ LASubway is named after Los Angeles' 1990's metro system for two resasons:
 - Provide a simple interface and tools for working with software pipelines
 - Create a standard for modular, container-like software pipelines (metros)
   that run everywhere on Unix-like platforms
+- Create a 'user-grid' system that allows users to connect all resources
+  they have access to and utilize it to run pipelines
 
 **Planned Features of LASubway:**
 
