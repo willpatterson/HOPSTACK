@@ -59,6 +59,8 @@ Strings are returned if they contain (all?) listed substrings.
 Range Filter Parameter
 ----------------------
 
+Returns only the number of strings defined by the given range.
+
 +-----------+-------------+------+-----------------+
 | Type Name | Obriviation | List | File References |
 +===========+=============+======+=================+
