@@ -7,7 +7,7 @@ This page is the offcial (and incomplete) list of LASDR paramter types. Code and
 Python Regex Filter Parameter
 -----------------------------
 
-Strings are only valid if they pass the defined regex filter
+Strings are returned if they match the regex statement
 
 +------------------+-------------+------+-----------------+
 | Type Name        | Obriviation | List | File References |
