@@ -24,6 +24,13 @@ Would be a user or system-wide directory containing:
 2. LAS host list
 3. Credentials (database, AWS, etc)
 
+An alternative to LASH could be creating headless container/jail(BSD)/
+zone(solaris)-like objects that contain all dependencies for the piece (or
+pieces) of the pipeline being run on a machine. These container-like modules 
+ would be dropped onto a machine as a precompiled binary wrapped in a disk 
+image, then be run as an independent entity by python code piped over ssh.
+This would be the preffered way doing things but it might not be possible and 
+if it is, it'd definitly not easy.
 
 Different Cluster Frameworks and software to consider interfacing with:
 -----------------------------------------------------------------------
