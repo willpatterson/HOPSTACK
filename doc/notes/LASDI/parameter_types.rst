@@ -7,7 +7,7 @@ This page is the offcial (and incomplete) list of LASDR paramter types. Code and
 Python Regex Filter Parameter
 -----------------------------
 
-Strings are returned if they match the defined regex statement
+Strings are returned if they match the defined regex statement.
 
 +------------------+-------------+------+-----------------+
 | Type Name        | Obriviation | List | File References |
@@ -25,7 +25,7 @@ Python Regex Substring Parameter
 --------------------------------
 
 Returns the substrings (defined by the regex statement) of the strings that 
-match the defined regex statement
+match the defined regex statement.
 
 +-----------+-------------+------+-----------------+
 | Type Name | Obriviation | List | File References |
@@ -42,7 +42,7 @@ match the defined regex statement
 Substring Filter Paramter
 -------------------------
 
-Strings are only vailid if they contain listed substrings.
+Strings are returned if they contain (all?) listed substrings.
 
 +-----------+-------------+------+----------------------+---------------+-----------------+
 | Type Name | Obriviation | List | Declaration Settings | Type Settings | File References |
