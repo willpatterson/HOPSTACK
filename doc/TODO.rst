@@ -10,6 +10,7 @@ LASDI:
   * pipes and redirects
   * raw strings via command line
   * Address file path regex filtering vs file content regex filtering
+- Build modules for parsing and interpreting JSON/YAML strings
 
 LAS Output Formatter LASOF:
 ===========================
