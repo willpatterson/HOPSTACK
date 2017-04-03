@@ -109,6 +109,8 @@ class DataInterpreter(object):
     def __init__(self):
         pass
 
+#Scheme classes are proably an unessary abstraction. Should use functions instead
+#TODO: Change scheme classes to functions
 class Scheme(object):
     """
     Defines the base class for classes used by DataInterpreter to access
@@ -210,6 +212,7 @@ class WorkSpaceScheme(Scheme):
 
 # Data Reference Classes: #####################################################
 
+#TODO: Replace custom error classes with standard python system errors
 class DISSSyntaxError(Exception):
     """Error thrown for bad DISS syntax"""
     def __init__(self, message):
