@@ -133,7 +133,7 @@ Metro's shared space directory (called Workspace)
 
 ::
 
-    wrkspace:/path/to/file/in/Workspace
+    workspace:/path/to/file/in/Workspace
 
 **Raw Data:** Raw data can be passed as the urls path:
 
