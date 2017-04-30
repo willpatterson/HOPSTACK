@@ -7,10 +7,10 @@ from setuptools.command.install import install
 
 setup(name="LASubway",
       version="0.0.0",
-      description="Software Pipelining Suite"
+      description="Software Pipelining Suite",
       license="MIT",
       author="William Patterson",
       install_requires=['PyYaml'],
       packages=find_packages(),
-      package_data={} #TODO Fill in
+      package_data={}, #TODO Fill in
       entry_points={}) #TODO Fill in
