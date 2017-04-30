@@ -1,3 +1,5 @@
 *.swp
 *.swo
 *docker*.tgz*
+*.egg-info/
+.env
