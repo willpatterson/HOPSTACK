@@ -70,9 +70,8 @@ LASubway Data Interpreter String Syntax (LASDISS, DISS):
 DISS Data Strings:
 ------------------
 
-1. A file path
-2. URL
-3. RAW Data (maybe)
+1. URL with added schemes
+2. RAW Data
 
 DISS Parameters:
 ----------------
