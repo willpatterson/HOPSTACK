@@ -2,10 +2,11 @@
 Main file for the LASubway Data Interpreter (LASDI)
 
 TODO:
-    - Implement DISS
+    - Refactor DataReference and BaseParameter into functional implementations
     - Implement network file downloads
     - Implement file-path search on the "Metro Network" if a path is
       not found on file system
+      **what?
     - Implement local file path search within the metro directory
       **I now have doubts about this
 """
@@ -261,7 +262,9 @@ class DataReference(ParseResult):
         if url.scheme == '':
             url.scheme == 'file'
 
-        #Translate URL if using custom scheme 
+        # Translate URL if using custom scheme 
+        # Should probably completely refactor this.
+        # workspaces should be managed by LASWSA, not a metro object
         try:
             if self.scheme == "wrkspace":
                 url = self.metro.generate_workspace_url(self.path)
