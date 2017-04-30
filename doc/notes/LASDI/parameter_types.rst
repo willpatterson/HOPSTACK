@@ -2,6 +2,15 @@
 LASDIR Paramter Types
 *********************
 
+**Comprehensive List:**
+* regex_filter
+* regex_substring
+* substring
+* range
+* range_required
+* extension
+
+
 This page is the offcial (and incomplete) list of LASDR paramter types. Code and other documentation might not match the information in this file
 
 Python Regex Filter Parameter
