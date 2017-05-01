@@ -22,17 +22,11 @@ from urllib.parse import urlparse, urlunparse, ParseResult
 from urllib.request import urlopen
 from contextlib import closing
 
-
 #Imports for compression/archive file interpreting:
 import gzip
 import bz2
 import zipfile
 import tarfile
-
-class IndecipherableStringError(Exception):
-    """Error when a string cannot be desciphered"""
-    def __init__(self, message):
-        super(IndecipherableStringError, self).__init__(message)
 
 def data_interpreter(data_string, tmp_data_dump):
     """
@@ -61,7 +55,7 @@ def data_interpreter(data_string, tmp_data_dump):
         return extract_dir_files()
 
     else:
-        raise IndecipherableStringError("Indecipherable string!!!")
+        raise TypeError("Indecipherable string!!!")
 
 
 #Classes for file compression detection and decompression
@@ -109,28 +103,8 @@ class DataInterpreter(object):
     """Defines LASDI"""
     def __init__(self):
         pass
+
 # Data Reference Classes: #####################################################
-
-#TODO: Replace custom error classes with standard python system errors
-class DISSSyntaxError(Exception):
-    """Error thrown for bad DISS syntax"""
-    def __init__(self, message):
-        super(DISSSyntaxError, self).__init__(message)
-
-class DISSParameterTypeError(Exception):
-    """Error thrown when the Parameter type string is incorrect"""
-    def __init__(self, message):
-        super(DISSParameterTypeError, self).__init__(message)
-
-class UnknownParameterDeclarationSetting(Exception):
-    """Error thrown for unknown type setting in DISS"""
-    def __init__(self, message):
-        super(UnknownParameterDeclarationSetting, self).__init__(message)
-
-class MulitpleParameterDeclarationSettingError(Exception):
-    def __init__(self, message):
-        super(MulitpleParameterDeclarationSettingError, self).__init__(message)
-
 class DataReference(ParseResult):
     """
     This class will be used for parsing and operating a single Data Reference
@@ -282,7 +256,7 @@ class BaseParameter(object):
             for cls in BaseParameter.__subclasses__():
                 if parameter_type in cls.parameter_type:
                     return cls(parameter)
-            raise DISSParameterTypeError("Bad parameter type: '{}'".format(parameter_type))
+            raise TypeError("Bad parameter type: '{}'".format(parameter_type))
 
         if type(parameters) is str:
             parameters = [parameters]
@@ -313,7 +287,7 @@ class BaseParameter(object):
 
         split_statement = parameter.strip('`').split('`')
         if len(split_statement) != 2:
-            raise DISSSyntaxError("Parameter statements must have excatly two sections")
+            raise SyntaxError("Parameter statements must have excatly two sections")
 
         declaration = BaseParameter.parse_parameter_declaration(split_statement[0])
         type_settings = re.split(',| ', split_statement[1])
@@ -356,19 +330,19 @@ class BaseParameter(object):
             setting = BaseParameter.match_declaration_setting('LevelRequired', declaration_setting)
             if setting:
                 if required_level is None: required_level = int(setting)
-                else: raise MulitpleParameterDeclarationSettingError("There can only be ONE 'Required Level' set in a 'Parameter Declaration'")
+                else: raise SyntaxError("There can only be ONE 'Required Level' set in a 'Parameter Declaration'")
                 continue
 
             setting = BaseParameter.match_declaration_setting('Priority', declaration_setting)
             if setting:
                 if priority is None: priority = int(setting)
-                else: raise MulitpleParameterDeclarationSettingError("There can only be ONE 'Priority' setting in a 'Parameter Declaration'")
+                else: raise SyntaxError("There can only be ONE 'Priority' setting in a 'Parameter Declaration'")
                 continue
 
             if declaration_setting in [ref for duo in BaseParameter.valid_file_references for ref in duo]:
                 allowed_file_references.append(declaration_setting)
             else:
-                raise UnknownParameterDeclarationSetting("Error: Unknown parameter declaration setting: {}".format(declaration_setting))
+                raise TypeError("Error: Unknown parameter declaration setting: {}".format(declaration_setting))
 
         tmp_parameter_dec.target_levels = target_levels
         tmp_parameter_dec.required_level = required_level
