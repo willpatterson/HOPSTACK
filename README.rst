@@ -4,7 +4,7 @@
 HOPSTACK
 ********
 
-HOPSTACK (Self Provisioning Ad Hoc Clustering ToolKit) facilitates the
+HOPSTACK (Self Provisioning Ad Hoc Cluster Orchestration ToolKit) facilitates the
 automation and deployment of software piplines across existing infrastructure
 in user space. The HOPSTACK project was initally started because there are no
 effective tools or methods used by scientists and journalists to document, 
