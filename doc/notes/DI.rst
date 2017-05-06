@@ -1,9 +1,9 @@
-************
-LASDI Notes:
-************
+*********
+DI Notes:
+*********
 
-New Name System for LASDI and DISS objects:
--------------------------------------------
+New Name System for DI and DISS objects:
+----------------------------------------
 
 Example:
 
@@ -64,7 +64,7 @@ To ways of passing raw data:
 * build an class to extend to create parsers easily
 
 
-LASubway Data Interpreter String Syntax (LASDISS, DISS):
+HOPSTACK Data Interpreter String Syntax (DISS, DISS):
 ========================================================
 
 DISS Data Strings:
@@ -139,10 +139,10 @@ file in range):**
 
     "/datasrting/path/thing/`r`25-30`r`50-80`"
 
-LASubway Output Formatter LASOF:
+HOPSTACK Output Formatter LASOF:
 --------------------------------
 
-LASOF is the inverse function of LASDI. It takes the output of a station and
+LASOF is the inverse function of DI. It takes the output of a station and
 converts it into a single string that can be passed to the next LASO.
 
 LASOF would take some output filter parameters defined in DISS as input. It 
