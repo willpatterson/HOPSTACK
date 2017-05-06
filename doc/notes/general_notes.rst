@@ -1,16 +1,16 @@
-*****************
-General LAS Notes
-*****************
+**********************
+General HOPSTACK Notes
+**********************
 
-LAS General Ideas and goals:
-----------------------------
+HOPSTACK General Ideas and goals:
+---------------------------------
 1. Remove programming from software pipelining
 2. Be easy for non-techincal/non-programming people to use
 3. Recursive modularity for all LASOs
 4. software pipeline visualization
 5. source managment and build tools for software pipeline dependencies
 
-LAS aims to provide a framework to build software pipelines within. Some 
+HOPSTACK aims to provide a framework to build software pipelines within. Some 
 fringe cases may not be supported, though one should be able to simulate thoes
 cases with a combination of standard features. 
 
@@ -19,7 +19,7 @@ Acronym List:
 * **LASMM** -- Metro Manager
 * **LASCM** -- Cluster Manager
 * **LASH** -- Head
-* **LASDI** -- Data Interpreter
+* **DI** -- Data Interpreter
 * **LASDR** -- Data Reference
 * **LASWSA** -- WorkSpace Abstration
 * **LASB** -- Base
@@ -27,7 +27,7 @@ Acronym List:
 * **LASO** -- Object
 * **LASSP** -- System Profiler
 
-LASubway Home (LASH):
+HOPSTACK Home (LASH):
 ---------------------
 
 Would be a user or system-wide directory containing:
