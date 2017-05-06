@@ -2,6 +2,9 @@
 HOPSTACK WorkSpace Abstraction (WSA)
 ************************************
 
+The WorkSpace Abstraction is similar to the Resilient Distributed Dataset (RDD)
+implemented in apache spark.
+
 WorkSpace:
 ----------
 
