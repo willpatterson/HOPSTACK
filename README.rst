@@ -1,36 +1,29 @@
 .. _README.rst
 
 ********
-LASubway
+HOPSTACK
 ********
 
-LASubway (LAS) is a software pipeliner/workflow managment system that scales 
-into a distributed cluster managament and job scheduling system. The LASubway 
-project was initally started because there are no effective tools or methods 
-used by scientists and journalists to document, write, and exectue 
-computational analyses. This discontinuity makes computational research
-difficult to reproduce, often adding significant overhead to researchers 
-workloads. LASubway aims to address these problems with a comprehensive set of
-tools to create, document, run and distriubte standarized software pipelines 
-across UNIX-like computers and clusters.
+HOPSTACK (Self Provisioning Ad Hoc Clustering ToolKit) facilitates the
+automation and deployment of software piplines across existing infrastructure
+in user space. The HOPSTACK project was initally started because there are no
+effective tools or methods used by scientists and journalists to document, 
+write, and exectue computational analyses. This discontinuity makes 
+computational research difficult to reproduce, often adding significant overhead
+to researchers workloads. HOPSTACK aims to address these problems with a 
+comprehensive set of tools to create, document, run and distriubte standarized
+software pipelines across UNIX-like computers and clusters.
 
-LASubway is named after Los Angeles' 1990's metro system for two resasons:
+**General Goals of HOPSTACK:**
 
-1. Subway systems provide a rough metaphor for software pipelining, providing 
-   easy names for features and concepts
-2. The LA subway is an incomplete, ambitious project -- both parrallel with the 
-   LASubway software suite in its current state.
-
-**General Goals of LASubway:**
-
-- Remove programming from software pipelining
+- Remove programming from software pipeline automation
 - Provide a simple interface and tools for working with software pipelines
 - Create a standard for modular, container-like software pipelines (metros)
   that run everywhere on Unix-like platforms
 - Create a 'user-grid' system that allows users to connect all resources
   they have access to and utilize it to run pipelines
 
-**Planned Features of LASubway:**
+**Planned Features of HOPSTACK:**
 
 - Tools to create, execute, and document standardized, recusively modular
   software pipelines (metros)
@@ -40,18 +33,18 @@ LASubway is named after Los Angeles' 1990's metro system for two resasons:
 - Interfaces to popular sechudulers (Slurm, SGE)
 - Ad-hoc clustering with SSH
 
-As the LASubway project evolves, these planned features will likely evolve with
-it. This documentation will updated continuously as LAS is developed.
+As the HOPSTACK project evolves, these planned features will likely evolve with
+it. This documentation will updated continuously as HOPSTACK is developed.
 
 Overview of Basic Structure:
 ============================
 
-In it's current state of development and planning LASubway defines three
-distinct object types (called ``LASOs`` for LASubway Objects): ``stations``,
+In it's current state of development and planning HOPSTACK defines three
+distinct object types (called ``LASOs`` for HOPSTACK Objects): ``stations``,
 ``metro lines`` and ``metros``, each comprised of the previous in the list. All
 LAS data objects are defined with ``YAML`` files inside a metro's base
-directory. All LAS objects are linked together with LASubway's ``data 
-interpreter`` LASDI. LASDI and the LAS objects are described more below.
+directory. All LAS objects are linked together with HOPSTACK's ``data 
+interpreter`` DI. DI and the LAS objects are described more below.
 
 Stations:
 ---------
@@ -59,14 +52,14 @@ Stations:
 ``Stations`` are the most basic of the LASOs. A station defines one shell
 command or LAS module and the type of input and output data expected. Stations
 are the building blocks of all other LAS objects. ``Stations`` are linked 
-together using ``LASDI`` in ``metro lines`` to provide a simple way of pipeing 
+together using ``DI`` in ``metro lines`` to provide a simple way of pipeing 
 data between different shell commands and or LAS modules.
 
 Metro Lines:
 ------------
 
 ``Metro lines``, the next object layer above ``stations``, are simply a linear
-set of ``stations`` that pipe data from one end to the other using ``LASDI``. 
+set of ``stations`` that pipe data from one end to the other using ``DI``. 
 
 Metros:
 -------
@@ -76,25 +69,25 @@ together to provide a unidirectional (and potentially parallel) graph. In the
 future I plan on implementing conditional control flow to ``metros`` to allow
 for dynamic 'smart' ``metros``. 
 
-The ``metro`` format is the software pipeline standard that LASubway intends
+The ``metro`` format is the software pipeline standard that HOPSTACK intends
 to provide, however, ``stations`` and ``metro lines`` can be run independenly
 from ``metros``.
 
 
-LAS Data Interpreter (LASDI):
+Data Interpreter (DI):
 ==========================================
-The LAS Data Interpreter is one of LASubway's key abstractions. LASDI's main 
+Data Interpreter is one of HOPSTACK's key abstractions. DI's main 
 function is to fetch/prepare data for the start of a pipeline as well as pipe
-data between different parts of the pipeline. At it's most basic level, LASDI 
+data between different parts of the pipeline. At it's most basic level, DI 
 takes a string as input, attempts to find verified data files with it, 
 downloads and prepares data if nessesary, and then outputs (optionally) 
-formatted and filtered filepaths or raw data. You pass LASDI an URL that points
-to a directory in the file system, LASDI will return every file inside that 
-directory. Pass LASDI the URL of a tar.gz file on the Web, LASDI will download 
+formatted and filtered filepaths or raw data. You pass DI an URL that points
+to a directory in the file system, DI will return every file inside that 
+directory. Pass DI the URL of a tar.gz file on the Web, DI will download 
 the tar.gz file into a tmp direcotry, decompress and untar the archive and 
 return the true file paths of every file inside the archive. 
 
-LASDI Can also take any LAS object as input. LASDI will run the LAS object 
+DI Can also take any LAS object as input. DI will run the LAS object 
 provided as input and pipe it's data into an existing pipeline.
 
 Protocols (Soon to be) Supported:
@@ -103,26 +96,26 @@ Protocols (Soon to be) Supported:
 - HTTP(S)
 - SSH
 
-LASDI is currently under development.
+DI is currently under development.
 
-LAS Data Interpreter References (LASDIRs):
+Data Interpreter References (DIRs):
 ------------------------------------------
 
-Strings decoded by LASDI are called ``LAS Data Interpreter References
-(LASDIRS)``, or ``Data References`` for short. LASDIR syntax could be 
+Strings decoded by DI are called ``Data Interpreter References
+(DIRS)``, or ``Data References`` for short. DIR syntax could be 
 considered an extention of traditional URL syntax, adding a few new schemes,
 utilizing Parameters to parse and filter data, and allowing raw data to be 
-valid under certain schemes. LASDIRs are comprised of two individual peices: A 
+valid under certain schemes. DIRs are comprised of two individual peices: A 
 ``URL`` or raw data sring, and variable combinations of ``Paramters``. 
 
-LASDIR Schemes:
+DIR Schemes:
 ---------------
 
-LASDIR syntax provides several custom URL schemes that allow for interaction 
-with higher-level LASubway processes:
+DIR syntax provides several custom URL schemes that allow for interaction 
+with higher-level HOPSTACK processes:
 
 **Previous LASO object output:** The base of the file path is the output 
-directory of the previous LASubway Object in the pipeline
+directory of the previous HOPSTACK Object in the pipeline
 
 ::
 
@@ -145,7 +138,7 @@ Metro's shared space directory (called Workspace)
 Parameters:
 ----------
 
-Parameters can be used to filter and format the output of LASDI.
+Parameters can be used to filter and format the output of DI.
 
 In Data References, Parameters are appened to URLs and surrounded by backticks
 
@@ -223,7 +216,7 @@ Example:
 Getting Involved:
 =================
 
-If you want to get involved in developing LASubway please let me know. You can
+If you want to get involved in developing HOPSTACK please let me know. You can
 reach me at wpatt2 (at) pdx.edu. Currently most of the project is planned but
 not implemented so there is A LOT to do. I am a busy, working college student 
 with little time to work on personal projects.
