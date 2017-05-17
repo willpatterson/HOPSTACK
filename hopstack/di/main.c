@@ -41,6 +41,8 @@ struct URI * parse_uri(char * raw_uri) {
     int host_cooridnates[2] = {-1};
     int port_coordinates[2] = {-1};
     int path_coordinates[2] = {-1};
+    int query_coordinates[2] = {-1, -1};
+    int fragment_coordinates[2] = {-1, -1};
 
     int tmp_collon = -1; 
 
@@ -81,8 +83,17 @@ struct URI * parse_uri(char * raw_uri) {
             path_coordinates[0] = tmp_uriptr - raw_uri;
             port_coordinates[1] = tmp_uriptr - raw_uri - 1;
         }
-
+        else if (*tmp_uriptr == '?') {} //Parse out query
+        else if (*tmp_uriptr == '#') {} //Parse out fragment
     }
+    if (query_coordinates[0] != -1) {
+        path_coordinates[1] = query_coordinates[0] - 1;
+    }
+    else if (fragment_coordinates[0] != -1) {
+        path_coordinates[1] = fragment_coordinates[0] - 1;
+    }
+    else { path_coordinates[1] = uri_len; }
+
     printf("User Coordinates\n");
     printf("Start: %d\nEnd: %d\n", user_coordinates[0], user_coordinates[1]); 
     printf("Password Coordinates\n");
