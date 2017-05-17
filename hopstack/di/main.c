@@ -55,8 +55,8 @@ struct URI * parse_uri(char * raw_uri) {
         if (tmp_char == ':') {
             if (!scheme_found) { //Parse out scheme
                 scheme_end = tmp_uriptr - raw_uri;
-                uri->scheme = (char *) malloc(scheme_end);
-                strncpy(uri->scheme, raw_uri, scheme_end);
+                uri->scheme = (char *) malloc(scheme_end); //TODO make this async
+                strncpy(uri->scheme, raw_uri, scheme_end); //
                 scheme_found = 1;
             }
             else if (scheme_found && user_found) { //Parse out port
