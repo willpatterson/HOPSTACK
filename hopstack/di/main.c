@@ -49,8 +49,10 @@ struct URI * parse_uri(char * raw_uri) {
     int path_start = -1;
 
     char * tmp_uriptr;
-    for (tmp_uriptr = raw_uri; *tmp_uriptr != '\0'; ++tmp_uriptr) {
-        if (*tmp_uriptr == ':') {
+    char tmp_char;
+    for (tmp_uriptr = raw_uri; *tmp_uriptr != '\0'; ++tmp_uriptr) { //iterate through raw_uri string
+        tmp_char = *tmp_uriptr; 
+        if (tmp_char == ':') {
             if (!scheme_found) { //Parse out scheme
                 scheme_end = tmp_uriptr - raw_uri;
                 uri->scheme = (char *) malloc(scheme_end);
@@ -65,7 +67,7 @@ struct URI * parse_uri(char * raw_uri) {
                 tmp_collon = tmp_uriptr - raw_uri;
             }
         }
-        else if (*tmp_uriptr == '@') { //Parse out user and password
+        else if (tmp_char == '@') { //Parse out user and password
             user_found = 1;
             host_cooridnates[0] = tmp_uriptr - raw_uri;
             if (tmp_collon) {
@@ -79,12 +81,12 @@ struct URI * parse_uri(char * raw_uri) {
                 user_coordinates[1] = tmp_uriptr - raw_uri;
             }
         }
-        else if ((*tmp_uriptr == '/') && (tmp_uriptr-raw_uri > (scheme_end+2)) && (path_coordinates[0] == -1)) { //Parse out path
+        else if ((tmp_char == '/') && (tmp_uriptr-raw_uri > (scheme_end+2)) && (path_coordinates[0] == -1)) { //Parse out path
             path_coordinates[0] = tmp_uriptr - raw_uri;
             port_coordinates[1] = tmp_uriptr - raw_uri - 1;
         }
-        else if (*tmp_uriptr == '?') {} //Parse out query
-        else if (*tmp_uriptr == '#') {} //Parse out fragment
+        else if (tmp_char == '?') {} //Parse out query
+        else if (tmp_char == '#') {} //Parse out fragment
     }
     if (query_coordinates[0] != -1) {
         path_coordinates[1] = query_coordinates[0] - 1;
