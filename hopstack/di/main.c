@@ -30,6 +30,8 @@ char * valid_schemes = "https http scp ftp sftp";
 struct URI * parse_uri(char * raw_uri) {
     struct URI *uri = malloc (sizeof (struct URI));
 
+    int uri_len = strlen(raw_uri);
+
     int scheme_found = 0;
     int scheme_end = 0; //First collon
     int user_found = 0;
@@ -75,11 +77,11 @@ struct URI * parse_uri(char * raw_uri) {
                 user_coordinates[1] = tmp_uriptr - raw_uri;
             }
         }
-        else if ((*tmp_uriptr == '/') && (tmp_uriptr-raw_uri > (scheme_end+2))) { //Parse out path
-            if (port_coordinates[0] != -1) {
-                port_coordinates[1] = tmp_uriptr - raw_uri;
-            }
+        else if ((*tmp_uriptr == '/') && (tmp_uriptr-raw_uri > (scheme_end+2)) && (path_coordinates[0] == -1)) { //Parse out path
+            path_coordinates[0] = tmp_uriptr - raw_uri;
+            port_coordinates[1] = tmp_uriptr - raw_uri - 1;
         }
+
     }
     printf("User Coordinates\n");
     printf("Start: %d\nEnd: %d\n", user_coordinates[0], user_coordinates[1]); 
