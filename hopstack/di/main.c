@@ -85,16 +85,26 @@ struct URI * parse_uri(char * raw_uri) {
             path_coordinates[0] = tmp_uriptr - raw_uri;
             port_coordinates[1] = tmp_uriptr - raw_uri - 1;
         }
-        else if (tmp_char == '?') {} //Parse out query
-        else if (tmp_char == '#') {} //Parse out fragment
+        else if (tmp_char == '?') { //Parse out query
+            query_coordinates[0] = tmp_uriptr - raw_uri;
+            path_coordinates[1] = tmp_uriptr - raw_uri - 1;
+        } 
+        else if (tmp_char == '#') { //Parse out fragment
+            fragment_coordinates[0] = tmp_uriptr - raw_uri;
+            if (query_coordinates[0] != -1) {
+                query_coordinates[1] = tmp_uriptr - raw_uri - 1;
+            }
+            else {
+                path_coordinates[1] = tmp_uriptr - raw_uri - 1;
+            }
+        } 
     }
-    if (query_coordinates[0] != -1) {
-        path_coordinates[1] = query_coordinates[0] - 1;
+    if ((query_coordinates[0] == -1) && (fragment_coordinates[0] == -1)) {
+        path_coordinates[1] = uri_len;
     }
     else if (fragment_coordinates[0] != -1) {
-        path_coordinates[1] = fragment_coordinates[0] - 1;
+        fragment_coordinates[1] = uri_len;
     }
-    else { path_coordinates[1] = uri_len; }
 
     printf("User Coordinates\n");
     printf("Start: %d\nEnd: %d\n", user_coordinates[0], user_coordinates[1]); 
@@ -106,11 +116,15 @@ struct URI * parse_uri(char * raw_uri) {
     printf("Start: %d\nEnd: %d\n", port_coordinates[0], port_coordinates[1]); 
     printf("Path Coordinates\n");
     printf("Start: %d\nEnd: %d\n", path_coordinates[0], path_coordinates[1]); 
+    printf("Query Coordinates\n");
+    printf("Start: %d\nEnd: %d\n", query_coordinates[0], query_coordinates[1]);
+    printf("Fragment Coordinates\n");
+    printf("Start: %d\nEnd: %d\n", fragment_coordinates[0], fragment_coordinates[1]);
     return uri;
 }
 
 int main() {
-    char * raw_uri = "scheme://user:passowrd@example.com:123/dir1/dir2/dir3";
+    char * raw_uri = "scheme://user:passowrd@example.com:123/dir1/dir2/dir3?query#fragment";
     struct URI * parsed_uri;
     printf("Len: %lu\n", strlen(raw_uri));
     printf("Raw: %s\n", raw_uri);
