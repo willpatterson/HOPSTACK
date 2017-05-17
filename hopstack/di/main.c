@@ -25,7 +25,7 @@ struct URP {
     struct rule * rules;
 };
 
-char * valid_schemes = "https http scp ftp sftp";
+char valid_schemes[] = "https http scp ftp sftp";
 
 struct URI * parse_uri(char * raw_uri) {
     struct URI *uri = malloc (sizeof (struct URI));
@@ -36,12 +36,12 @@ struct URI * parse_uri(char * raw_uri) {
     int scheme_end = 0; //First collon
     int user_found = 0;
 
-    int user_coordinates[2] = {-1};
-    int password_cooridnates[2] = {-1};
-    int host_cooridnates[2] = {-1};
-    int port_coordinates[2] = {-1};
-    int path_coordinates[2] = {-1};
-    int query_coordinates[2] = {-1, -1};
+    int user_coordinates[2]     = {-1, -1};
+    int password_cooridnates[2] = {-1, -1};
+    int host_cooridnates[2]     = {-1, -1};
+    int port_coordinates[2]     = {-1, -1};
+    int path_coordinates[2]     = {-1, -1};
+    int query_coordinates[2]    = {-1, -1};
     int fragment_coordinates[2] = {-1, -1};
 
     int tmp_collon = -1; 
