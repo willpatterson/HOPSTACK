@@ -51,20 +51,23 @@ struct URI * parse_uri(char * raw_uri) {
     char * tmp_uriptr;
     char tmp_char;
     for (tmp_uriptr = raw_uri; *tmp_uriptr != '\0'; ++tmp_uriptr) { //iterate through raw_uri string
-        tmp_char = *tmp_uriptr; 
+        tmp_char = *tmp_uriptr; //Set tmp char so tmp_uriptr doesnt have to be dereferenced multiple times
         if (tmp_char == ':') {
             if (!scheme_found) { //Parse out scheme
                 scheme_end = tmp_uriptr - raw_uri;
-                uri->scheme = (char *) malloc(scheme_end); //TODO make this async
+                printf("%d\n", scheme_end);
+                uri->scheme = (char *) malloc(scheme_end+1); //TODO make this async
                 strncpy(uri->scheme, raw_uri, scheme_end); //
                 scheme_found = 1;
             }
             else if (scheme_found && user_found) { //Parse out port
                 port_coordinates[0] = tmp_uriptr - raw_uri;
-                host_cooridnates[1] = port_coordinates[0] + 1; //this could cause problems
+                host_cooridnates[1] = tmp_uriptr - raw_uri + 1; //this could cause problems
             }
             else if (scheme_found && !user_found) {
                 tmp_collon = tmp_uriptr - raw_uri;
+                printf("%c\n", raw_uri[tmp_collon]);
+                printf("%d\n", tmp_collon);
             }
         }
         else if (tmp_char == '@') { //Parse out user and password
@@ -73,8 +76,16 @@ struct URI * parse_uri(char * raw_uri) {
             if (tmp_collon) {
                 user_coordinates[0] = scheme_end + 2;
                 user_coordinates[1] = tmp_collon;
-                password_cooridnates[0] = tmp_collon;
-                password_cooridnates[1] = tmp_uriptr - raw_uri;
+                /* Consider what will happen if there isnt a '://' in a uri..
+                 * How can this caught before memory is allocated and written too
+                 * This could be a potential vulerability */
+                uri->user = (char *) malloc(tmp_collon-(scheme_end+3)+1); //TODO make this async
+                strncpy(uri->user, raw_uri+scheme_end+3, tmp_collon-(scheme_end+3)); //
+
+                //password_cooridnates[0] = tmp_collon;
+                //password_cooridnates[1] = tmp_uriptr - raw_uri;
+                uri->password = (char *) malloc((tmp_uriptr-raw_uri)-tmp_collon); //TODO make this async
+                strncpy(uri->password, raw_uri+tmp_collon+1, (tmp_uriptr-raw_uri)-tmp_collon-1); //
             }
             else {
                 user_coordinates[0] = scheme_end + 2;
@@ -123,12 +134,16 @@ struct URI * parse_uri(char * raw_uri) {
     return uri;
 }
 
+short validate_uri(struct URI uri) {/*TODO*/}
+
 int main() {
     char * raw_uri = "scheme://user:passowrd@example.com:123/dir1/dir2/dir3?query#fragment";
     struct URI * parsed_uri;
     printf("Len: %lu\n", strlen(raw_uri));
     printf("Raw: %s\n", raw_uri);
     parsed_uri = parse_uri(raw_uri);
-    //printf("%s\n", parsed_uri->scheme);
+    printf("%s\n", parsed_uri->scheme);
+    printf("%s\n", parsed_uri->user);
+    printf("%s\n", parsed_uri->password);
 }
 
