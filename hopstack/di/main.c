@@ -141,6 +141,21 @@ struct URI * parse_uri(char * raw_uri) {
 
 short validate_uri(struct URI uri) { /*TODO*/ return 0; }
 
+void deallocate_uri(struct URI * uri) {
+    if (uri == NULL) { return; }
+
+    if (uri->scheme != NULL) { free(uri->scheme); }
+    if (uri->user != NULL) { free(uri->user); }
+    if (uri->password != NULL) { free(uri->password); }
+    if (uri->host != NULL) { free(uri->host); }
+    if (uri->port != NULL) { free(uri->port); }
+    if (uri->path != NULL) { free(uri->path); }
+    if (uri->query != NULL) { free(uri->query); }
+    if (uri->fragment != NULL) { free(uri->fragment); }
+    free(uri);
+    return;
+}
+
 void display_URI(struct URI * uri) {
     if (uri == NULL) {
         printf("EMPTY URI POINTER\n");
@@ -183,6 +198,7 @@ void display_URI(struct URI * uri) {
 
 
 int main() {
+    /*
     printf("FULL URL\n");
     char full_URI[] = "scheme://user:passowrd@example.com:123/dir1/dir2/dir3?query#fragment";
     struct URI * parsed_uri;
@@ -190,17 +206,42 @@ int main() {
     printf("Raw: %s\n", full_URI);
     parsed_uri = parse_uri(full_URI);
     display_URI(parsed_uri);
+    deallocate_uri(parsed_uri);
 
     printf("NO PASSWORD\n");
-    struct URI * parsed_uri_nowpasswd;
+    //struct URI * parsed_uri_nowpasswd;
     char no_password_URI[] = "scheme://user@example.com:123/dir1/dir2/dir3?query#fragment";
     printf("Len: %lu\n", strlen(no_password_URI));
     printf("Raw: %s\n", no_password_URI);
-    parsed_uri_nowpasswd = parse_uri(no_password_URI);
-    display_URI(parsed_uri_nowpasswd);
+    parsed_uri = parse_uri(no_password_URI);
+    display_URI(parsed_uri);
+    */
 
-    char no_password_user_URI[] = "scheme://example.com:123/dir1/dir2/dir3?query#fragment";
-    char no_password_user_port_URI[] = "scheme://example.com/dir1/dir2/dir3?query#fragment";
-    char no_password_user_port_query_URI[] = "scheme://example.com/dir1/dir2/dir3#fragment";
+    char * URIs[] = {"scheme://user:passowrd@example.com:123/dir1/dir2/dir3?query#fragment",
+                     "scheme://user@example.com:123/dir1/dir2/dir3?query#fragment",
+                     "scheme://example.com:123/dir1/dir2/dir3?query#fragment",
+                     "scheme://example.com/dir1/dir2/dir3?query#fragment",
+                     "scheme://example.com/dir1/dir2/dir3?query",
+                     "scheme://example.com/dir1/dir2/dir3#fragment",
+                     "scheme://example.com/dir1/dir2/dir3",
+                     "scheme://example.com",
+                     "scheme://example.com:123",
+                     "scheme://example.com#fragment",
+                     "scheme://example.com?query",
+                     "scheme://example.com?query#fragment",
+                     "scheme://example.com:123?query#fragment",
+                     NULL};
+
+    struct URI * parsed_uri;
+    char ** tmp_uriptr;
+    for (tmp_uriptr = URIs; *tmp_uriptr != NULL; ++tmp_uriptr) { //iterate through raw_uri string
+        printf("////////////////////////////////////////////////////////\n");
+        printf("Raw URI: %s\n", *tmp_uriptr);
+        printf("Length : %lu\n", strlen(*tmp_uriptr));
+        parsed_uri = parse_uri(*tmp_uriptr);
+        display_URI(parsed_uri);
+        deallocate_uri(parsed_uri);
+    }
+    printf("////////////////////////////////////////////////////////\n");
 }
 
