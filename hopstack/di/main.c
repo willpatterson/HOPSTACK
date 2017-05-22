@@ -59,7 +59,7 @@ struct URI * parse_uri(char * raw_uri) {
                 scheme_found = 1;
             }
             else if (scheme_found && user_found) { //Parse out port
-                port_start = tmp_uriptr - raw_uri;
+                port_start = tmp_uriptr - raw_uri+1;
 
                 //Allocate and store hostname
                 uri->host = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-host_start)));
@@ -71,8 +71,6 @@ struct URI * parse_uri(char * raw_uri) {
         }
         else if (tmp_char == '@') { //Parse out user and password
             user_found = 1;
-            //host_cooridnates[0] = tmp_uriptr - raw_uri;
-            host_start = tmp_uriptr - raw_uri;
             host_start = tmp_uriptr - raw_uri;
             if (tmp_collon != -1) {
                 /* Consider what will happen if there isnt a '://' in a uri..
@@ -94,15 +92,31 @@ struct URI * parse_uri(char * raw_uri) {
         }
         else if ((tmp_char == '/') && (tmp_uriptr-raw_uri > (scheme_end+2)) && (path_start == -1)) {
             path_start = tmp_uriptr - raw_uri;
-
-            //Allocate and store port
-            uri->port = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-1)-port_start+1));
-            strncpy(uri->port, raw_uri+port_start+1, ((tmp_uriptr-raw_uri-1)-port_start));
-        }
-        else if ((tmp_char == '/') && (tmp_collon != -1) && !user_found) {
-            //Allocate and store hostname
-            uri->host = (char *) malloc(sizeof(char)*(tmp_collon-(scheme_end+3)+1));
-            strncpy(uri->host, raw_uri+scheme_end+3, tmp_collon-(scheme_end+3));
+            if (port_start != -1) {
+                //Allocate and store port
+                uri->port = (char *) malloc(sizeof(char)*(path_start-port_start)+1);
+                strncpy(uri->port, raw_uri+port_start, path_start-port_start);
+            }
+            else if (tmp_collon != -1) {
+                if (user_found == 1) {
+                    //Allocate and store hostname
+                    uri->host = (char *) malloc(sizeof(char)*(path_start-host_start)+1);
+                    strncpy(uri->host, raw_uri+host_start, path_start-host_start);
+                }
+                else {
+                    //Allocate and store port
+                    uri->port = (char *) malloc(sizeof(char)*(path_start-tmp_collon)+1);
+                    strncpy(uri->port, raw_uri+tmp_collon+1, path_start-tmp_collon-1);
+                    //Allocate and store hostname
+                    uri->host = (char *) malloc(sizeof(char)*(tmp_collon-(scheme_end+3)+1));
+                    strncpy(uri->host, raw_uri+scheme_end+3, tmp_collon-(scheme_end+3));
+                }
+            }
+            else {
+                //Allocate and store host
+                uri->host = (char *) malloc(sizeof(char)*(path_start-(scheme_end+3)+1));
+                strncpy(uri->host, raw_uri+scheme_end+3, path_start-(scheme_end+3));
+            }
         }
         else if (tmp_char == '?') { //Parse out query
             query_start = tmp_uriptr - raw_uri;
@@ -141,6 +155,11 @@ struct URI * parse_uri(char * raw_uri) {
         //Allocate and store fragment
         uri->fragment = (char *) malloc(sizeof(char)*(uri_len-fragment_start+1));
         strncpy(uri->fragment, raw_uri+fragment_start+1, (uri_len-fragment_start));
+    }
+    else {
+        //Allocate and store host
+        uri->host = (char *) malloc(sizeof(char)*(uri_len-(scheme_end+3))+1);
+        strncpy(uri->host, raw_uri+scheme_end+3, uri_len-(scheme_end+3));
     }
     return uri;
 }
