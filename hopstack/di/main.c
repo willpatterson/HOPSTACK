@@ -54,16 +54,16 @@ struct URI * parse_uri(char * raw_uri) {
                 scheme_end = tmp_uriptr - raw_uri;
 
                 //Allocate and store scheme
-                uri->scheme = (char *) malloc(sizeof(char)*(scheme_end+1)); //TODO make this async
-                strncpy(uri->scheme, raw_uri, scheme_end); //
+                uri->scheme = (char *) malloc(sizeof(char)*(scheme_end+1));
+                strncpy(uri->scheme, raw_uri, scheme_end); 
                 scheme_found = 1;
             }
             else if (scheme_found && user_found) { //Parse out port
                 port_start = tmp_uriptr - raw_uri;
 
                 //Allocate and store hostname
-                uri->host = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-host_start))); //TODO make this async
-                strncpy(uri->host, raw_uri+host_start+1, tmp_uriptr-raw_uri-host_start-1); //
+                uri->host = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-host_start)));
+                strncpy(uri->host, raw_uri+host_start+1, tmp_uriptr-raw_uri-host_start-1);
             }
             else if (scheme_found && !user_found) {
                 tmp_collon = tmp_uriptr - raw_uri;
@@ -79,62 +79,62 @@ struct URI * parse_uri(char * raw_uri) {
                  * How can this caught before memory is allocated and written too
                  * This could be a potential vulerability */
                 //Allocate and store user
-                uri->user = (char *) malloc(sizeof(char)*(tmp_collon-(scheme_end+3)+1)); //TODO make this async
-                strncpy(uri->user, raw_uri+scheme_end+3, tmp_collon-(scheme_end+3)); //
+                uri->user = (char *) malloc(sizeof(char)*(tmp_collon-(scheme_end+3)+1));
+                strncpy(uri->user, raw_uri+scheme_end+3, tmp_collon-(scheme_end+3)); 
                 
                 //Allocate and store password
-                uri->password = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri)-tmp_collon)); //TODO make this async
-                strncpy(uri->password, raw_uri+tmp_collon+1, (tmp_uriptr-raw_uri)-tmp_collon-1); //
+                uri->password = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri)-tmp_collon));
+                strncpy(uri->password, raw_uri+tmp_collon+1, (tmp_uriptr-raw_uri)-tmp_collon-1);
             }
             else {
                 //Allocate and store user
-                uri->user = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri)-(scheme_end+3)+1)); //TODO make this async
-                strncpy(uri->user, raw_uri+scheme_end+3, (tmp_uriptr-raw_uri)-(scheme_end+3)); //
+                uri->user = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri)-(scheme_end+3)+1));
+                strncpy(uri->user, raw_uri+scheme_end+3, (tmp_uriptr-raw_uri)-(scheme_end+3));
             }
         }
         else if ((tmp_char == '/') && (tmp_uriptr-raw_uri > (scheme_end+2)) && (path_start == -1)) { //Parse out path
             path_start = tmp_uriptr - raw_uri;
 
             //Allocate and store port
-            uri->port = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-1)-port_start+1)); //TODO make this async
-            strncpy(uri->port, raw_uri+port_start+1, ((tmp_uriptr-raw_uri-1)-port_start)); //
+            uri->port = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-1)-port_start+1));
+            strncpy(uri->port, raw_uri+port_start+1, ((tmp_uriptr-raw_uri-1)-port_start));
         }
         else if ((tmp_char == '/') && (tmp_collon != -1) && !user_found) {
             //Allocate and store hostname
-            uri->host = (char *) malloc(sizeof(char)*(tmp_collon-(scheme_end+3)+1)); //TODO make this async
-            strncpy(uri->host, raw_uri+scheme_end+3, tmp_collon-(scheme_end+3)); //
+            uri->host = (char *) malloc(sizeof(char)*(tmp_collon-(scheme_end+3)+1));
+            strncpy(uri->host, raw_uri+scheme_end+3, tmp_collon-(scheme_end+3));
         }
         else if (tmp_char == '?') { //Parse out query
             query_start = tmp_uriptr - raw_uri;
 
             //Allocate and store path
-            uri->path = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-1)-path_start+1)); //TODO make this async
-            strncpy(uri->path, raw_uri+path_start+1, ((tmp_uriptr-raw_uri-1)-path_start)); //
+            uri->path = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-1)-path_start+1));
+            strncpy(uri->path, raw_uri+path_start+1, ((tmp_uriptr-raw_uri-1)-path_start)); 
         } 
         else if (tmp_char == '#') { //Parse out fragment
             fragment_start = tmp_uriptr - raw_uri;
             if (query_start != -1) {
                 //Allocate and store query
-                uri->query = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-1)-query_start+1)); //TODO make this async
-                strncpy(uri->query, raw_uri+query_start+1, ((tmp_uriptr-raw_uri-1)-query_start)); //
+                uri->query = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-1)-query_start+1));
+                strncpy(uri->query, raw_uri+query_start+1, ((tmp_uriptr-raw_uri-1)-query_start));
             }
             else {
                 //Allocate and store path
-                uri->path = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-1)-path_start+1)); //TODO make this async
-                strncpy(uri->path, raw_uri+path_start+1, ((tmp_uriptr-raw_uri-1)-path_start)); //
+                uri->path = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-1)-path_start+1));
+                strncpy(uri->path, raw_uri+path_start+1, ((tmp_uriptr-raw_uri-1)-path_start)); 
             }
         } 
     }
 
     if ((query_start == -1) && (fragment_start == -1)) {
         //Allocate and store path
-        uri->path = (char *) malloc(sizeof(char)*(uri_len-path_start+1)); //TODO make this async
-        strncpy(uri->path, raw_uri+path_start+1, (uri_len-path_start)); //
+        uri->path = (char *) malloc(sizeof(char)*(uri_len-path_start+1));
+        strncpy(uri->path, raw_uri+path_start+1, (uri_len-path_start)); 
     }
     else if (fragment_start != -1) {
         //Allocate and store fragment
-        uri->fragment = (char *) malloc(sizeof(char)*(uri_len-fragment_start+1)); //TODO make this async
-        strncpy(uri->fragment, raw_uri+fragment_start+1, (uri_len-fragment_start)); //
+        uri->fragment = (char *) malloc(sizeof(char)*(uri_len-fragment_start+1));
+        strncpy(uri->fragment, raw_uri+fragment_start+1, (uri_len-fragment_start));
     }
     return uri;
 }
@@ -198,25 +198,6 @@ void display_URI(struct URI * uri) {
 
 
 int main() {
-    /*
-    printf("FULL URL\n");
-    char full_URI[] = "scheme://user:passowrd@example.com:123/dir1/dir2/dir3?query#fragment";
-    struct URI * parsed_uri;
-    printf("Len: %lu\n", strlen(full_URI));
-    printf("Raw: %s\n", full_URI);
-    parsed_uri = parse_uri(full_URI);
-    display_URI(parsed_uri);
-    deallocate_uri(parsed_uri);
-
-    printf("NO PASSWORD\n");
-    //struct URI * parsed_uri_nowpasswd;
-    char no_password_URI[] = "scheme://user@example.com:123/dir1/dir2/dir3?query#fragment";
-    printf("Len: %lu\n", strlen(no_password_URI));
-    printf("Raw: %s\n", no_password_URI);
-    parsed_uri = parse_uri(no_password_URI);
-    display_URI(parsed_uri);
-    */
-
     char * URIs[] = {"scheme://user:passowrd@example.com:123/dir1/dir2/dir3?query#fragment",
                      "scheme://user@example.com:123/dir1/dir2/dir3?query#fragment",
                      "scheme://example.com:123/dir1/dir2/dir3?query#fragment",
