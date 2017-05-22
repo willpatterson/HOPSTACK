@@ -28,7 +28,10 @@ struct URP {
 char valid_schemes[] = "https http scp ftp sftp";
 
 struct URI * parse_uri(char * raw_uri) {
-    struct URI *uri = malloc (sizeof (struct URI));
+    if (raw_uri == NULL) { return NULL; }
+
+    struct URI *uri = calloc (1, sizeof (struct URI));
+    //memset(&uri, 0, sizeof(struct URI));
 
     int uri_len = strlen(raw_uri);
 
@@ -55,8 +58,8 @@ struct URI * parse_uri(char * raw_uri) {
         if (tmp_char == ':') {
             if (!scheme_found) { //Parse out scheme
                 scheme_end = tmp_uriptr - raw_uri;
-                printf("%d\n", scheme_end);
-                uri->scheme = (char *) malloc(scheme_end+1); //TODO make this async
+                //Allocate and store scheme
+                uri->scheme = (char *) malloc(sizeof(char)*(scheme_end+1)); //TODO make this async
                 strncpy(uri->scheme, raw_uri, scheme_end); //
                 scheme_found = 1;
             }
@@ -73,23 +76,30 @@ struct URI * parse_uri(char * raw_uri) {
         else if (tmp_char == '@') { //Parse out user and password
             user_found = 1;
             host_cooridnates[0] = tmp_uriptr - raw_uri;
-            if (tmp_collon) {
+            if (tmp_collon != -1) {
                 user_coordinates[0] = scheme_end + 2;
                 user_coordinates[1] = tmp_collon;
                 /* Consider what will happen if there isnt a '://' in a uri..
                  * How can this caught before memory is allocated and written too
                  * This could be a potential vulerability */
-                uri->user = (char *) malloc(tmp_collon-(scheme_end+3)+1); //TODO make this async
+                //Allocate and store user
+                uri->user = (char *) malloc(sizeof(char)*(tmp_collon-(scheme_end+3)+1)); //TODO make this async
                 strncpy(uri->user, raw_uri+scheme_end+3, tmp_collon-(scheme_end+3)); //
 
                 //password_cooridnates[0] = tmp_collon;
                 //password_cooridnates[1] = tmp_uriptr - raw_uri;
-                uri->password = (char *) malloc((tmp_uriptr-raw_uri)-tmp_collon); //TODO make this async
+                
+                //Allocate and store password
+                uri->password = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri)-tmp_collon)); //TODO make this async
                 strncpy(uri->password, raw_uri+tmp_collon+1, (tmp_uriptr-raw_uri)-tmp_collon-1); //
             }
             else {
-                user_coordinates[0] = scheme_end + 2;
-                user_coordinates[1] = tmp_uriptr - raw_uri;
+                //user_coordinates[0] = scheme_end + 3;
+                //user_coordinates[1] = tmp_uriptr - raw_uri;
+
+                //Allocate and store user
+                uri->user = (char *) malloc(sizeof(char)*((tmp_uriptr - raw_uri)-(scheme_end+3)+1)); //TODO make this async
+                strncpy(uri->user, raw_uri+scheme_end+3, (tmp_uriptr - raw_uri)-(scheme_end+3)); //
             }
         }
         else if ((tmp_char == '/') && (tmp_uriptr-raw_uri > (scheme_end+2)) && (path_coordinates[0] == -1)) { //Parse out path
@@ -116,34 +126,71 @@ struct URI * parse_uri(char * raw_uri) {
     else if (fragment_coordinates[0] != -1) {
         fragment_coordinates[1] = uri_len;
     }
-
-    printf("User Coordinates\n");
-    printf("Start: %d\nEnd: %d\n", user_coordinates[0], user_coordinates[1]); 
-    printf("Password Coordinates\n");
-    printf("Start: %d\nEnd: %d\n", password_cooridnates[0], password_cooridnates[1]); 
-    printf("Host Coordinates\n");
-    printf("Start: %d\nEnd: %d\n", host_cooridnates[0], host_cooridnates[1]); 
-    printf("Port Coordinates\n");
-    printf("Start: %d\nEnd: %d\n", port_coordinates[0], port_coordinates[1]); 
-    printf("Path Coordinates\n");
-    printf("Start: %d\nEnd: %d\n", path_coordinates[0], path_coordinates[1]); 
-    printf("Query Coordinates\n");
-    printf("Start: %d\nEnd: %d\n", query_coordinates[0], query_coordinates[1]);
-    printf("Fragment Coordinates\n");
-    printf("Start: %d\nEnd: %d\n", fragment_coordinates[0], fragment_coordinates[1]);
     return uri;
 }
 
-short validate_uri(struct URI uri) {/*TODO*/}
+short validate_uri(struct URI uri) { /*TODO*/ return 0; }
+
+void display_URI(struct URI * uri) {
+    if (uri == NULL) {
+        printf("EMPTY URI POINTER\n");
+        return;
+    }
+    printf("Scheme  : ");
+    if (uri->scheme != NULL) { printf("%s\n", uri->scheme); }
+    else { printf("NONE\n"); }
+
+    printf("User    : ");
+    if (uri->user != NULL) { printf("%s\n", uri->user); }
+    else { printf("NONE\n"); }
+
+    printf("Password: ");
+    if (uri->password != NULL) { printf("%s\n", uri->password); }
+    else { printf("NONE\n"); }
+
+    printf("Hostname: ");
+    if (uri->host != NULL) { printf("%s\n", uri->host); }
+    else { printf("NONE\n"); }
+
+    printf("Port    : ");
+    if (uri->port != NULL) { printf("%s\n", uri->port); }
+    else { printf("NONE\n"); }
+    
+    printf("Path    : ");
+    if (uri->path != NULL) { printf("%s\n", uri->path); }
+    else { printf("NONE\n"); }
+
+    printf("Query   : ");
+    if (uri->query!= NULL) { printf("%s\n", uri->query); }
+    else { printf("NONE\n"); }
+
+    printf("Fragment: ");
+    if (uri->fragment!= NULL) { printf("%s\n", uri->fragment); }
+    else { printf("NONE\n"); }
+
+    return;
+}
+
 
 int main() {
-    char * raw_uri = "scheme://user:passowrd@example.com:123/dir1/dir2/dir3?query#fragment";
+    printf("FULL URL\n");
+    char full_URI[] = "scheme://user:passowrd@example.com:123/dir1/dir2/dir3?query#fragment";
     struct URI * parsed_uri;
-    printf("Len: %lu\n", strlen(raw_uri));
-    printf("Raw: %s\n", raw_uri);
-    parsed_uri = parse_uri(raw_uri);
-    printf("%s\n", parsed_uri->scheme);
-    printf("%s\n", parsed_uri->user);
-    printf("%s\n", parsed_uri->password);
+    printf("Len: %lu\n", strlen(full_URI));
+    printf("Raw: %s\n", full_URI);
+    parsed_uri = parse_uri(full_URI);
+    display_URI(parsed_uri);
+
+    printf("NO PASSWORD\n");
+    struct URI * parsed_uri_nowpasswd;
+    char no_password_URI[] = "scheme://user@example.com:123/dir1/dir2/dir3?query#fragment";
+    printf("Len: %lu\n", strlen(no_password_URI));
+    printf("Raw: %s\n", no_password_URI);
+    parsed_uri_nowpasswd = parse_uri(no_password_URI);
+    display_URI(parsed_uri_nowpasswd);
+
+    char no_password_user_URI[] = "scheme://example.com:123/dir1/dir2/dir3?query#fragment";
+    char no_password_user_port_URI[] = "scheme://example.com/dir1/dir2/dir3?query#fragment";
+    char no_password_user_port_query_URI[] = "scheme://example.com/dir1/dir2/dir3#fragment";
 }
 
