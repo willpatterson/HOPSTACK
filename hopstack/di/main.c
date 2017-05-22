@@ -51,6 +51,8 @@ struct URI * parse_uri(char * raw_uri) {
 
     int path_start = -1;
     int port_start = -1;
+    int query_start = -1;
+    int fragment_start = -1;
 
     char * tmp_uriptr;
     char tmp_char;
@@ -71,34 +73,24 @@ struct URI * parse_uri(char * raw_uri) {
             }
             else if (scheme_found && !user_found) {
                 tmp_collon = tmp_uriptr - raw_uri;
-                printf("%c\n", raw_uri[tmp_collon]);
-                printf("%d\n", tmp_collon);
             }
         }
         else if (tmp_char == '@') { //Parse out user and password
             user_found = 1;
             host_cooridnates[0] = tmp_uriptr - raw_uri;
             if (tmp_collon != -1) {
-                user_coordinates[0] = scheme_end + 2;
-                user_coordinates[1] = tmp_collon;
                 /* Consider what will happen if there isnt a '://' in a uri..
                  * How can this caught before memory is allocated and written too
                  * This could be a potential vulerability */
                 //Allocate and store user
                 uri->user = (char *) malloc(sizeof(char)*(tmp_collon-(scheme_end+3)+1)); //TODO make this async
                 strncpy(uri->user, raw_uri+scheme_end+3, tmp_collon-(scheme_end+3)); //
-
-                //password_cooridnates[0] = tmp_collon;
-                //password_cooridnates[1] = tmp_uriptr - raw_uri;
                 
                 //Allocate and store password
                 uri->password = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri)-tmp_collon)); //TODO make this async
                 strncpy(uri->password, raw_uri+tmp_collon+1, (tmp_uriptr-raw_uri)-tmp_collon-1); //
             }
             else {
-                //user_coordinates[0] = scheme_end + 3;
-                //user_coordinates[1] = tmp_uriptr - raw_uri;
-
                 //Allocate and store user
                 uri->user = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri)-(scheme_end+3)+1)); //TODO make this async
                 strncpy(uri->user, raw_uri+scheme_end+3, (tmp_uriptr-raw_uri)-(scheme_end+3)); //
@@ -114,24 +106,41 @@ struct URI * parse_uri(char * raw_uri) {
         }
         else if (tmp_char == '?') { //Parse out query
             query_coordinates[0] = tmp_uriptr - raw_uri;
+            query_start = tmp_uriptr - raw_uri;
             path_coordinates[1] = tmp_uriptr - raw_uri - 1;
+
+            //Allocate and store path
             uri->path = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-1)-path_start+1)); //TODO make this async
             strncpy(uri->path, raw_uri+path_start+1, ((tmp_uriptr-raw_uri-1)-path_start)); //
         } 
         else if (tmp_char == '#') { //Parse out fragment
             fragment_coordinates[0] = tmp_uriptr - raw_uri;
+            fragment_start = tmp_uriptr - raw_uri;
             if (query_coordinates[0] != -1) {
                 query_coordinates[1] = tmp_uriptr - raw_uri - 1;
+                //Allocate and store query
+                uri->query = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-1)-query_start+1)); //TODO make this async
+                strncpy(uri->query, raw_uri+query_start+1, ((tmp_uriptr-raw_uri-1)-query_start)); //
             }
             else {
                 path_coordinates[1] = tmp_uriptr - raw_uri - 1;
+                //Allocate and store path
+                uri->path = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-1)-path_start+1)); //TODO make this async
+                strncpy(uri->path, raw_uri+path_start+1, ((tmp_uriptr-raw_uri-1)-path_start)); //
             }
         } 
     }
+
     if ((query_coordinates[0] == -1) && (fragment_coordinates[0] == -1)) {
         path_coordinates[1] = uri_len;
+        //Allocate and store path
+        uri->path = (char *) malloc(sizeof(char)*(uri_len-path_start+1)); //TODO make this async
+        strncpy(uri->path, raw_uri+path_start+1, (uri_len-path_start)); //
     }
     else if (fragment_coordinates[0] != -1) {
+        //Allocate and store fragment
+        uri->fragment = (char *) malloc(sizeof(char)*(uri_len-fragment_start+1)); //TODO make this async
+        strncpy(uri->fragment, raw_uri+fragment_start+1, (uri_len-fragment_start)); //
         fragment_coordinates[1] = uri_len;
     }
     return uri;
