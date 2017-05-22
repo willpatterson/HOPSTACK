@@ -92,7 +92,7 @@ struct URI * parse_uri(char * raw_uri) {
                 strncpy(uri->user, raw_uri+scheme_end+3, (tmp_uriptr-raw_uri)-(scheme_end+3));
             }
         }
-        else if ((tmp_char == '/') && (tmp_uriptr-raw_uri > (scheme_end+2)) && (path_start == -1)) { //Parse out path
+        else if ((tmp_char == '/') && (tmp_uriptr-raw_uri > (scheme_end+2)) && (path_start == -1)) {
             path_start = tmp_uriptr - raw_uri;
 
             //Allocate and store port
@@ -108,8 +108,10 @@ struct URI * parse_uri(char * raw_uri) {
             query_start = tmp_uriptr - raw_uri;
 
             //Allocate and store path
-            uri->path = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-1)-path_start+1));
-            strncpy(uri->path, raw_uri+path_start+1, ((tmp_uriptr-raw_uri-1)-path_start)); 
+            if (path_start != -1) {
+                uri->path = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-1)-path_start+1));
+                strncpy(uri->path, raw_uri+path_start+1, ((tmp_uriptr-raw_uri-1)-path_start)); 
+            }
         } 
         else if (tmp_char == '#') { //Parse out fragment
             fragment_start = tmp_uriptr - raw_uri;
@@ -119,17 +121,21 @@ struct URI * parse_uri(char * raw_uri) {
                 strncpy(uri->query, raw_uri+query_start+1, ((tmp_uriptr-raw_uri-1)-query_start));
             }
             else {
-                //Allocate and store path
-                uri->path = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-1)-path_start+1));
-                strncpy(uri->path, raw_uri+path_start+1, ((tmp_uriptr-raw_uri-1)-path_start)); 
+                if (path_start != -1) {
+                    //Allocate and store path
+                    uri->path = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-1)-path_start+1));
+                    strncpy(uri->path, raw_uri+path_start+1, ((tmp_uriptr-raw_uri-1)-path_start)); 
+                }
             }
         } 
     }
 
     if ((query_start == -1) && (fragment_start == -1)) {
-        //Allocate and store path
-        uri->path = (char *) malloc(sizeof(char)*(uri_len-path_start+1));
-        strncpy(uri->path, raw_uri+path_start+1, (uri_len-path_start)); 
+        if (path_start != -1) {
+            //Allocate and store path
+            uri->path = (char *) malloc(sizeof(char)*(uri_len-path_start+1));
+            strncpy(uri->path, raw_uri+path_start+1, (uri_len-path_start)); 
+        }
     }
     else if (fragment_start != -1) {
         //Allocate and store fragment
