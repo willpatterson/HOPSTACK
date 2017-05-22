@@ -3,4 +3,4 @@
 *docker*.tgz*
 *.egg-info/
 .env
-*a.out
+*a.out*
