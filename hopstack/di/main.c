@@ -64,11 +64,11 @@ struct URI * parse_uri(char * raw_uri) {
     int current_index = -1;
     for (tmp_uriptr = raw_uri; *tmp_uriptr != '\0'; ++tmp_uriptr) { //iterate through raw_uri string
         tmp_char = *tmp_uriptr; //Set tmp char so tmp_uriptr doesnt have to be dereferenced multiple times
-        current_index =  tmp_uriptr - raw_uri;
+        current_index = tmp_uriptr - raw_uri;
 
         if (tmp_char == ':') {
             if (!scheme_found) { //Parse out scheme 
-                scheme_end = tmp_uriptr - raw_uri;
+                scheme_end = current_index;
 
                 //Allocate and store scheme
                 uri->scheme = (char *) malloc(sizeof(char)*(scheme_end+1));
@@ -76,37 +76,37 @@ struct URI * parse_uri(char * raw_uri) {
                 scheme_found = 1;
             }
             else if (scheme_found && user_found) { //Parse out host
-                port_start = tmp_uriptr - raw_uri+1;
+                port_start = current_index+1;
 
                 //Allocate and store hostname
-                uri->host = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-host_start)));
-                strncpy(uri->host, raw_uri+host_start+1, tmp_uriptr-raw_uri-host_start-1);
+                uri->host = (char *) malloc(sizeof(char)*((current_index-host_start)));
+                strncpy(uri->host, raw_uri+host_start+1, current_index-host_start-1);
             }
             else if (scheme_found && !user_found) { //Set tmp colon
-                tmp_collon = tmp_uriptr - raw_uri;
+                tmp_collon = current_index;
             }
         }
         else if (tmp_char == '@') { //Parse out user and password
             user_found = 1;
-            host_start = tmp_uriptr - raw_uri;
+            host_start = current_index;
             if (tmp_collon != -1) {
                 //Allocate and store user
                 uri->user = (char *) malloc(sizeof(char)*(tmp_collon-(scheme_end+3)+1));
                 strncpy(uri->user, raw_uri+scheme_end+3, tmp_collon-(scheme_end+3)); 
                 
                 //Allocate and store password
-                uri->password = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri)-tmp_collon));
-                strncpy(uri->password, raw_uri+tmp_collon+1, (tmp_uriptr-raw_uri)-tmp_collon-1);
+                uri->password = (char *) malloc(sizeof(char)*((current_index)-tmp_collon));
+                strncpy(uri->password, raw_uri+tmp_collon+1, (current_index)-tmp_collon-1);
                 tmp_collon = -1;
             }
             else {
                 //Allocate and store user
-                uri->user = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri)-(scheme_end+3)+1));
-                strncpy(uri->user, raw_uri+scheme_end+3, (tmp_uriptr-raw_uri)-(scheme_end+3));
+                uri->user = (char *) malloc(sizeof(char)*((current_index)-(scheme_end+3)+1));
+                strncpy(uri->user, raw_uri+scheme_end+3, (current_index)-(scheme_end+3));
             }
         }
-        else if ((tmp_char == '/') && (tmp_uriptr-raw_uri > (scheme_end+2)) && (path_start == -1)) {
-            path_start = tmp_uriptr - raw_uri;
+        else if ((tmp_char == '/') && (current_index > (scheme_end+2)) && (path_start == -1)) {
+            path_start = current_index;
             if (port_start != -1) {
                 //Allocate and store port
                 uri->port = (char *) malloc(sizeof(char)*(path_start-port_start)+1);
@@ -134,15 +134,15 @@ struct URI * parse_uri(char * raw_uri) {
             }
         }
         else if (tmp_char == '?') { //Parse out query
-            query_start = tmp_uriptr - raw_uri;
+            query_start = current_index;
 
             if (path_start != -1) {
                 //Allocate and store path
-                uri->path = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-1)-path_start+1));
-                strncpy(uri->path, raw_uri+path_start+1, ((tmp_uriptr-raw_uri-1)-path_start)); 
+                uri->path = (char *) malloc(sizeof(char)*((current_index-1)-path_start+1));
+                strncpy(uri->path, raw_uri+path_start+1, ((current_index-1)-path_start)); 
             }
             else if (tmp_collon != -1) {
-                if (user_found == 1) {
+                if (user_found == 1) { //TODO
                     //Allocate and store hostname
                     //uri->host = (char *) malloc(sizeof(char)*(path_start-host_start)+1);
                     //strncpy(uri->host, raw_uri+host_start, path_start-host_start);
@@ -157,24 +157,24 @@ struct URI * parse_uri(char * raw_uri) {
                 }
             }
             else if (port_start != -1) { //Not sure if this conditional does anything
-                uri->port = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-1)-port_start+1));
-                strncpy(uri->port, raw_uri+port_start+1, ((tmp_uriptr-raw_uri-1)-port_start)); 
+                uri->port = (char *) malloc(sizeof(char)*((current_index-1)-port_start+1));
+                strncpy(uri->port, raw_uri+port_start+1, ((current_index-1)-port_start)); 
             }
 
         } 
         else if (tmp_char == '#') { //Parse out fragment
-            fragment_start = tmp_uriptr - raw_uri;
+            fragment_start = current_index;
 
             if (query_start != -1) {
                 //Allocate and store query
-                uri->query = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-1)-query_start+1));
-                strncpy(uri->query, raw_uri+query_start+1, ((tmp_uriptr-raw_uri-1)-query_start));
+                uri->query = (char *) malloc(sizeof(char)*((current_index-1)-query_start+1));
+                strncpy(uri->query, raw_uri+query_start+1, ((current_index-1)-query_start));
             }
             else {
                 if (path_start != -1) {
                     //Allocate and store path
-                    uri->path = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-1)-path_start+1));
-                    strncpy(uri->path, raw_uri+path_start+1, ((tmp_uriptr-raw_uri-1)-path_start)); 
+                    uri->path = (char *) malloc(sizeof(char)*((current_index-1)-path_start+1));
+                    strncpy(uri->path, raw_uri+path_start+1, ((current_index-1)-path_start)); 
                 }
             }
         } 
@@ -294,21 +294,153 @@ void display_URI(struct URI * uri) {
     return;
 }
 
+struct URI_test {
+    char * uri;
+    char * info;
+
+    //Acceptable output:
+    char * scheme;
+    char * user;
+    char * password;
+    char * host;
+    char * port;
+    char * path;
+    char * query;
+    char * fragment;
+};
 
 int main() {
-    char * URIs[] = {"scheme://user:passowrd@example.com:123/dir1/dir2/dir3?query#fragment", //Passing
+    struct URI_test URI_tests[] = {{"scheme://example.com", "Simplist valid URI", "scheme", NULL, NULL, "example.com", NULL, NULL, NULL, NULL}, //SIMPLE BASE CASE
+
+                                   //WITH PORT
+                                   {"scheme://example.com:123", "Simplist valid URI + PORT", "scheme", NULL, NULL, "example.com", "123", NULL, NULL, NULL},
+                                   {"scheme://example.com:123/dir1/dir2", "Simplist valid URI + PORT + PATH", "scheme", NULL, NULL, "example.com", "123", "/dir1/dir2", NULL, NULL},
+                                   {"scheme://example.com:123/dir1/dir2?query", "Simplist valid URI + PORT + PATH + QUERY", "scheme", NULL, NULL, "example.com", "123", "/dir1/dir2", "query", NULL},
+                                   {"scheme://example.com:123/dir1/dir2#fragment", "Simplist valid URI + PORT + PATH + FRAGMENT", "scheme", NULL, NULL, "example.com", "123", "/dir1/dir2", NULL, "fragment"},
+                                   {"scheme://example.com:123/dir1/dir2?query#fragment", "Simplist valid URI + PROT + PATH + QUERY + FRAGMENT", "scheme", NULL, NULL, "example.com", "123", "/dir1/dir2", "query", "fragment"},
+                                   {"scheme://example.com:123?query", "Simplist valid URI + PORT + QUERY", "scheme", NULL, NULL, "example.com", "123", NULL, "query", NULL},
+                                   {"scheme://example.com:123#fragment", "Simplist valid URI + PORT + FRAGMENT", "scheme", NULL, NULL, "example.com", "123", NULL, NULL, "fragment"},
+                                   {"scheme://example.com:123?query#fragment", "Simplist valid URI + PORT + FRAGMENT + QUERY", "scheme", NULL, NULL, "example.com", "123", NULL, "query", "fragment"},
+
+                                   {"scheme://user@example.com:123", "SCHEME + USER + HOST + PORT", "scheme", "user", NULL, "example.com", "123", NULL, NULL, NULL},
+                                   {"scheme://user@example.com:123/dir1/dir2", "SCHEME + USER + HOST + PORT + PATH", "scheme", "user", NULL, "example.com", "123", "/dir1/dir2", NULL, NULL},
+                                   {"scheme://user@example.com:123/dir1/dir2?query", "SCHEME + USER + HOST + PORT + PATH + QUERY", "scheme", "user", NULL, "example.com", "123", "/dir1/dir2", "query", NULL},
+                                   {"scheme://user@example.com:123/dir1/dir2#fragment", "SCHEME + USER + HOST + PORT + PATH + FRAGMENT", "scheme", "user", NULL, "example.com", "123", "/dir1/dir2", NULL, "fragment"},
+                                   {"scheme://user@example.com:123/dir1/dir2?query#fragment", "SCHEME + USER + HOST + PORT + PATH + QUERY + FRAGMENT", "scheme", "user", NULL, "example.com", "123", "/dir1/dir2", "query", "fragment"},
+                                   {"scheme://user@example.com:123?query", "SCHEME + USER + HOST + PORT + QUERY", "scheme", "user", NULL, "example.com", "123", NULL, "query", NULL},
+                                   {"scheme://user@example.com:123#fragment", "SCHEME + USER + HOST + PORT + FRAGMENT", "scheme", "user", NULL, "example.com", "123", NULL, NULL, "fragment"},
+                                   {"scheme://user@example.com:123?query#fragment", "SCHEME + USER + HOST + PORT + QUERY + FRAGMENT", "scheme", "user", NULL, "example.com", "123", NULL, "query", "fragment"},
+
+                                   {"scheme://user:password@example.com:123", "SCHEME + USER + PASSWORD + HOST + PORT", "scheme", "user", NULL, "example.com", "123", NULL, NULL, NULL},
+                                   {"scheme://user:password@example.com:123/dir1/dir2", "SCHEME + USER + PASSWORD + HOST + PORT + PATH", "scheme", "user", "password", "example.com", "123", "/dir1/dir2", NULL, NULL},
+                                   {"scheme://user:password@example.com:123/dir1/dir2?query", "SCHEME + USER + PASSWORD + HOST + PORT + PATH + QUERY", "scheme", "user", "password", "example.com", "123", "/dir1/dir2", "query", NULL},
+                                   {"scheme://user:password@example.com:123/dir1/dir2#fragment", "SCHEME + USER + PASSWORD + HOST + PORT + PATH + FRAGMENT", "scheme", "user", "password", "example.com", "123", "/dir1/dir2", NULL, "fragment"},
+                                   {"scheme://user:password@example.com:123/dir1/dir2?query#fragment", "SCHEME + USER + PASSWORD + HOST + PORT + PATH + QUERY + FRAGMENT", "scheme", "user", "password", "example.com", "123", "/dir1/dir2", "query", "fragment"},
+                                   {"scheme://user:password@example.com:123?query", "SCHEME + USER + PASSWORD + HOST + PORT + QUERY", "scheme", "user", "password", "example.com", "123", NULL, "query", NULL},
+                                   {"scheme://user:password@example.com:123#fragment", "SCHEME + USER + PASSWORD + HOST + PORT + FRAGMENT", "scheme", "user", "password", "example.com", "123", NULL, NULL, "fragment"},
+                                   {"scheme://user:password@example.com:123?query#fragment", "SCHEME + USER + PASSWORD + HOST + PORT + QUERY + FRAGMENT", "scheme", "user", "password", "example.com", "123", NULL, "query", "fragment"},
+
+                                   //WITHOUT PORT
+                                   {"scheme://example.com", "Simplist valid URI + PORT", "scheme", NULL, NULL, "example.com", "123", NULL, NULL, NULL},
+                                   {"scheme://example.com/dir1/dir2", "Simplist valid URI + PATH", "scheme", NULL, NULL, "example.com", "123", "/dir1/dir2", NULL, NULL},
+                                   {"scheme://example.com/dir1/dir2?query", "Simplist valid URI + PATH + QUERY", "scheme", NULL, NULL, "example.com", "123", "/dir1/dir2", "query", NULL},
+                                   {"scheme://example.com/dir1/dir2#fragment", "Simplist valid URI + PATH + FRAGMENT", "scheme", NULL, NULL, "example.com", "123", "/dir1/dir2", NULL, "fragment"},
+                                   {"scheme://example.com/dir1/dir2?query#fragment", "Simplist valid URI + PATH + QUERY + FRAGMENT", "scheme", NULL, NULL, "example.com", "123", "/dir1/dir2", "query", "fragment"},
+                                   {"scheme://example.com?query", "Simplist valid URI +  QUERY", "scheme", NULL, NULL, "example.com", "123", NULL, "query", NULL},
+                                   {"scheme://example.com#fragment", "Simplist valid URI +  FRAGMENT", "scheme", NULL, NULL, "example.com", "123", NULL, NULL, "fragment"},
+                                   {"scheme://example.com?query#fragment", "Simplist valid URI + FRAGMENT + QUERY", "scheme", NULL, NULL, "example.com", "123", NULL, "query", "fragment"},
+
+                                   {"scheme://user@example.com", "SCHEME + USER + HOST", "scheme", "user", NULL, "example.com", "123", NULL, NULL, NULL},
+                                   {"scheme://user@example.com/dir1/dir2", "SCHEME + USER + HOST + PATH", "scheme", "user", NULL, "example.com", "123", "/dir1/dir2", NULL, NULL},
+                                   {"scheme://user@example.com/dir1/dir2?query", "SCHEME + USER + HOST + PATH + QUERY", "scheme", "user", NULL, "example.com", "123", "/dir1/dir2", "query", NULL},
+                                   {"scheme://user@example.com/dir1/dir2#fragment", "SCHEME + USER + HOST + PATH + FRAGMENT", "scheme", "user", NULL, "example.com", "123", "/dir1/dir2", NULL, "fragment"},
+                                   {"scheme://user@example.com/dir1/dir2?query#fragment", "SCHEME + USER + HOST + PATH + QUERY + FRAGMENT", "scheme", "user", NULL, "example.com", "123", "/dir1/dir2", "query", "fragment"},
+                                   {"scheme://user@example.com?query", "SCHEME + USER + HOST + QUERY", "scheme", "user", NULL, "example.com", "123", NULL, "query", NULL},
+                                   {"scheme://user@example.com#fragment", "SCHEME + USER + HOST + FRAGMENT", "scheme", "user", NULL, "example.com", "123", NULL, NULL, "fragment"},
+                                   {"scheme://user@example.com?query#fragment", "SCHEME + USER + HOST + QUERY + FRAGMENT", "scheme", "user", NULL, "example.com", "123", NULL, "query", "fragment"},
+
+                                   {"scheme://user:password@example.com", "SCHEME + USER + PASSWORD + HOST", "scheme", "user", NULL, "example.com", "123", NULL, NULL, NULL},
+                                   {"scheme://user:password@example.com/dir1/dir2", "SCHEME + USER + PASSWORD + HOST + PATH", "scheme", "user", "password", "example.com", "123", "/dir1/dir2", NULL, NULL},
+                                   {"scheme://user:password@example.com/dir1/dir2?query", "SCHEME + USER + PASSWORD + HOST + PATH + QUERY", "scheme", "user", "password", "example.com", "123", "/dir1/dir2", "query", NULL},
+                                   {"scheme://user:password@example.com/dir1/dir2#fragment", "SCHEME + USER + PASSWORD + HOST + PATH + FRAGMENT", "scheme", "user", "password", "example.com", "123", "/dir1/dir2", NULL, "fragment"},
+                                   {"scheme://user:password@example.com/dir1/dir2?query#fragment", "SCHEME + USER + PASSWORD + HOST + PATH + QUERY + FRAGMENT", "scheme", "user", "password", "example.com", "123", "/dir1/dir2", "query", "fragment"},
+                                   {"scheme://user:password@example.com?query", "SCHEME + USER + PASSWORD + HOST + QUERY", "scheme", "user", "password", "example.com", "123", NULL, "query", NULL},
+                                   {"scheme://user:password@example.com#fragment", "SCHEME + USER + PASSWORD + HOST + FRAGMENT", "scheme", "user", "password", "example.com", "123", NULL, NULL, "fragment"},
+                                   {"scheme://user:password@example.com?query#fragment", "SCHEME + USER + PASSWORD + HOST + QUERY + FRAGMENT", "scheme", "user", "password", "example.com", "123", NULL, "query", "fragment"},
+ 
+    };
+
+    char * URIs[] = {"scheme://example.com",                                                 //Passing
+
+                     //BEGIN ALL POSSIBILITIES WITH PORT
+                     "scheme://example.com:123",                                             //Passing
+                     "scheme://example.com:123/dir1/dir2/dir3",
+                     "scheme://example.com:123/dir1/dir2/dir3?query",
+                     "scheme://example.com:123/dir1/dir2/dir3#fragment",
+                     "scheme://example.com:123/dir1/dir2/dir3?query#fragment",
+                     "scheme://example.com:123?query",
+                     "scheme://example.com:123#fragment",
+                     "scheme://example.com:123?query#fragment",                              //Passing
+
+                     "scheme://user@example.com:123",
+                     "scheme://user@example.com:123/dir1/dir2/dir3",
+                     "scheme://user@example.com:123/dir1/dir2/dir3?query",
+                     "scheme://user@example.com:123/dir1/dir2/dir3#fragment",
+                     "scheme://user@example.com:123/dir1/dir2/dir3?query#fragment",
+                     "scheme://user@example.com:123?query",
+                     "scheme://user@example.com:123#fragment",
+                     "scheme://user@example.com:123?query#fragment",
+
+                     "scheme://user:password@example.com:123",
+                     "scheme://user:password@example.com:123/dir1/dir2/dir3",
+                     "scheme://user:password@example.com:123/dir1/dir2/dir3?query",
+                     "scheme://user:password@example.com:123/dir1/dir2/dir3#fragment",
+                     "scheme://user:password@example.com:123/dir1/dir2/dir3?query#fragment", //Passing (FULL URI)
+                     "scheme://user:password@example.com:123?query",
+                     "scheme://user:password@example.com:123#fragment",
+                     "scheme://user:password@example.com:123?query#fragment",
+                     //END 
+                     
+                     //BEGIN ALL POSSIBILITIES WITHOUT PORT
+                     "scheme://example.com/dir1/dir2/dir3",                                  //Passing
+                     "scheme://example.com/dir1/dir2/dir3?query",                            //Passing
+                     "scheme://example.com/dir1/dir2/dir3#fragment",                         //Passing
+                     "scheme://example.com/dir1/dir2/dir3?query#fragment",                   //Passing
+                     "scheme://example.com?query",                                           //Passing
+                     "scheme://example.com#fragment",                                        //Passing
+                     "scheme://example.com?query#fragment",                                  //Passing
+
+                     "scheme://user@example.com",
+                     "scheme://user@example.com/dir1/dir2/dir3",
+                     "scheme://user@example.com/dir1/dir2/dir3?query",
+                     "scheme://user@example.com/dir1/dir2/dir3#fragment",
+                     "scheme://user@example.com/dir1/dir2/dir3?query#fragment",
+                     "scheme://user@example.com?query",
+                     "scheme://user@example.com#fragment",
+                     "scheme://user@example.com?query#fragment",
+
+                     "scheme://user:password@example.com",
+                     "scheme://user:password@example.com/dir1/dir2/dir3",
+                     "scheme://user:password@example.com/dir1/dir2/dir3?query",
+                     "scheme://user:password@example.com/dir1/dir2/dir3#fragment",
+                     "scheme://user:password@example.com/dir1/dir2/dir3?query#fragment",
+                     "scheme://user:password@example.com?query",
+                     "scheme://user:password@example.com#fragment",
+                     "scheme://user:password@example.com?query#fragment",
+
+                     //OLD
+                     "scheme://user:passowrd@example.com:123/dir1/dir2/dir3?query#fragment", //Passing
                      "scheme://user@example.com:123/dir1/dir2/dir3?query#fragment",          //Passing
                      "scheme://example.com:123/dir1/dir2/dir3?query#fragment",               //Passing
                      "scheme://example.com/dir1/dir2/dir3?query#fragment",                   //Passing
                      "scheme://example.com/dir1/dir2/dir3?query",                            //Passing
                      "scheme://example.com/dir1/dir2/dir3#fragment",                         //Passing
                      "scheme://example.com/dir1/dir2/dir3",                                  //Passing
-                     "scheme://example.com",                                                 //Passing
-                     "scheme://example.com:123",                                             //Passing
-                     "scheme://example.com:123?query#fragment",                              //Passing
                      "scheme://example.com?query",                                           //Passing
                      "scheme://example.com#fragment",                                        //Passing
                      "scheme://example.com?query#fragment",                                  //Passing
+                     "scheme://user@example.com:123",
+                     "scheme://user:password@example.com:123",
                      NULL};
 
     struct URI * parsed_uri;
