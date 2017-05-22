@@ -50,6 +50,7 @@ struct URI * parse_uri(char * raw_uri) {
     int tmp_collon = -1; 
 
     int path_start = -1;
+    int port_start = -1;
 
     char * tmp_uriptr;
     char tmp_char;
@@ -65,6 +66,7 @@ struct URI * parse_uri(char * raw_uri) {
             }
             else if (scheme_found && user_found) { //Parse out port
                 port_coordinates[0] = tmp_uriptr - raw_uri;
+                port_start = tmp_uriptr - raw_uri;
                 host_cooridnates[1] = tmp_uriptr - raw_uri + 1; //this could cause problems
             }
             else if (scheme_found && !user_found) {
@@ -104,7 +106,10 @@ struct URI * parse_uri(char * raw_uri) {
         }
         else if ((tmp_char == '/') && (tmp_uriptr-raw_uri > (scheme_end+2)) && (path_coordinates[0] == -1)) { //Parse out path
             path_coordinates[0] = tmp_uriptr - raw_uri;
-            port_coordinates[1] = tmp_uriptr - raw_uri - 1;
+            //port_coordinates[1] = tmp_uriptr - raw_uri - 1;
+            //Allocate and store port
+            uri->port = (char *) malloc(sizeof(char)*((tmp_uriptr - raw_uri - 1) - port_start + 1)); //TODO make this async
+            strncpy(uri->port, raw_uri + port_start + 1, ((tmp_uriptr - raw_uri - 1) - port_start)); //
         }
         else if (tmp_char == '?') { //Parse out query
             query_coordinates[0] = tmp_uriptr - raw_uri;
