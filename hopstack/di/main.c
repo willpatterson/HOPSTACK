@@ -53,6 +53,7 @@ struct URI * parse_uri(char * raw_uri) {
     int port_start = -1;
     int query_start = -1;
     int fragment_start = -1;
+    int host_start = -1;
 
     char * tmp_uriptr;
     char tmp_char;
@@ -70,6 +71,8 @@ struct URI * parse_uri(char * raw_uri) {
                 port_coordinates[0] = tmp_uriptr - raw_uri;
                 port_start = tmp_uriptr - raw_uri;
                 host_cooridnates[1] = tmp_uriptr - raw_uri + 1; //this could cause problems
+                uri->host = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-host_start)+1)); //TODO make this async
+                strncpy(uri->host, raw_uri+host_start+1, tmp_uriptr-raw_uri-host_start); //
             }
             else if (scheme_found && !user_found) {
                 tmp_collon = tmp_uriptr - raw_uri;
@@ -78,6 +81,8 @@ struct URI * parse_uri(char * raw_uri) {
         else if (tmp_char == '@') { //Parse out user and password
             user_found = 1;
             host_cooridnates[0] = tmp_uriptr - raw_uri;
+            host_start = tmp_uriptr - raw_uri;
+            host_start = tmp_uriptr - raw_uri;
             if (tmp_collon != -1) {
                 /* Consider what will happen if there isnt a '://' in a uri..
                  * How can this caught before memory is allocated and written too
@@ -103,6 +108,11 @@ struct URI * parse_uri(char * raw_uri) {
             //Allocate and store port
             uri->port = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-1)-port_start+1)); //TODO make this async
             strncpy(uri->port, raw_uri+port_start+1, ((tmp_uriptr-raw_uri-1)-port_start)); //
+        }
+        else if ((tmp_char == '/') && (tmp_collon != -1) && !user_found) {
+            //Allocate and store hostname
+            uri->host = (char *) malloc(sizeof(char)*(tmp_collon-(scheme_end+3)+1)); //TODO make this async
+            strncpy(uri->host, raw_uri+scheme_end+3, tmp_collon-(scheme_end+3)); //
         }
         else if (tmp_char == '?') { //Parse out query
             query_coordinates[0] = tmp_uriptr - raw_uri;
