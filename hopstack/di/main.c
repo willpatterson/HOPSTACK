@@ -100,20 +100,23 @@ struct URI * parse_uri(char * raw_uri) {
                 //user_coordinates[1] = tmp_uriptr - raw_uri;
 
                 //Allocate and store user
-                uri->user = (char *) malloc(sizeof(char)*((tmp_uriptr - raw_uri)-(scheme_end+3)+1)); //TODO make this async
-                strncpy(uri->user, raw_uri+scheme_end+3, (tmp_uriptr - raw_uri)-(scheme_end+3)); //
+                uri->user = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri)-(scheme_end+3)+1)); //TODO make this async
+                strncpy(uri->user, raw_uri+scheme_end+3, (tmp_uriptr-raw_uri)-(scheme_end+3)); //
             }
         }
         else if ((tmp_char == '/') && (tmp_uriptr-raw_uri > (scheme_end+2)) && (path_coordinates[0] == -1)) { //Parse out path
             path_coordinates[0] = tmp_uriptr - raw_uri;
+            path_start = tmp_uriptr - raw_uri;
             //port_coordinates[1] = tmp_uriptr - raw_uri - 1;
             //Allocate and store port
-            uri->port = (char *) malloc(sizeof(char)*((tmp_uriptr - raw_uri - 1) - port_start + 1)); //TODO make this async
-            strncpy(uri->port, raw_uri + port_start + 1, ((tmp_uriptr - raw_uri - 1) - port_start)); //
+            uri->port = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-1)-port_start+1)); //TODO make this async
+            strncpy(uri->port, raw_uri+port_start+1, ((tmp_uriptr-raw_uri-1)-port_start)); //
         }
         else if (tmp_char == '?') { //Parse out query
             query_coordinates[0] = tmp_uriptr - raw_uri;
             path_coordinates[1] = tmp_uriptr - raw_uri - 1;
+            uri->path = (char *) malloc(sizeof(char)*((tmp_uriptr-raw_uri-1)-path_start+1)); //TODO make this async
+            strncpy(uri->path, raw_uri+path_start+1, ((tmp_uriptr-raw_uri-1)-path_start)); //
         } 
         else if (tmp_char == '#') { //Parse out fragment
             fragment_coordinates[0] = tmp_uriptr - raw_uri;
