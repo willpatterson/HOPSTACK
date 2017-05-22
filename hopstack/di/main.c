@@ -190,6 +190,17 @@ struct URI * parse_uri(char * raw_uri) {
         //Allocate and store fragment
         uri->fragment = (char *) malloc(sizeof(char)*(uri_len-fragment_start+1));
         strncpy(uri->fragment, raw_uri+fragment_start+1, (uri_len-fragment_start));
+        if ((path_start == -1) && (tmp_collon == -1)) {
+            //Allocate and store host
+            if (query_start == -1) {
+                uri->host = (char *) malloc(sizeof(char)*(fragment_start-(scheme_end+3))+1);
+                strncpy(uri->host, raw_uri+scheme_end+3, fragment_start-(scheme_end+3));
+            }
+            else {
+                uri->host = (char *) malloc(sizeof(char)*(query_start-(scheme_end+3))+1);
+                strncpy(uri->host, raw_uri+scheme_end+3, query_start-(scheme_end+3));
+            }
+        }
     }
     else if ((fragment_start == -1) && (query_start == -1)){ //If URI ends with neither query or fragment
         if (path_start != -1) {
@@ -281,19 +292,19 @@ void display_URI(struct URI * uri) {
 
 
 int main() {
-    char * URIs[] = {"scheme://user:passowrd@example.com:123/dir1/dir2/dir3?query#fragment",
-                     "scheme://user@example.com:123/dir1/dir2/dir3?query#fragment",
-                     "scheme://example.com:123/dir1/dir2/dir3?query#fragment",
-                     "scheme://example.com/dir1/dir2/dir3?query#fragment",
-                     "scheme://example.com/dir1/dir2/dir3?query",
-                     "scheme://example.com/dir1/dir2/dir3#fragment",
-                     "scheme://example.com/dir1/dir2/dir3",
-                     "scheme://example.com",
-                     "scheme://example.com:123",
-                     "scheme://example.com#fragment",
-                     "scheme://example.com?query",
-                     "scheme://example.com?query#fragment",
-                     "scheme://example.com:123?query#fragment",
+    char * URIs[] = {"scheme://user:passowrd@example.com:123/dir1/dir2/dir3?query#fragment", //Passing
+                     "scheme://user@example.com:123/dir1/dir2/dir3?query#fragment",          //Passing
+                     "scheme://example.com:123/dir1/dir2/dir3?query#fragment",               //Passing
+                     "scheme://example.com/dir1/dir2/dir3?query#fragment",                   //Passing
+                     "scheme://example.com/dir1/dir2/dir3?query",                            //Passing
+                     "scheme://example.com/dir1/dir2/dir3#fragment",                         //Passing
+                     "scheme://example.com/dir1/dir2/dir3",                                  //Passing
+                     "scheme://example.com",                                                 //Passing
+                     "scheme://example.com:123",                                             //Passing
+                     "scheme://example.com:123?query#fragment",                              //Passing
+                     "scheme://example.com?query",                                           //Passing
+                     "scheme://example.com#fragment",                                        //Passing
+                     "scheme://example.com?query#fragment",                                  //Passing
                      NULL};
 
     struct URI * parsed_uri;
