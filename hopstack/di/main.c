@@ -36,7 +36,11 @@ struct URI * parse_uri(char * raw_uri) {
      * POTENTIAL VULERABILITY:
      * Consider what will happen if there isnt a '://' in a uri..
      * How can this caught before memory is allocated and written too
-     * This could be a potential vulerability */
+     * This could be a potential vulerability 
+     * 
+     * TODO:
+     * - Impelment support for IPV6
+     */
 
     if (raw_uri == NULL) { return NULL; }
 
