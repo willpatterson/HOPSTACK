@@ -28,6 +28,15 @@ struct URP {
 
 char valid_schemes[] = "https http scp ftp sftp";
 
+int allocate_and_copy_str(char * copy_from, char * copy_to, int length) {
+    if (copy_from == NULL) { return -2; } //TODO left off here
+    if (copy_to != NULL) { return -1; }
+
+    copy_to = (char *) malloc((sizeof(char)*length)+1);
+    strncpy(copy_to, copy_from, length); 
+    return 0;
+}
+
 struct URI * parse_uri(char * raw_uri) {
     /* Parses raw URI passed in as character array and returns a URI struct
      * with all pieces of the URI in separate character arrays
@@ -49,6 +58,7 @@ struct URI * parse_uri(char * raw_uri) {
 
     int uri_len = strlen(raw_uri);
 
+    int test = 22;
     int scheme_found = 0;
     int scheme_end = 0; //First collon
     int user_found = 0;
@@ -74,6 +84,8 @@ struct URI * parse_uri(char * raw_uri) {
                 //Allocate and store scheme
                 uri->scheme = (char *) malloc(sizeof(char)*(scheme_end+1));
                 strncpy(uri->scheme, raw_uri, scheme_end); 
+                //test = allocate_and_copy_str(raw_uri, uri->scheme, scheme_end);
+                //printf("%d\n", test);
                 scheme_found = 1;
             }
             else if (scheme_found && user_found) { //Parse out host
