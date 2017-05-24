@@ -1,43 +1,13 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdbool.h>
+#include "di_uri_parser.h"
+short allocate_and_copy_str(char ** copy_to, char * copy_from, int length) {
+    if ((copy_from == NULL) || (copy_to == NULL)) { return -1; }
 
-struct URI {
-    char * scheme;
-    char * user;
-    char * password;
-    char * host;
-    char * port;
-    char * path;
-    char * query;
-    char * fragment;
-};
-
-struct rule {
-    char * name;
-    char * rule;
-    char * levels;
-    char * priority;
-};
-
-struct URP {
-    struct URI uri;
-    struct rule * rules;
-};
-
-char valid_schemes[] = "https http scp ftp sftp";
-
-int allocate_and_copy_str(char * copy_from, char * copy_to, int length) {
-    if (copy_from == NULL) { return -2; } //TODO left off here
-    if (copy_to != NULL) { return -1; }
-
-    copy_to = (char *) malloc((sizeof(char)*length)+1);
-    strncpy(copy_to, copy_from, length); 
+    *copy_to = (char *) malloc((sizeof(char)*length)+1);
+    strncpy(*copy_to, copy_from, length); 
     return 0;
 }
 
-struct URI * parse_uri(char * raw_uri) {
+URI * parse_uri(char * raw_uri) {
     /* Parses raw URI passed in as character array and returns a URI struct
      * with all pieces of the URI in separate character arrays
      * INPUT: CHARACTER ARRAY CONTAINING URI
@@ -54,7 +24,7 @@ struct URI * parse_uri(char * raw_uri) {
 
     if (raw_uri == NULL) { return NULL; }
 
-    struct URI *uri = calloc (1, sizeof (struct URI));
+    URI *uri = calloc (1, sizeof (URI));
 
     int uri_len = strlen(raw_uri);
 
@@ -82,18 +52,14 @@ struct URI * parse_uri(char * raw_uri) {
                 scheme_end = current_index;
 
                 //Allocate and store scheme
-                uri->scheme = (char *) malloc(sizeof(char)*(scheme_end+1));
-                strncpy(uri->scheme, raw_uri, scheme_end); 
-                //test = allocate_and_copy_str(raw_uri, uri->scheme, scheme_end);
-                //printf("%d\n", test);
+                allocate_and_copy_str(&uri->scheme, raw_uri, scheme_end); 
                 scheme_found = 1;
             }
             else if (scheme_found && user_found) { //Parse out host
                 port_start = current_index+1;
 
                 //Allocate and store hostname
-                uri->host = (char *) malloc(sizeof(char)*((current_index-host_start)));
-                strncpy(uri->host, raw_uri+host_start+1, current_index-host_start-1);
+                allocate_and_copy_str(&uri->host, raw_uri+host_start+1, current_index-host_start-1);
             }
             else if (scheme_found && !user_found) { //Set tmp colon
                 tmp_collon = current_index;
@@ -104,74 +70,61 @@ struct URI * parse_uri(char * raw_uri) {
             host_start = current_index;
             if (tmp_collon != -1) {
                 //Allocate and store user
-                uri->user = (char *) malloc(sizeof(char)*(tmp_collon-(scheme_end+3)+1));
-                strncpy(uri->user, raw_uri+scheme_end+3, tmp_collon-(scheme_end+3)); 
+                allocate_and_copy_str(&uri->user, raw_uri+scheme_end+3, tmp_collon-(scheme_end+3)); 
                 
                 //Allocate and store password
-                uri->password = (char *) malloc(sizeof(char)*((current_index)-tmp_collon));
-                strncpy(uri->password, raw_uri+tmp_collon+1, (current_index)-tmp_collon-1);
+                allocate_and_copy_str(&uri->password, raw_uri+tmp_collon+1, (current_index)-tmp_collon-1);
                 tmp_collon = -1;
             }
             else {
                 //Allocate and store user
-                uri->user = (char *) malloc(sizeof(char)*((current_index)-(scheme_end+3)+1));
-                strncpy(uri->user, raw_uri+scheme_end+3, (current_index)-(scheme_end+3));
+                allocate_and_copy_str(&uri->user, raw_uri+scheme_end+3, (current_index)-(scheme_end+3));
             }
         }
         else if ((tmp_char == '/') && (current_index > (scheme_end+2)) && (path_start == -1)) {
             path_start = current_index;
             if (port_start != -1) {
                 //Allocate and store port
-                uri->port = (char *) malloc(sizeof(char)*(path_start-port_start)+1);
-                strncpy(uri->port, raw_uri+port_start, path_start-port_start);
+                allocate_and_copy_str(&uri->port, raw_uri+port_start, path_start-port_start);
             }
             else if (tmp_collon != -1) {
                 if (user_found == 1) {
                     //Allocate and store hostname
-                    uri->host = (char *) malloc(sizeof(char)*(path_start-host_start)+1);
-                    strncpy(uri->host, raw_uri+host_start, path_start-host_start);
+                    allocate_and_copy_str(&uri->host, raw_uri+host_start, path_start-host_start);
                 }
                 else {
                     //Allocate and store port
-                    uri->port = (char *) malloc(sizeof(char)*(path_start-tmp_collon)+1);
-                    strncpy(uri->port, raw_uri+tmp_collon+1, path_start-tmp_collon-1);
+                    allocate_and_copy_str(&uri->port, raw_uri+tmp_collon+1, path_start-tmp_collon-1);
                     //Allocate and store hostname
-                    uri->host = (char *) malloc(sizeof(char)*(tmp_collon-(scheme_end+3)+1));
-                    strncpy(uri->host, raw_uri+scheme_end+3, tmp_collon-(scheme_end+3));
+                    allocate_and_copy_str(&uri->host, raw_uri+scheme_end+3, tmp_collon-(scheme_end+3));
                 }
             }
             else {
                 //Allocate and store host
-                uri->host = (char *) malloc(sizeof(char)*(path_start-(scheme_end+3)+1));
-                strncpy(uri->host, raw_uri+scheme_end+3, path_start-(scheme_end+3));
+                allocate_and_copy_str(&uri->host, raw_uri+scheme_end+3, path_start-(scheme_end+3));
             }
         }
         else if (tmp_char == '?') { //Parse out query
             query_start = current_index;
 
-            if (path_start != -1) {
+           if (path_start != -1) {
                 //Allocate and store path
-                uri->path = (char *) malloc(sizeof(char)*((current_index-1)-path_start+1));
-                strncpy(uri->path, raw_uri+path_start+1, ((current_index-1)-path_start)); 
+                allocate_and_copy_str(&uri->path, raw_uri+path_start+1, ((current_index-1)-path_start)); 
             }
             else if (tmp_collon != -1) {
                 if (user_found == 1) { //TODO
                     //Allocate and store hostname
-                    //uri->host = (char *) malloc(sizeof(char)*(path_start-host_start)+1);
-                    //strncpy(uri->host, raw_uri+host_start, path_start-host_start);
+                    allocate_and_copy_str(&uri->host, raw_uri+host_start, path_start-host_start);
                 }
                 else {
                     //Allocate and store port
-                    uri->port = (char *) malloc(sizeof(char)*(current_index-tmp_collon)+1);
-                    strncpy(uri->port, raw_uri+tmp_collon+1, current_index-tmp_collon-1);
+                    allocate_and_copy_str(&uri->port, raw_uri+tmp_collon+1, current_index-tmp_collon-1);
                     //Allocate and store hostname
-                    uri->host = (char *) malloc(sizeof(char)*(tmp_collon-(scheme_end+3)+1));
-                    strncpy(uri->host, raw_uri+scheme_end+3, tmp_collon-(scheme_end+3));
+                    allocate_and_copy_str(&uri->host, raw_uri+scheme_end+3, tmp_collon-(scheme_end+3));
                 }
             }
             else if (port_start != -1) { //Not sure if this conditional does anything
-                uri->port = (char *) malloc(sizeof(char)*((current_index-1)-port_start+1));
-                strncpy(uri->port, raw_uri+port_start+1, ((current_index-1)-port_start)); 
+                allocate_and_copy_str(&uri->port, raw_uri+port_start+1, ((current_index-1)-port_start)); 
             }
 
         } 
@@ -180,14 +133,12 @@ struct URI * parse_uri(char * raw_uri) {
 
             if (query_start != -1) {
                 //Allocate and store query
-                uri->query = (char *) malloc(sizeof(char)*((current_index-1)-query_start+1));
-                strncpy(uri->query, raw_uri+query_start+1, ((current_index-1)-query_start));
+                allocate_and_copy_str(&uri->query, raw_uri+query_start+1, ((current_index-1)-query_start));
             }
             else {
                 if (path_start != -1) {
                     //Allocate and store path
-                    uri->path = (char *) malloc(sizeof(char)*((current_index-1)-path_start+1));
-                    strncpy(uri->path, raw_uri+path_start+1, ((current_index-1)-path_start)); 
+                    allocate_and_copy_str(&uri->path, raw_uri+path_start+1, ((current_index-1)-path_start)); 
                 }
             }
         } 
@@ -196,78 +147,93 @@ struct URI * parse_uri(char * raw_uri) {
     //BEGIN Post Iteration Allocation:
     if ((query_start != -1) && (fragment_start == -1)) { //If URI ends with query
         //Allocate and store query
-        uri->query = (char *) malloc(sizeof(char)*(uri_len-query_start+1));
-        strncpy(uri->query, raw_uri+query_start+1, uri_len-query_start);
+        allocate_and_copy_str(&uri->query, raw_uri+query_start+1, uri_len-query_start);
 
         //Allocate and store host
-        uri->host = (char *) malloc(sizeof(char)*(query_start-(scheme_end+3))+1);
-        strncpy(uri->host, raw_uri+scheme_end+3, query_start-(scheme_end+3));
+        allocate_and_copy_str(&uri->host, raw_uri+scheme_end+3, query_start-(scheme_end+3));
     }
     else if (fragment_start != -1) { //If URI ends with fragment
         //Allocate and store fragment
-        uri->fragment = (char *) malloc(sizeof(char)*(uri_len-fragment_start+1));
-        strncpy(uri->fragment, raw_uri+fragment_start+1, (uri_len-fragment_start));
+        allocate_and_copy_str(&uri->fragment, raw_uri+fragment_start+1, (uri_len-fragment_start));
         if ((path_start == -1) && (tmp_collon == -1)) {
             //Allocate and store host
             if (query_start == -1) {
-                uri->host = (char *) malloc(sizeof(char)*(fragment_start-(scheme_end+3))+1);
-                strncpy(uri->host, raw_uri+scheme_end+3, fragment_start-(scheme_end+3));
+                allocate_and_copy_str(&uri->host, raw_uri+scheme_end+3, fragment_start-(scheme_end+3));
             }
             else {
-                uri->host = (char *) malloc(sizeof(char)*(query_start-(scheme_end+3))+1);
-                strncpy(uri->host, raw_uri+scheme_end+3, query_start-(scheme_end+3));
+                allocate_and_copy_str(&uri->host, raw_uri+scheme_end+3, query_start-(scheme_end+3));
             }
         }
     }
     else if ((fragment_start == -1) && (query_start == -1)){ //If URI ends with neither query or fragment
         if (path_start != -1) {
             //Allocate and store path
-            uri->path = (char *) malloc(sizeof(char)*(uri_len-path_start+1));
-            strncpy(uri->path, raw_uri+path_start+1, (uri_len-path_start)); 
+            allocate_and_copy_str(&uri->path, raw_uri+path_start+1, (uri_len-path_start)); 
         }
         else if (tmp_collon != -1) {
             //Allocate and store port
-            uri->port = (char *) malloc(sizeof(char)*(uri_len-tmp_collon)+1);
-            strncpy(uri->port, raw_uri+tmp_collon+1, uri_len-tmp_collon);
+            allocate_and_copy_str(&uri->port, raw_uri+tmp_collon+1, uri_len-tmp_collon);
 
             if (user_found == 1) {
                 //Allocate and store host
-                uri->host = (char *) malloc(sizeof(char)*(tmp_collon-host_start)+1);
-                strncpy(uri->host, raw_uri+host_start, tmp_collon-host_start);
+                allocate_and_copy_str(&uri->host, raw_uri+host_start, tmp_collon-host_start);
             }
             else {
                 //Allocate and store host
-                uri->host = (char *) malloc(sizeof(char)*(tmp_collon-(scheme_end+3))+1);
-                strncpy(uri->host, raw_uri+scheme_end+3, tmp_collon-(scheme_end+3));
+                allocate_and_copy_str(&uri->host, raw_uri+scheme_end+3, tmp_collon-(scheme_end+3));
             }
         }
         else {
             //Allocate and store host
-            uri->host = (char *) malloc(sizeof(char)*(uri_len-(scheme_end+3))+1);
-            strncpy(uri->host, raw_uri+scheme_end+3, uri_len-(scheme_end+3));
+            allocate_and_copy_str(&uri->host, raw_uri+scheme_end+3, uri_len-(scheme_end+3));
         }
     }
     return uri;
 }
 
-short validate_uri(struct URI uri) { /*TODO*/ return 0; }
+short validate_uri(URI uri) { /*TODO*/ return 0; }
 
-void deallocate_uri(struct URI * uri) {
+void deallocate_uri(URI * uri) {
     if (uri == NULL) { return; }
 
-    if (uri->scheme != NULL) { free(uri->scheme); }
-    if (uri->user != NULL) { free(uri->user); }
-    if (uri->password != NULL) { free(uri->password); }
-    if (uri->host != NULL) { free(uri->host); }
-    if (uri->port != NULL) { free(uri->port); }
-    if (uri->path != NULL) { free(uri->path); }
-    if (uri->query != NULL) { free(uri->query); }
-    if (uri->fragment != NULL) { free(uri->fragment); }
+    if (uri->scheme != NULL) {
+        free(uri->scheme); 
+        uri->scheme = NULL;
+    }
+    if (uri->user != NULL) {
+        free(uri->user);
+        uri->scheme = NULL;
+    }
+    if (uri->password != NULL) { 
+        free(uri->password);
+        uri->scheme = NULL;
+    }
+    if (uri->host != NULL) {
+        free(uri->host);
+        uri->scheme = NULL;
+    }
+    if (uri->port != NULL) {
+        free(uri->port); 
+        uri->scheme = NULL;
+    }
+    if (uri->path != NULL) {
+        free(uri->path); 
+        uri->scheme = NULL;
+    }
+    if (uri->query != NULL) {
+        free(uri->query); 
+        uri->scheme = NULL;
+    }
+    if (uri->fragment != NULL) {
+        free(uri->fragment); 
+        uri->scheme = NULL;
+    }
     free(uri);
+    uri = NULL;
     return;
 }
 
-void display_URI(struct URI * uri) {
+void display_URI(URI * uri) {
     if (uri == NULL) {
         printf("EMPTY URI POINTER\n");
         return;
@@ -342,7 +308,7 @@ bool compare_null_strings(char * str1, char * str2) {
         else              { return false; }
     }
     else {
-        if (str2 == NULL)                 { return false; }
+        if      (str2 == NULL)            { return false; }
         else if (strcmp(str1, str2) == 0) { return true; }
         else                              { return false; }
     }
@@ -350,7 +316,7 @@ bool compare_null_strings(char * str1, char * str2) {
 
 struct URI_test_results do_uri_test(struct URI_test test_vals) {
 
-    struct URI * parsed_uri;
+    URI * parsed_uri;
     struct URI_test_results results = {false, false, false, false, false, false, false, false};
     if (test_vals.uri != NULL) {
         parsed_uri = parse_uri(test_vals.uri);
@@ -370,7 +336,7 @@ struct URI_test_results do_uri_test(struct URI_test test_vals) {
 }
 
 //TODO
-void display_uri_parsing_test(struct URI_test_results results, struct URI_test expected_vals, struct URI output) {}
+void display_uri_parsing_test(struct URI_test_results results, struct URI_test expected_vals, URI output) {}
 
 int main() {
     struct URI_test URI_tests[] = {{"scheme://example.com", "Simplist valid URI", "scheme", NULL, NULL, "example.com", NULL, NULL, NULL, NULL}, //SIMPLE BASE CASE
@@ -505,7 +471,7 @@ int main() {
                      "scheme://user:password@example.com:123",
                      NULL};
 
-    struct URI * parsed_uri;
+    URI * parsed_uri;
     char ** tmp_uriptr;
     for (tmp_uriptr = URIs; *tmp_uriptr != NULL; ++tmp_uriptr) { //iterate through raw_uri string
         printf("////////////////////////////////////////////////////////\n");
