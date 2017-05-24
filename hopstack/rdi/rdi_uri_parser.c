@@ -1,5 +1,5 @@
-#include "di_uri_parser.h"
-#include "di_uri_utils.h"
+#include "rdi_uri_parser.h"
+#include "rdi_uri_utils.h"
 
 short allocate_and_copy_str(char ** copy_to, char * copy_from, int length) {
     if ((copy_from == NULL) || (copy_to == NULL)) { return -1; }
@@ -19,6 +19,11 @@ URI * parse_uri(char * raw_uri) {
      * Consider what will happen if there isnt a '://' in a uri..
      * How can this caught before memory is allocated and written too
      * This could be a potential vulerability 
+     *
+     * NOTES:
+     * - How should URIs containing raw data be delt with? They will start with
+     *   the 'raw' scheme. everything after 'raw://' should be considered one unit
+     *   of data.
      * 
      * TODO:
      * - Impelment support for IPV6
