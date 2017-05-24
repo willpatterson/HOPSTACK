@@ -4,3 +4,7 @@
 *.egg-info/
 .env
 *a.out*
+kadimus_regex.c
+kadimus_regex.h
+sftpget.c
+url2file.c
