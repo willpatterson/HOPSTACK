@@ -14,18 +14,13 @@ HOPSTACK aims to provide a framework to build software pipelines within. Some
 fringe cases may not be supported, though one should be able to simulate thoes
 cases with a combination of standard features. 
 
-Acronym List:
--------------
-* **LASMM** -- Metro Manager
-* **LASCM** -- Cluster Manager
-* **LASH** -- Head
-* **DI** -- Data Interpreter
-* **LASDR** -- Data Reference
-* **LASWSA** -- WorkSpace Abstration
-* **LASB** -- Base
-* **LASBM** -- Base Manager
-* **LASO** -- Object
-* **LASSP** -- System Profiler
+Tool List:
+----------
+* **HRDI** -- HOPSTACK Recursive Data Interpreter
+* **HCP** -- HOPSTACK Cluster Provisioner
+* **HSS** -- HOPSTACK Service Scheduler
+* **HWA** -- HOPSTACK Workspace Abstraction
+* **HPP** -- HOPSTACK Performance Profiler
 
 HOPSTACK Home (LASH):
 ---------------------
@@ -49,7 +44,6 @@ Different Cluster Frameworks and software to consider interfacing with:
 
 1. kubernetes
 2. Apache Mesos
-3. Hadoop
 
 
 LASO Notes:
